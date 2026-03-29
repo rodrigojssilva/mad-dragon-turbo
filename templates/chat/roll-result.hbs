@@ -1,0 +1,54 @@
+<div class="mdt-roll">
+  <h3>
+    {{actorName}}
+  </h3>
+
+  <p class="roll-breakdown">
+    {{breakdown}} = {{diceCount}}d6
+  </p>
+
+  <p class="roll-difficulty">
+    {{localize "MDT.roll.difficulty"}}: {{difficultyLabel}}
+  </p>
+
+  <div class="dice-results">
+    {{#each results}}
+      {{#if (eq this 6)}}
+        <span class="die die-six">
+          {{this}}
+        </span>
+      {{else if (eq this 1)}}
+        <span class="die die-one">
+          {{this}}
+        </span>
+      {{else}}
+        <span class="die">
+          {{this}}
+        </span>
+      {{/if}}
+    {{/each}}
+  </div>
+
+  {{#if rerolledResult}}
+    <p class="reroll">
+      {{localize "MDT.roll.tricksterReroll"}} →
+      {{#if (eq rerolledResult 6)}}
+        <span class="die die-six">
+          {{rerolledResult}}
+        </span>
+      {{else if (eq rerolledResult 1)}}
+        <span class="die die-one">
+          {{rerolledResult}}
+        </span>
+      {{else}}
+        <span class="die">
+          {{rerolledResult}}
+        </span>
+      {{/if}}
+    </p>
+  {{/if}}
+
+  <div class="roll-result {{analysis.cssClass}}">
+    {{localize analysis.label}}
+  </div>
+</div>

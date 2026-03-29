@@ -1,0 +1,44 @@
+{
+  "id": "mad-dragon-turbo",
+  "title": "Mad Dragon Turbo",
+  "description": "Sistema RPG de folheto Mad Dragon Turbo para Foundry VTT.",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13",
+    "maximum": "13"
+  },
+  "authors": [
+    {
+      "name": "Richard C. Bernardes - O Bardo"
+    },
+    {
+      "name": "Rodrigo J. S. Silva - Capivara Tech"
+    }
+  ],
+  "languages": [
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "lang/pt-BR.json"
+    }
+  ],
+  "esmodules": ["module/mdt.js"],
+  "styles": ["css/mdt.css"],
+  "documentTypes": {
+    "Actor": {
+      "character": {},
+      "npc": {},
+      "enemy": {}
+    },
+    "Item": {
+    "specialty": {},
+    "spell": {}
+    }
+  },
+  "packs": [],
+  "socket": false,
+  "url": "",
+  "manifest": "",
+  "download": ""
+}

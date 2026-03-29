@@ -1,0 +1,30 @@
+<form>
+  <div class="form-group">
+    <label>{{localize "MDT.roll.possible"}}</label>
+    <input type="checkbox" name="possible" checked disabled />
+  </div>
+
+  <div class="form-group">
+    <label>{{localize "MDT.roll.useStyle"}} ({{styleLabel}})</label>
+    <input type="checkbox" name="style" />
+  </div>
+
+  <div class="form-group">
+    <label>{{localize "MDT.roll.useSpecialty"}}</label>
+    <input type="checkbox" name="specialty" />
+  </div>
+
+  <div class="form-group">
+    <label>{{localize "MDT.roll.useItem"}}</label>
+    <input type="checkbox" name="item" />
+  </div>
+
+  <div class="form-group">
+    <label>{{localize "MDT.roll.difficulty"}}</label>
+    <select name="difficulty">
+      {{#each difficulties}}
+        <option value="{{this.key}}">{{localize this.label}}</option>
+      {{/each}}
+    </select>
+  </div>
+</form>

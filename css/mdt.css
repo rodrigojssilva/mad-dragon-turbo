@@ -1,0 +1,10 @@
+/* Mad Dragon Turbo - Estilos da ficha */
+.mad-dragon-turbo .sheet-header {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.mad-dragon-turbo .sheet-body {
+  padding: 5px;
+}

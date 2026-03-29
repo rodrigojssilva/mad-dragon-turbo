@@ -1,0 +1,74 @@
+{
+  "MDT": {
+    "name": "Nome",
+    "concept": "Conceito",
+    "style": "Estilo",
+    "health": "Vida",
+    "sanity": "Sanidade",
+    "notes": "Notas",
+    "specialties": "Especialidades",
+    "sheet": {
+      "character": "Ficha de Personagem",
+      "npc": "Ficha de NPC",
+      "enemy": "Ficha de Inimigo"
+    },
+    "styles": {
+      "brawler": "Porradeiro",
+      "genius": "Genial",
+      "trickster": "Malandrão"
+    },
+    "spell": {
+      "levelLabel": "Nível",
+      "levelLow": "Baixo Nível",
+      "levelHigh": "Alto Nível",
+      "cost": "Custo/Sacrifício"
+    },
+    "roll": {
+      "title": "Teste MDT",
+      "rollButton": "Rolar",
+      "possible": "Ação possível!",
+      "difficulty": "Dificuldade",
+      "useSpecialty": "Usar especialidade?",
+      "tricksterReroll": "Malandrão rerola o 1",
+      "useStyle": "Estilo compatível?",
+      "useItem": "Usar item de vantagem?",
+      "noStyle": "Sem estilo definido",
+      "bonus": {
+        "possible": "Ação possível",
+        "specialty": "Especialidade",
+        "item": "Item de vantagem"
+      },
+      "action": {
+        "physical": "Ação física (Porradeiro)",
+        "mental": "Ação mental (Genial)",
+        "social": "Ação social (Malandrão)"
+      },
+      "difficulties": {
+        "common": "Comum (2+)",
+        "challenging": "Desafiadora (4+)",
+        "complex": "Complexa (6)",
+        "hidden": "🎲 Oculta",
+        "hiddenLabel": "???"
+      },
+      "result": {
+        "critical": "💀 Falha Crítica",
+        "failure": "❌ Falha",
+        "partial": "⚠️ Sucesso Parcial",
+        "success": "✅ Sucesso",
+        "superb": "⭐ Primoroso",
+        "spectacular": "🌟 Espetacular"
+      }
+    }
+  },
+  "TYPES": {
+    "Actor": {
+      "character": "Personagem",
+      "npc": "NPC",
+      "enemy": "Inimigo"
+    },
+    "Item": {
+      "specialty": "Especialidade",
+      "spell": "Magia"
+    }
+  }
+}
