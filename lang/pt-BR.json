@@ -60,6 +60,12 @@
         "hidden": "🎲 Dificuldade Oculta",
         "maybe": "🤔 Passei?"
       }
+    },
+    "combat": {
+      "initiativeTitle": "Ordem de Iniciativa",
+      "rollAll": "Definir Iniciativa",
+      "noCombatants": "Nenhum combatente no encontro!",
+      "initiativeRolled": "Iniciativa definida com sucesso!"
     }
   },
   "TYPES": {

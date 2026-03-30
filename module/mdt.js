@@ -8,6 +8,7 @@ import { EnemyModel } from "./models/actor/enemy-model.js";
 import { SpecialtyModel } from "./models/item/specialty-model.js";
 import { SpellModel } from "./models/item/spell-model.js";
 import { MDTRoll } from "./helpers/roll.js";
+import { MDTCombat } from "./combat/combat.js";
 
 Hooks.on("init", function () {
   console.log("MDT | Inicializando Mad Dragon Turbo...");
@@ -54,6 +55,9 @@ Hooks.on("init", function () {
       label: "MDT.sheet.character",
     },
   );
+
+  // Registra o sistema de combate customizado
+  CONFIG.Combat.documentClass = MDTCombat;
 
   registerHandlebarsHelpers();
 });
