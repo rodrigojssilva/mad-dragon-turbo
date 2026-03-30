@@ -8,3 +8,11 @@
 .mad-dragon-turbo .sheet-body {
   padding: 5px;
 }
+
+.mdt-roll .mdt-die-rerolled {
+  opacity: 0.5;
+}
+
+.mdt-roll .mdt-die-rerolled s {
+  text-decoration: line-through;
+}

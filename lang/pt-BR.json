@@ -56,7 +56,9 @@
         "partial": "⚠️ Sucesso Parcial",
         "success": "✅ Sucesso",
         "superb": "⭐ Primoroso",
-        "spectacular": "🌟 Espetacular"
+        "spectacular": "🌟 Espetacular",
+        "hidden": "🎲 Dificuldade Oculta",
+        "maybe": "🤔 Passei?"
       }
     }
   },

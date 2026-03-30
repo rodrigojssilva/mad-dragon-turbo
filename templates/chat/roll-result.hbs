@@ -1,54 +1,52 @@
 <div class="mdt-roll">
-  <h3>
-    {{actorName}}
-  </h3>
+  <h3>{{actorName}}</h3>
 
-  <p class="roll-breakdown">
-    {{breakdown}} = {{diceCount}}d6
-  </p>
+  <p class="roll-breakdown">{{breakdown}} = {{diceCount}}d6</p>
+  <p class="roll-difficulty">{{localize "MDT.roll.difficulty"}}: {{difficultyLabel}}</p>
 
-  <p class="roll-difficulty">
-    {{localize "MDT.roll.difficulty"}}: {{difficultyLabel}}
-  </p>
-
+  {{!-- Resultados originais --}}
   <div class="dice-results">
-    {{#each results}}
+    {{#each originalResults}}
       {{#if (eq this 6)}}
-        <span class="die die-six">
-          {{this}}
-        </span>
+        <span class="die die-six">{{this}}</span>
       {{else if (eq this 1)}}
-        <span class="die die-one">
-          {{this}}
-        </span>
+        <span class="die die-one">{{this}}</span>
       {{else}}
-        <span class="die">
-          {{this}}
-        </span>
+        <span class="die">{{this}}</span>
       {{/if}}
     {{/each}}
   </div>
 
+  {{!-- Reroll do Malandrão --}}
   {{#if rerolledResult}}
     <p class="reroll">
       {{localize "MDT.roll.tricksterReroll"}} →
       {{#if (eq rerolledResult 6)}}
-        <span class="die die-six">
-          {{rerolledResult}}
-        </span>
+        <span class="die die-six">{{rerolledResult}}</span>
       {{else if (eq rerolledResult 1)}}
-        <span class="die die-one">
-          {{rerolledResult}}
-        </span>
+        <span class="die die-one">{{rerolledResult}}</span>
       {{else}}
-        <span class="die">
-          {{rerolledResult}}
-        </span>
+        <span class="die">{{rerolledResult}}</span>
       {{/if}}
     </p>
+
+    {{!-- Resultados atualizados após reroll --}}
+    <div class="dice-results">
+      {{#each results}}
+        {{#if (eq this 6)}}
+          <span class="die die-six">{{this}}</span>
+        {{else if (eq this 1)}}
+          <span class="die die-one">{{this}}</span>
+        {{else}}
+          <span class="die">{{this}}</span>
+        {{/if}}
+      {{/each}}
+    </div>
   {{/if}}
 
+  {{!-- Análise final — sempre exibida --}}
   <div class="roll-result {{analysis.cssClass}}">
     {{localize analysis.label}}
   </div>
+
 </div>
