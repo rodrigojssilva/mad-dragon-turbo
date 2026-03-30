@@ -4,7 +4,7 @@ const { StringField, HTMLField } = foundry.data.fields;
 export class SpellModel extends TypeDataModel {
   static defineSchema() {
     return {
-      description: new StringField({
+      description: new HTMLField({
         required: false,
         blank: true,
         initial: "",

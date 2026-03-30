@@ -67,8 +67,31 @@
         <ul class="items-list">
           {{#each specialties}}
             <li class="item-row" data-item-id="{{this.id}}">
-              <span class="item-name">{{this.name}}</span>
-              <a class="item-delete"><i class="fas fa-times"></i></a>
+              <div class="item-summary">
+                <span class="item-name item-toggle">
+                  <i class="fas fa-chevron-right item-chevron"></i>
+                  {{this.name}}
+                </span>
+                <div class="item-controls">
+                  <a class="item-to-chat" data-item-id="{{this.id}}" 
+                    title="{{localize 'MDT.item.toChat'}}">
+                    <i class="fas fa-comment"></i>
+                  </a>
+                  <a class="item-delete" title="{{localize 'MDT.item.delete'}}">
+                    <i class="fas fa-trash"></i>
+                  </a>
+                </div>
+              </div>
+
+              {{!-- Collapse --}}
+              <div class="item-description hidden">
+                <input class="item-name-input" type="text"
+                      value="{{this.name}}"
+                      placeholder="{{localize 'MDT.item.namePlaceholder'}}" />
+                <textarea class="item-desc-input"
+                          placeholder="{{localize 'MDT.item.descPlaceholder'}}"
+                          rows="3">{{this.system.description}}</textarea>
+              </div>
             </li>
           {{else}}
             <span>{{localize "MDT.specialty.empty"}}</span>         

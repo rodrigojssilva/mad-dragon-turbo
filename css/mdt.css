@@ -228,10 +228,7 @@
   padding: 0;
 }
 
-.mad-dragon-turbo .item-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.mad-dragon-turbo .item-row {  
   padding: 2px 4px;
   border-bottom: 1px solid #ddd;
   font-size: 0.85em;
@@ -332,4 +329,43 @@
   border-bottom: 1px solid #333;
   background: transparent;
   font-family: inherit;
+}
+
+
+
+/* CARD DO CHAT */
+.mdt-item-card {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px 10px;
+  background: #f5f0e8;
+}
+
+.mdt-item-card .item-card-header {
+  font-size: 0.8em;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.mdt-item-card .item-card-type {
+  font-style: italic;
+}
+
+.mdt-item-card .item-card-name {
+  margin: 0 0 6px;
+  font-size: 1.1em;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 4px;
+}
+
+.mdt-item-card .item-card-desc {
+  font-size: 0.9em;
+  color: #333;
+}
+
+.mdt-item-card .item-card-level {
+  font-size: 0.8em;
+  color: #666;
+  margin-top: 4px;
+  font-style: italic;
 }

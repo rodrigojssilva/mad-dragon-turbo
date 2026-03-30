@@ -20,15 +20,6 @@ export class MadDragonActorSheet extends ActorSheet {
     context.actor = actor;
     context.system = systemData;
 
-    context.healthDots = this._prepareDots(
-      systemData.health.value,
-      systemData.health.max,
-    );
-    context.sanityDots = this._prepareDots(
-      systemData.sanity.value,
-      systemData.sanity.max,
-    );
-
     context.styles = [
       {
         value: "brawler",
@@ -57,55 +48,104 @@ export class MadDragonActorSheet extends ActorSheet {
     return context;
   }
 
-  _prepareDots(value, max) {
-    return Array.from({ length: max }, (_, i) => ({
-      filled: i < value,
-      index: i,
-    }));
+  activateListeners(html) {
+    super.activateListeners(html);
+
+    // html é jQuery — convertemos para HTMLElement com [0]
+    const el = html[0];
+
+    if (!this.isEditable) return;
+    // Adicionar items
+    el.querySelector(".add-specialty")?.addEventListener("click", () =>
+      this._onAddItem("specialty"),
+    );
+
+    el.querySelector(".add-spell")?.addEventListener("click", () =>
+      this._onAddItem("spell"),
+    );
+
+    el.querySelector(".add-equipment")?.addEventListener("click", () =>
+      this._onAddItem("equipment"),
+    );
+
+    // Toggle collapse
+    el.querySelectorAll(".item-toggle").forEach((btn) => {
+      btn.addEventListener("click", this._onItemToggle.bind(this));
+    });
+
+    // Salvar nome do item inline
+    el.querySelectorAll(".item-name-input").forEach((input) => {
+      input.addEventListener("change", this._onItemNameChange.bind(this));
+    });
+
+    // Salvar descrição do item inline
+    el.querySelectorAll(".item-desc-input").forEach((textarea) => {
+      textarea.addEventListener("change", this._onItemDescChange.bind(this));
+    });
+
+    // Deletar item
+    el.querySelectorAll(".item-delete").forEach((btn) => {
+      btn.addEventListener("click", this._onDeleteItem.bind(this));
+    });
+
+    // Enviar para o chat
+    el.querySelectorAll(".item-to-chat").forEach((btn) => {
+      btn.addEventListener("click", this._onItemToChat.bind(this));
+    });
+
+    // el.querySelectorAll(".item-name").forEach((name) => {
+    //   name.addEventListener("click", this._onEditItem.bind(this));
+    // });
+
+    el.querySelector(".roll-test")?.addEventListener(
+      "click",
+      this._onRollTest.bind(this),
+    );
   }
 
-  activateListeners(html) {
-  super.activateListeners(html);
+  // Toggle do collapse
+  _onItemToggle(event) {
+    const row = event.currentTarget.closest(".item-row");
+    const desc = row.querySelector(".item-description");
+    const chevron = row.querySelector(".item-chevron");
 
-  // html é jQuery — convertemos para HTMLElement com [0]
-  const el = html[0];
+    const isHidden = desc.classList.contains("hidden");
+    desc.classList.toggle("hidden", !isHidden);
+    chevron.classList.toggle("fa-chevron-right", !isHidden);
+    chevron.classList.toggle("fa-chevron-down", isHidden);
+  }
 
-  if (!this.isEditable) return;
+  async _onItemNameChange(event) {
+    const itemId = event.currentTarget.closest("[data-item-id]").dataset.itemId;
+    const item = this.actor.items.get(itemId);
+    await item?.update({ name: event.currentTarget.value });
+  }
 
-  el.querySelectorAll(".health-dot").forEach(dot => {
-    dot.addEventListener("click", this._onDotClick.bind(this, "health"));
-  });
+  async _onItemDescChange(event) {
+    const itemId = event.currentTarget.closest("[data-item-id]").dataset.itemId;
+    const item = this.actor.items.get(itemId);
+    await item?.update({ "system.description": event.currentTarget.value });
+  }
 
-  el.querySelectorAll(".sanity-dot").forEach(dot => {
-    dot.addEventListener("click", this._onDotClick.bind(this, "sanity"));
-  });
+  // Enviar item para o chat
+  async _onItemToChat(event) {
+    const itemId = event.currentTarget.dataset.itemId;
+    const item = this.actor.items.get(itemId);
+    if (!item) return;
 
-  el.querySelector(".add-specialty")
-    ?.addEventListener("click", () => this._onAddItem("specialty"));
+    const content = await foundry.applications.handlebars.renderTemplate(
+      "systems/mad-dragon-turbo/templates/chat/item-card.hbs",
+      {
+        item,
+        system: item.system,
+        actorName: this.actor.name,
+      },
+    );
 
-  el.querySelector(".add-spell")
-    ?.addEventListener("click", () => this._onAddItem("spell"));
-
-  el.querySelector(".add-equipment")
-    ?.addEventListener("click", () => this._onAddItem("equipment"));
-
-  el.querySelectorAll(".item-delete").forEach(btn => {
-    btn.addEventListener("click", this._onDeleteItem.bind(this));
-  });
-
-  el.querySelectorAll(".item-name").forEach(name => {
-    name.addEventListener("click", this._onEditItem.bind(this));
-  });
-
-  el.querySelector(".roll-test")
-    ?.addEventListener("click", this._onRollTest.bind(this));
-}
-
-  async _onDotClick(resource, event) {
-    const index = parseInt(event.currentTarget.dataset.index);
-    const current = this.actor.system[resource].value;
-    const newValue = index + 1 === current ? index : index + 1;
-    await this.actor.update({ [`system.${resource}.value`]: newValue });
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content,
+    });
   }
 
   async _onAddItem(type) {

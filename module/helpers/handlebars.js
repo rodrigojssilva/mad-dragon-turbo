@@ -7,4 +7,6 @@ export function registerHandlebarsHelpers() {
     for (let i = 0; i < n; i++) result += block.fn(i);
     return result;
   });
+
+  Handlebars.registerHelper("concat", (...args) => args.slice(0, -1).join(""));
 }

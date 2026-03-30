@@ -1,0 +1,20 @@
+<div class="mdt-item-card"> 
+  <h3 class="item-card-name">
+    {{item.name}}
+  </h3>
+  {{#if system.description}}
+    <div class="item-card-desc">
+      {{{system.description}}}
+    </div>
+  {{/if}}
+  {{#if system.level}}
+    <p class="item-card-level">
+      {{localize "MDT.spell.levelLabel"}}:
+      {{#if (eq system.level "high")}}
+        {{localize "MDT.spell.levelHigh"}}
+      {{else}}
+        {{localize "MDT.spell.levelLow"}}
+      {{/if}}
+    </p>
+  {{/if}}
+</div>

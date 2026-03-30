@@ -43,6 +43,14 @@
       "new": "Novo item",
       "empty": "Nenhum item."
     },
+    "item": {
+      "toChat": "Enviar para o chat",
+      "edit": "Editar",
+      "editDesc": "Editar descrição",
+      "delete": "Deletar",
+      "namePlaceholder": "Nome do item",
+      "descPlaceholder": "Descrição..."
+    },
     "roll": {
       "titleBtn": "Rolagem",
       "title": "Teste MDT",

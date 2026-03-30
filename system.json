@@ -24,7 +24,10 @@
     }
   ],
   "esmodules": ["module/mdt.js"],
-  "styles": ["css/mdt.css"],
+  "styles": [
+    "css/mdt.css",
+    "css/mdt_collapse.css"
+  ],
   "documentTypes": {
     "Actor": {
       "character": {},
