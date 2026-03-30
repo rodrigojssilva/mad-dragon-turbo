@@ -9,6 +9,7 @@ import { SpecialtyModel } from "./models/item/specialty-model.js";
 import { SpellModel } from "./models/item/spell-model.js";
 import { MDTRoll } from "./helpers/roll.js";
 import { MDTCombat } from "./combat/combat.js";
+import { EquipmentModel } from "./models/item/equipment-model.js";
 
 Hooks.on("init", function () {
   console.log("MDT | Inicializando Mad Dragon Turbo...");
@@ -18,6 +19,7 @@ Hooks.on("init", function () {
     character: CharacterModel,
     npc: NpcModel,
     enemy: EnemyModel,
+    equipment: EquipmentModel,
   });
 
   Object.assign(CONFIG.Item.dataModels, {
@@ -38,6 +40,7 @@ Hooks.on("init", function () {
   CONFIG.Item.typeLabels = {
     specialty: "TYPES.Item.specialty",
     spell: "TYPES.Item.spell",
+    equipment: "TYPES.Item.equipment",
   };
 
   // Registra fichas

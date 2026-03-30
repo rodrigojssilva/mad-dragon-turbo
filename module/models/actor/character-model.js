@@ -35,6 +35,7 @@ export class CharacterModel extends TypeDataModel {
         }),
       }),
       notes: new HTMLField({ required: false, blank: true, initial: "" }),
+      resources: new StringField({ required: false, blank: true, initial: "" }),
     };
   }
 

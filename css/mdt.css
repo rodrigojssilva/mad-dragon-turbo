@@ -31,3 +31,305 @@
 .mdt-initiative-btn:hover {
   background: #9a3030;
 }
+
+/* ===========================
+   FICHA — LAYOUT GERAL
+   =========================== */
+.mad-dragon-turbo.sheet {
+  font-family: "Signika", sans-serif;
+  background: #f5f0e8;
+  color: #1a1a1a;
+}
+
+/* CABEÇALHO */
+.mad-dragon-turbo .sheet-header {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: #e8e0d0;
+  border-bottom: 2px solid #333;
+}
+
+.mad-dragon-turbo .header-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.mad-dragon-turbo .profile-img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border: 2px solid #333;
+  cursor: pointer;
+}
+
+.mad-dragon-turbo .roll-test {
+  background: #333;
+  color: #f5f0e8;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 0.85em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.mad-dragon-turbo .roll-test:hover {
+  background: #555;
+}
+
+.mad-dragon-turbo .resource-value-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.mad-dragon-turbo .resource-input {
+  width: 40px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 1em;
+  font-weight: bold;
+  padding: 2px;
+  background: transparent;
+}
+
+.mad-dragon-turbo .resource-sep {
+  font-weight: bold;
+  color: #555;
+}
+
+.mad-dragon-turbo .resource-max {
+  font-weight: bold;
+  color: #555;
+}
+
+.mad-dragon-turbo .header-right {
+  flex: 1;
+}
+
+.mad-dragon-turbo .sheet-title {
+  font-size: 1em;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: right;
+  margin: 0 0 6px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 4px;
+}
+
+.mad-dragon-turbo .header-field {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.mad-dragon-turbo .header-field label {
+  font-size: 0.8em;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.mad-dragon-turbo .header-field input {
+  flex: 1;
+  border: none;
+  border-bottom: 1px solid #333;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.9em;
+  padding: 1px 4px;
+}
+
+/* COLUNAS */
+.mad-dragon-turbo .sheet-columns {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+}
+
+.mad-dragon-turbo .col-left {
+  flex: 1.1;
+}
+
+.mad-dragon-turbo .col-right {
+  flex: 0.9;
+}
+
+/* SEÇÕES */
+.mad-dragon-turbo .sheet-section {
+  margin-bottom: 12px;
+}
+
+.mad-dragon-turbo .sheet-section h3 {
+  font-size: 0.85em;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-bottom: 1px solid #333;
+  margin: 0 0 4px;
+  padding-bottom: 2px;
+}
+
+.mad-dragon-turbo .section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #333;
+  margin-bottom: 4px;
+  padding-bottom: 2px;
+}
+
+.mad-dragon-turbo .section-header h3 {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mad-dragon-turbo .section-header a {
+  cursor: pointer;
+  font-size: 0.8em;
+  color: #555;
+}
+
+.mad-dragon-turbo .section-header a:hover {
+  color: #000;
+}
+
+/* RECURSOS */
+.mad-dragon-turbo .resource-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.mad-dragon-turbo .resource-block {
+  flex: 1;
+}
+
+.mad-dragon-turbo .resource-block label {
+  font-size: 0.75em;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 2px;
+}
+
+/* ITENS */
+.mad-dragon-turbo .items-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mad-dragon-turbo .item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 4px;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.85em;
+}
+
+.mad-dragon-turbo .item-row:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.mad-dragon-turbo .item-name {
+  cursor: pointer;
+  flex: 1;
+}
+
+.mad-dragon-turbo .item-name:hover {
+  text-decoration: underline;
+}
+
+.mad-dragon-turbo .item-delete {
+  cursor: pointer;
+  color: #aaa;
+  font-size: 0.8em;
+  padding: 0 2px;
+}
+
+.mad-dragon-turbo .item-delete:hover {
+  color: #900;
+}
+
+.mad-dragon-turbo .empty-line {
+  border-bottom: 1px solid #ccc;
+  height: 22px;
+}
+
+/* ESTILO */
+.mad-dragon-turbo .style-option {
+  margin-bottom: 8px;
+  padding: 4px;
+  border-radius: 3px;
+}
+
+.mad-dragon-turbo .style-option:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.mad-dragon-turbo .style-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mad-dragon-turbo .style-desc {
+  font-size: 0.75em;
+  color: #555;
+  margin: 2px 0 0 20px;
+  font-style: italic;
+}
+
+.mad-dragon-turbo .style-stats {
+  font-size: 0.7em;
+  color: #333;
+  margin-left: 20px;
+  display: block;
+  font-weight: bold;
+}
+
+/* TEXTAREA */
+.mad-dragon-turbo textarea {
+  width: 100%;
+  background: transparent;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  padding: 4px;
+  font-family: inherit;
+  font-size: 0.85em;
+  resize: none;
+  box-sizing: border-box;
+}
+
+/* RODAPÉ RECURSOS */
+.mad-dragon-turbo .resources-footer {
+  /* display: flex;
+  align-items: center;
+  gap: 6px; */
+  border-top: 1px solid #333;
+  padding-top: 6px;
+}
+
+.mad-dragon-turbo .resources-footer label {
+  font-size: 0.8em;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.mad-dragon-turbo .resources-footer input {
+  flex: 1;
+  border: none;
+  border-bottom: 1px solid #333;
+  background: transparent;
+  font-family: inherit;
+}

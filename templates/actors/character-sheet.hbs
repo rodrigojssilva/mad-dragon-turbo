@@ -1,20 +1,155 @@
 <form class="{{cssClass}} mad-dragon-turbo" autocomplete="off">
 
+  {{!-- CABEÇALHO --}}
   <header class="sheet-header">
-    <img class="profile-img" src="{{actor.img}}" 
-         data-edit="img" title="{{actor.name}}" />
-    <div class="header-fields">
-      <h1>
+    <div class="header-left">
+      <img class="profile-img" src="{{actor.img}}"
+           data-edit="img" title="{{actor.name}}" />
+      <button type="button" class="roll-test" title="{{localize 'MDT.roll.title'}}">
+        <i class="fas fa-dice-d6"></i> {{localize "MDT.roll.titleBtn"}}
+      </button>
+    </div>
+
+    <div class="header-right">
+      <h1 class="sheet-title">{{localize "MDT.sheet.title"}}</h1>
+      <div class="header-field">
+        <label>{{localize "MDT.name"}}:</label>
         <input name="name" type="text" value="{{actor.name}}" />
-      </h1>
-      <input name="system.conceito" type="text" 
-             value="{{system.conceito}}" 
-             placeholder="{{localize 'MDT.conceito'}}" />
+      </div>
+      <div class="header-field">
+        <label>{{localize "MDT.concept"}}:</label>                
+        <textarea name="system.concept" rows="1"
+                  placeholder="...">{{system.concept}}</textarea>
+      </div>
     </div>
   </header>
 
-  <section class="sheet-body">
-    <p>Ficha em construção!</p>
-  </section>
+  <div class="sheet-columns">
+
+    {{!-- COLUNA ESQUERDA --}}
+    <div class="col-left">
+
+      {{!-- VIDA E SANIDADE --}}
+      <div class="resource-row">
+      <div class="resource-block">
+        <label>{{localize "MDT.health"}}</label>
+        <div class="resource-value-row">
+          <input class="resource-input" 
+                name="system.health.value"
+                type="number" 
+                value="{{system.health.value}}"
+                min="0" max="{{system.health.max}}" />
+          <span class="resource-sep">/</span>
+          <span class="resource-max">{{system.health.max}}</span>
+        </div>        
+      </div>
+
+      <div class="resource-block">
+        <label>{{localize "MDT.sanity"}}</label>
+        <div class="resource-value-row">
+          <input class="resource-input"
+                name="system.sanity.value"
+                type="number"
+                value="{{system.sanity.value}}"
+                min="0" max="{{system.sanity.max}}" />
+          <span class="resource-sep">/</span>
+          <span class="resource-max">{{system.sanity.max}}</span>
+        </div>
+      </div>
+    </div>
+
+      {{!-- HABILIDADES (ESPECIALIDADES) --}}
+      <div class="sheet-section">
+        <div class="section-header">
+          <h3>{{localize "MDT.specialties"}}</h3>
+          <a class="add-specialty"><i class="fas fa-plus"></i></a>
+        </div>
+        <ul class="items-list">
+          {{#each specialties}}
+            <li class="item-row" data-item-id="{{this.id}}">
+              <span class="item-name">{{this.name}}</span>
+              <a class="item-delete"><i class="fas fa-times"></i></a>
+            </li>
+          {{else}}
+            <span>{{localize "MDT.specialty.empty"}}</span>         
+          {{/each}}
+        </ul>
+      </div>
+
+      {{!-- PODERES / MAGIAS --}}
+      <div class="sheet-section">
+        <div class="section-header">
+          <h3>{{localize "MDT.spells"}}</h3>
+          <a class="add-spell"><i class="fas fa-plus"></i></a>
+        </div>
+        <ul class="items-list">
+          {{#each spells}}
+            <li class="item-row" data-item-id="{{this.id}}">
+              <span class="item-name">{{this.name}}</span>
+              <a class="item-delete"><i class="fas fa-times"></i></a>
+            </li>
+          {{else}}
+            <span>{{localize "MDT.specialty.empty"}}</span>         
+          {{/each}}
+        </ul>
+      </div>
+
+      {{!-- ANOTAÇÕES --}}
+      <div class="sheet-section">
+        <h3>{{localize "MDT.notes"}}</h3>
+        <textarea name="system.notes" rows="4"
+                  placeholder="...">{{system.notes}}</textarea>
+      </div>
+
+      {{!-- RECURSOS --}}
+      <div class="sheet-section resources-footer">
+        <h3>{{localize "MDT.resources"}}:</h3>        
+        <textarea name="system.resources" rows="4"
+                  placeholder="...">{{system.resources}}</textarea>
+      </div>
+
+    </div>
+
+    {{!-- COLUNA DIREITA --}}
+    <div class="col-right">
+
+      {{!-- ESTILO --}}
+      <div class="sheet-section">
+        <h3>{{localize "MDT.style"}}</h3>
+        {{#each styles}}
+          <div class="style-option">
+            <div class="style-header">
+              <input type="radio" 
+                    name="system.style"
+                    value="{{this.value}}"
+                    {{#if (eq this.value ../system.style)}}checked{{/if}} />
+              <strong>{{this.label}}</strong>
+            </div>
+            <p class="style-desc">{{this.description}}</p>
+            <span class="style-stats">{{this.stats}}</span>
+          </div>
+        {{/each}}
+      </div>
+
+      {{!-- ITENS / EQUIPAMENTOS --}}
+      <div class="sheet-section">
+        <div class="section-header">
+          <h3>{{localize "MDT.equipments"}}</h3>
+          <a class="add-equipment"><i class="fas fa-plus"></i></a>
+        </div>
+        <ul class="items-list">
+          {{#each equipment}}
+            <li class="item-row" data-item-id="{{this.id}}">
+              <span class="item-name">{{this.name}}</span>
+              <a class="item-delete"><i class="fas fa-times"></i></a>
+            </li>
+          {{else}}
+            <span>{{localize "MDT.equipment.empty"}}</span>
+          {{/each}}
+        </ul>
+      </div>
+
+    </div>
+  </div>
 
 </form>
