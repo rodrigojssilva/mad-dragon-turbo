@@ -28,6 +28,7 @@
     "css/mdt.css",
     "css/mdt_collapse.css"
   ],
+  "background": "systems/mad-dragon-turbo/assets/MDT_logo_white.png",
   "documentTypes": {
     "Actor": {
       "character": {},

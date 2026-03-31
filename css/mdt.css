@@ -243,10 +243,6 @@
   flex: 1;
 }
 
-.mad-dragon-turbo .item-name:hover {
-  text-decoration: underline;
-}
-
 .mad-dragon-turbo .item-delete {
   cursor: pointer;
   color: #aaa;
@@ -304,15 +300,12 @@
   padding: 4px;
   font-family: inherit;
   font-size: 0.85em;
-  resize: none;
+  resize: vertical;
   box-sizing: border-box;
 }
 
 /* RODAPÉ RECURSOS */
 .mad-dragon-turbo .resources-footer {
-  /* display: flex;
-  align-items: center;
-  gap: 6px; */
   border-top: 1px solid #333;
   padding-top: 6px;
 }
