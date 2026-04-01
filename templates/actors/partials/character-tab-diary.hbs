@@ -2,18 +2,50 @@
     {{!-- COLUNA ESQUERDA --}}
     <div class="col-left">
         {{!-- ANOTAÇÕES --}}
-        <div class="sheet-section">
-            <h3>{{localize "MDT.notes"}}</h3>
-            <textarea name="system.notes" rows="4" placeholder="...">{{system.notes}}</textarea>
+        <div class="sheet-section diary-block" data-diary-field="notes">
+            <div class="section-header">
+                <h3>{{localize "MDT.notes"}}</h3>
+                <div class="item-edit-toolbar">
+                    <button type="button" class="item-edit-btn diary-edit-start" title="{{localize 'MDT.item.edit'}}"
+                        aria-label="{{localize 'MDT.item.edit'}}">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                    <button type="button" class="item-edit-btn diary-edit-cancel hidden"
+                        title="Cancelar" aria-label="Cancelar">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button type="button" class="item-edit-btn diary-edit-save hidden" title="Salvar"
+                        aria-label="Salvar">
+                        <i class="fas fa-floppy-disk"></i>
+                    </button>
+                </div>
+            </div>
+            <textarea class="diary-textarea" disabled rows="4" placeholder="...">{{system.notes}}</textarea>
         </div>
     </div>
 
     {{!-- COLUNA DIREITA --}}
     <div class="col-right">
         {{!-- RECURSOS --}}
-        <div class="sheet-section">
-            <h3>{{localize "MDT.resources"}}:</h3>
-            <textarea name="system.resources" rows="4" placeholder="...">{{system.resources}}</textarea>
+        <div class="sheet-section diary-block" data-diary-field="resources">
+            <div class="section-header">
+                <h3>{{localize "MDT.resources"}}:</h3>
+                <div class="item-edit-toolbar">
+                    <button type="button" class="item-edit-btn diary-edit-start" title="{{localize 'MDT.item.edit'}}"
+                        aria-label="{{localize 'MDT.item.edit'}}">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                    <button type="button" class="item-edit-btn diary-edit-cancel hidden"
+                        title="Cancelar" aria-label="Cancelar">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button type="button" class="item-edit-btn diary-edit-save hidden" title="Salvar"
+                        aria-label="Salvar">
+                        <i class="fas fa-floppy-disk"></i>
+                    </button>
+                </div>
+            </div>
+            <textarea class="diary-textarea" disabled rows="4" placeholder="...">{{system.resources}}</textarea>
         </div>
     </div>
 </div>

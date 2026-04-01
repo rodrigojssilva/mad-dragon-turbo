@@ -345,6 +345,36 @@
   font-family: inherit;
 }
 
+/* DIARIO */
+.mad-dragon-turbo .tab.diary {
+  height: 100%;
+}
+
+.mad-dragon-turbo .tab.diary .sheet-columns {
+  height: 100%;
+}
+
+.mad-dragon-turbo .tab.diary .col-left,
+.mad-dragon-turbo .tab.diary .col-right {
+  display: flex;
+}
+
+.mad-dragon-turbo .tab.diary .diary-block {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.mad-dragon-turbo .tab.diary .diary-block .item-edit-toolbar {
+  margin: 0;
+}
+
+.mad-dragon-turbo .tab.diary .diary-textarea {
+  flex: 1;
+  min-height: 480px;
+  resize: none;
+}
+
 
 
 /* CARD DO CHAT */

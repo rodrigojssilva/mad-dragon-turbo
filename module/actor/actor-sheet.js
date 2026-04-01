@@ -159,6 +159,17 @@ export class MadDragonActorSheet extends ActorSheet {
       this._onRest.bind(this),
     );
 
+    // Diário - editar/salvar/cancelar
+    el.querySelectorAll(".diary-edit-start").forEach((btn) => {
+      btn.addEventListener("click", this._onDiaryEditStart.bind(this));
+    });
+    el.querySelectorAll(".diary-edit-save").forEach((btn) => {
+      btn.addEventListener("click", this._onDiaryEditSave.bind(this));
+    });
+    el.querySelectorAll(".diary-edit-cancel").forEach((btn) => {
+      btn.addEventListener("click", this._onDiaryEditCancel.bind(this));
+    });
+
     this._restoreExpandedItems(el);
   }
 
@@ -446,5 +457,58 @@ export class MadDragonActorSheet extends ActorSheet {
 
     await Promise.all(spells.map((spell) => spell.update({ "system.usedUses": 0 })));
     ui.notifications?.info(game.i18n.localize("MDT.spell.restDone"));
+  }
+
+  _onDiaryEditStart(event) {
+    event.preventDefault();
+    const block = event.currentTarget.closest(".diary-block");
+    if (!block) return;
+    const textarea = block.querySelector(".diary-textarea");
+    const btnStart = block.querySelector(".diary-edit-start");
+    const btnSave = block.querySelector(".diary-edit-save");
+    const btnCancel = block.querySelector(".diary-edit-cancel");
+    if (!textarea || !btnStart || !btnSave || !btnCancel) return;
+
+    textarea.dataset.originalValue = textarea.value ?? "";
+    textarea.disabled = false;
+    btnStart.classList.add("hidden");
+    btnSave.classList.remove("hidden");
+    btnCancel.classList.remove("hidden");
+    textarea.focus();
+  }
+
+  async _onDiaryEditSave(event) {
+    event.preventDefault();
+    const block = event.currentTarget.closest(".diary-block");
+    if (!block) return;
+    const field = block.dataset.diaryField;
+    const textarea = block.querySelector(".diary-textarea");
+    const btnStart = block.querySelector(".diary-edit-start");
+    const btnSave = block.querySelector(".diary-edit-save");
+    const btnCancel = block.querySelector(".diary-edit-cancel");
+    if (!field || !textarea || !btnStart || !btnSave || !btnCancel) return;
+
+    await this.actor.update({ [`system.${field}`]: textarea.value ?? "" });
+    textarea.disabled = true;
+    btnStart.classList.remove("hidden");
+    btnSave.classList.add("hidden");
+    btnCancel.classList.add("hidden");
+  }
+
+  _onDiaryEditCancel(event) {
+    event.preventDefault();
+    const block = event.currentTarget.closest(".diary-block");
+    if (!block) return;
+    const textarea = block.querySelector(".diary-textarea");
+    const btnStart = block.querySelector(".diary-edit-start");
+    const btnSave = block.querySelector(".diary-edit-save");
+    const btnCancel = block.querySelector(".diary-edit-cancel");
+    if (!textarea || !btnStart || !btnSave || !btnCancel) return;
+
+    textarea.value = textarea.dataset.originalValue ?? textarea.value;
+    textarea.disabled = true;
+    btnStart.classList.remove("hidden");
+    btnSave.classList.add("hidden");
+    btnCancel.classList.add("hidden");
   }
 }
