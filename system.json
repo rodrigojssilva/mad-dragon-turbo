@@ -2,7 +2,7 @@
   "id": "mad-dragon-turbo",
   "title": "Mad Dragon Turbo",
   "description": "Sistema RPG de folheto Mad Dragon Turbo para Foundry VTT.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "compatibility": {
     "minimum": "13",
     "verified": "13",
@@ -46,7 +46,7 @@
   },
   "packs": [],
   "socket": false,
-  "url": "",
-  "manifest": "",
+  "url": "https://github.com/rodrigojssilva/mad-dragon-turbo.git",
+  "manifest": "https://raw.githubusercontent.com/rodrigojssilva/mad-dragon-turbo/v1.0.0/system.json",
   "download": ""
 }
