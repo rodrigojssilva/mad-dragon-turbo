@@ -53,13 +53,16 @@
     },
     "equipment": {
       "new": "Novo item",
-      "empty": "Nenhum item."
+      "empty": "Nenhum item.",
+      "quantityLabel": "Quantidade"
     },
     "item": {
       "toChat": "Enviar para o chat",
       "edit": "Editar",
       "editDesc": "Editar descrição",
       "delete": "Deletar",
+      "nameLabel": "Nome",
+      "descLabel": "Descrição",
       "namePlaceholder": "Nome do item",
       "descPlaceholder": "Descrição..."
     },

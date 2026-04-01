@@ -422,7 +422,7 @@
 }
 
 .mad-dragon-turbo .spell-fields {
-  margin-top: 8px;
+  margin-bottom: 5px;
   padding: 6px;
   border: 1px dashed #b8b8b8;
   border-radius: 4px;
@@ -452,6 +452,26 @@
 }
 
 .mad-dragon-turbo .spell-uses-grid input {
+  border: 1px solid #bdbdbd;
+  border-radius: 3px;
+  padding: 2px 4px;
+  background: #fff;
+}
+
+.mad-dragon-turbo .equipment-fields {
+  margin-bottom: 5px;
+}
+
+.mad-dragon-turbo .equipment-fields label {
+  font-size: 0.8em;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mad-dragon-turbo .equipment-qty-input {
+  width: 100%;
   border: 1px solid #bdbdbd;
   border-radius: 3px;
   padding: 2px 4px;

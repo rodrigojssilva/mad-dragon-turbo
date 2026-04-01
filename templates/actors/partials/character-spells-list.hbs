@@ -28,10 +28,16 @@
             </div>
 
             <div class="item-description hidden">
-                <input class="item-name-input" type="text" disabled value="{{this.name}}"
-                    placeholder="{{localize 'MDT.item.namePlaceholder'}}" />
-                <textarea class="item-desc-input" disabled placeholder="{{localize 'MDT.item.descPlaceholder'}}"
-                    rows="3">{{this.system.description}}</textarea>
+                <label>
+                    {{localize "MDT.item.nameLabel"}}
+                    <input class="item-name-input" type="text" disabled value="{{this.name}}"
+                        placeholder="{{localize 'MDT.item.namePlaceholder'}}" />
+                </label>
+                <label>
+                    {{localize "MDT.item.descLabel"}}
+                    <textarea class="item-desc-input" disabled placeholder="{{localize 'MDT.item.descPlaceholder'}}"
+                        rows="3">{{this.system.description}}</textarea>
+                </label>
 
                 <div class="spell-fields">
                     <label class="spell-checkbox">
