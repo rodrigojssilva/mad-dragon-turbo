@@ -18,6 +18,10 @@ export class SpellModel extends TypeDataModel {
         required: true,
         initial: false,
       }),
+      freeUse: new BooleanField({
+        required: true,
+        initial: false,
+      }),
       maxUses: new NumberField({
         required: true,
         integer: true,

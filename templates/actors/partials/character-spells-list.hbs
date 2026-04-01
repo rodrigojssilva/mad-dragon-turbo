@@ -40,12 +40,18 @@
                 </label>
 
                 <div class="spell-fields">
-                    <label class="spell-checkbox">
-                        <input class="spell-high-level-input" type="checkbox" disabled {{#if
-                            this.system.highLevel}}checked{{else}}{{#if (eq this.system.level "high"
-                            )}}checked{{/if}}{{/if}} />
-                        {{localize "MDT.spell.highLevelCheckbox"}}
-                    </label>
+                    <div class="spell-checkbox-row">
+                        <label class="spell-checkbox">
+                            <input class="spell-high-level-input" type="checkbox" disabled {{#if
+                                this.system.highLevel}}checked{{else}}{{#if (eq this.system.level "high"
+                                )}}checked{{/if}}{{/if}} />
+                            {{localize "MDT.spell.highLevelCheckbox"}}
+                        </label>
+                        <label class="spell-checkbox">
+                            <input class="spell-free-use-input" type="checkbox" disabled {{#if this.system.freeUse}}checked{{/if}} />
+                            {{localize "MDT.spell.freeUseCheckbox"}}
+                        </label>
+                    </div>
 
                     <div class="spell-uses-grid">
                         <label>
@@ -59,7 +65,9 @@
                                 value="{{this.system.maxUses}}" />
                         </label>
                     </div>
-                    {{#if this.noUses}}
+                    {{#if this.system.freeUse}}
+                    <p class="spell-free-use-note">{{localize "MDT.spell.freeUseEnabled"}}</p>
+                    {{else if this.noUses}}
                     <p class="spell-empty-note">{{localize "MDT.spell.noUses"}}</p>
                     {{/if}}
                 </div>

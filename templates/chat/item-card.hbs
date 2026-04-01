@@ -17,11 +17,15 @@
           {{localize "MDT.spell.levelLow"}}
         {{/if}}
       </span>
-      <span class="mdt-pill item-card-uses">
-        {{localize "MDT.spell.usesLabel"}}: {{remainingUses}} / {{maxUses}}
-      </span>
-      {{#if (eq remainingUses 0)}}
-        <span class="mdt-pill item-card-empty-uses">{{localize "MDT.spell.emptyUsesShort"}}</span>
+      {{#if freeUse}}
+        <span class="mdt-pill item-card-free-use">{{localize "MDT.spell.freeUseCheckbox"}}</span>
+      {{else}}
+        <span class="mdt-pill item-card-uses">
+          {{localize "MDT.spell.usesLabel"}}: {{remainingUses}} / {{maxUses}}
+        </span>
+        {{#if (eq remainingUses 0)}}
+          <span class="mdt-pill item-card-empty-uses">{{localize "MDT.spell.emptyUsesShort"}}</span>
+        {{/if}}
       {{/if}}
     </div>
   {{/if}}

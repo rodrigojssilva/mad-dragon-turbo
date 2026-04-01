@@ -467,6 +467,11 @@
   color: #6f1e1e;
 }
 
+.mdt-item-card .item-card-free-use {
+  background: #d9efe3;
+  color: #1d5a3c;
+}
+
 .mad-dragon-turbo .spell-fields {
   margin-bottom: 5px;
   padding: 6px;
@@ -481,6 +486,18 @@
   gap: 6px;
   margin-bottom: 6px;
   font-size: 0.85em;
+}
+
+.mad-dragon-turbo .spell-checkbox-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.mad-dragon-turbo .spell-checkbox-row .spell-checkbox {
+  margin-bottom: 0;
 }
 
 .mad-dragon-turbo .spell-uses-grid {
@@ -539,6 +556,13 @@
   margin: 6px 0 0;
   font-size: 0.8em;
   color: #7e1f1f;
+  font-weight: 600;
+}
+
+.mad-dragon-turbo .spell-free-use-note {
+  margin: 6px 0 0;
+  font-size: 0.8em;
+  color: #1d5a3c;
   font-weight: 600;
 }
 

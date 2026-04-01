@@ -57,6 +57,7 @@ export class MadDragonActorSheet extends ActorSheet {
     context.spells = actor.items
       .filter((i) => i.type === "spell")
       .map((spell) => {
+        const freeUse = !!spell.system.freeUse;
         const maxUses = Math.max(0, Number(spell.system.maxUses ?? 0));
         const usedUses = Math.min(maxUses, Math.max(0, Number(spell.system.usedUses ?? 0)));
         const remainingUses = Math.max(0, maxUses - usedUses);
@@ -66,11 +67,12 @@ export class MadDragonActorSheet extends ActorSheet {
           type: spell.type,
           system: {
             ...spell.system,
+            freeUse,
             maxUses,
             usedUses,
             remainingUses,
           },
-          noUses: remainingUses <= 0,
+          noUses: !freeUse && remainingUses <= 0,
         };
       });
     context.equipment = actor.items
@@ -147,6 +149,13 @@ export class MadDragonActorSheet extends ActorSheet {
     // Usar magia
     el.querySelectorAll(".spell-cast").forEach((btn) => {
       btn.addEventListener("click", this._onSpellCast.bind(this));
+    });
+    el.querySelectorAll(".spell-free-use-input").forEach((input) => {
+      input.addEventListener("change", (event) => {
+        const row = event.currentTarget.closest(".item-row");
+        if (!row) return;
+        this._syncSpellUsesInputs(row);
+      });
     });
 
     // Rolagem de teste
@@ -252,6 +261,7 @@ export class MadDragonActorSheet extends ActorSheet {
     const nameInput = row.querySelector(".item-name-input");
     const descInput = row.querySelector(".item-desc-input");
     const spellHighLevelInput = row.querySelector(".spell-high-level-input");
+    const spellFreeUseInput = row.querySelector(".spell-free-use-input");
     const spellMaxUsesInput = row.querySelector(".spell-max-uses-input");
     const spellUsedUsesInput = row.querySelector(".spell-used-uses-input");
     const equipmentQtyInput = row.querySelector(".equipment-qty-input");
@@ -269,9 +279,11 @@ export class MadDragonActorSheet extends ActorSheet {
     nameInput.disabled = false;
     descInput.disabled = false;
     if (spellHighLevelInput) spellHighLevelInput.disabled = false;
+    if (spellFreeUseInput) spellFreeUseInput.disabled = false;
     if (spellMaxUsesInput) spellMaxUsesInput.disabled = false;
     if (spellUsedUsesInput) spellUsedUsesInput.disabled = false;
     if (equipmentQtyInput) equipmentQtyInput.disabled = false;
+    this._syncSpellUsesInputs(row);
     btnStart.classList.add("hidden");
     btnSave.classList.remove("hidden");
     btnCancel.classList.remove("hidden");
@@ -293,6 +305,7 @@ export class MadDragonActorSheet extends ActorSheet {
     const nameInput = row.querySelector(".item-name-input");
     const descInput = row.querySelector(".item-desc-input");
     const spellHighLevelInput = row.querySelector(".spell-high-level-input");
+    const spellFreeUseInput = row.querySelector(".spell-free-use-input");
     const spellMaxUsesInput = row.querySelector(".spell-max-uses-input");
     const spellUsedUsesInput = row.querySelector(".spell-used-uses-input");
     const equipmentQtyInput = row.querySelector(".equipment-qty-input");
@@ -305,8 +318,13 @@ export class MadDragonActorSheet extends ActorSheet {
     const newName = (nameInput.value ?? "").trim();
     const newDesc = (descInput.value ?? "").trim();
     const newHighLevel = spellHighLevelInput?.checked ?? item.system.highLevel ?? false;
-    const newMaxUses = Math.max(0, Number(spellMaxUsesInput?.value ?? item.system.maxUses ?? 0));
-    const rawUsedUses = Math.max(0, Number(spellUsedUsesInput?.value ?? item.system.usedUses ?? 0));
+    const newFreeUse = spellFreeUseInput?.checked ?? item.system.freeUse ?? false;
+    const newMaxUses = newFreeUse
+      ? 0
+      : Math.max(0, Number(spellMaxUsesInput?.value ?? item.system.maxUses ?? 0));
+    const rawUsedUses = newFreeUse
+      ? 0
+      : Math.max(0, Number(spellUsedUsesInput?.value ?? item.system.usedUses ?? 0));
     const newUsedUses = Math.min(newMaxUses, rawUsedUses);
     const newQuantity = Math.max(0, Number(equipmentQtyInput?.value ?? item.system.quantity ?? 1));
 
@@ -318,6 +336,7 @@ export class MadDragonActorSheet extends ActorSheet {
     if (item.type === "spell") {
       updateData["system.highLevel"] = newHighLevel;
       updateData["system.level"] = newHighLevel ? "high" : "low";
+      updateData["system.freeUse"] = newFreeUse;
       updateData["system.maxUses"] = newMaxUses;
       updateData["system.usedUses"] = newUsedUses;
     }
@@ -330,6 +349,7 @@ export class MadDragonActorSheet extends ActorSheet {
     nameInput.disabled = true;
     descInput.disabled = true;
     if (spellHighLevelInput) spellHighLevelInput.disabled = true;
+    if (spellFreeUseInput) spellFreeUseInput.disabled = true;
     if (spellMaxUsesInput) spellMaxUsesInput.disabled = true;
     if (spellUsedUsesInput) spellUsedUsesInput.disabled = true;
     if (equipmentQtyInput) equipmentQtyInput.disabled = true;
@@ -349,6 +369,7 @@ export class MadDragonActorSheet extends ActorSheet {
     const nameInput = row.querySelector(".item-name-input");
     const descInput = row.querySelector(".item-desc-input");
     const spellHighLevelInput = row.querySelector(".spell-high-level-input");
+    const spellFreeUseInput = row.querySelector(".spell-free-use-input");
     const spellMaxUsesInput = row.querySelector(".spell-max-uses-input");
     const spellUsedUsesInput = row.querySelector(".spell-used-uses-input");
     const equipmentQtyInput = row.querySelector(".equipment-qty-input");
@@ -362,6 +383,7 @@ export class MadDragonActorSheet extends ActorSheet {
     nameInput.value = nameInput.dataset.originalValue ?? nameInput.value;
     descInput.value = descInput.dataset.originalValue ?? descInput.value;
     if (spellHighLevelInput) spellHighLevelInput.checked = !!spellHighLevelInput.defaultChecked;
+    if (spellFreeUseInput) spellFreeUseInput.checked = !!spellFreeUseInput.defaultChecked;
     if (spellMaxUsesInput) spellMaxUsesInput.value = spellMaxUsesInput.defaultValue ?? spellMaxUsesInput.value;
     if (spellUsedUsesInput) spellUsedUsesInput.value = spellUsedUsesInput.defaultValue ?? spellUsedUsesInput.value;
     if (equipmentQtyInput) equipmentQtyInput.value = equipmentQtyInput.defaultValue ?? equipmentQtyInput.value;
@@ -370,6 +392,7 @@ export class MadDragonActorSheet extends ActorSheet {
     nameInput.disabled = true;
     descInput.disabled = true;
     if (spellHighLevelInput) spellHighLevelInput.disabled = true;
+    if (spellFreeUseInput) spellFreeUseInput.disabled = true;
     if (spellMaxUsesInput) spellMaxUsesInput.disabled = true;
     if (spellUsedUsesInput) spellUsedUsesInput.disabled = true;
     if (equipmentQtyInput) equipmentQtyInput.disabled = true;
@@ -394,6 +417,10 @@ export class MadDragonActorSheet extends ActorSheet {
     const itemId = event.currentTarget.dataset.itemId;
     const item = this.actor.items.get(itemId);
     if (!item || item.type !== "spell") return;
+    if (item.system.freeUse) {
+      await this._sendItemToChat(item);
+      return;
+    }
 
     const maxUses = Math.max(0, Number(item.system.maxUses ?? 0));
     const usedUses = Math.max(0, Number(item.system.usedUses ?? 0));
@@ -415,6 +442,7 @@ export class MadDragonActorSheet extends ActorSheet {
     const usedUses = Math.min(maxUses, Math.max(0, Number(item.system.usedUses ?? 0)));
     const remainingUses = Math.max(0, maxUses - usedUses);
     const isHighLevel = item.system.highLevel ?? item.system.level === "high";
+    const freeUse = !!item.system.freeUse;
 
     const content = await foundry.applications.handlebars.renderTemplate(
       "systems/mad-dragon-turbo/templates/chat/item-card.hbs",
@@ -424,6 +452,7 @@ export class MadDragonActorSheet extends ActorSheet {
         actorName: this.actor.name,
         isSpell: item.type === "spell",
         isHighLevel,
+        freeUse,
         maxUses,
         usedUses,
         remainingUses,
@@ -574,5 +603,21 @@ export class MadDragonActorSheet extends ActorSheet {
     btnStart.classList.remove("hidden");
     btnSave.classList.add("hidden");
     btnCancel.classList.add("hidden");
+  }
+
+  _syncSpellUsesInputs(row) {
+    const freeUseInput = row.querySelector(".spell-free-use-input");
+    const maxUsesInput = row.querySelector(".spell-max-uses-input");
+    const usedUsesInput = row.querySelector(".spell-used-uses-input");
+    if (!freeUseInput || !maxUsesInput || !usedUsesInput) return;
+    if (freeUseInput.disabled) return;
+
+    const isFreeUse = freeUseInput.checked;
+    if (isFreeUse) {
+      maxUsesInput.value = 0;
+      usedUsesInput.value = 0;
+    }
+    maxUsesInput.disabled = isFreeUse;
+    usedUsesInput.disabled = isFreeUse;
   }
 }
