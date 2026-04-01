@@ -7,16 +7,22 @@
       {{{system.description}}}
     </div>
   {{/if}}
-  {{#if system.level}}
+  {{#if isSpell}}
     <div class="item-card-meta">
       <span class="mdt-pill item-card-level">
         {{localize "MDT.spell.levelLabel"}}:
-        {{#if (eq system.level "high")}}
+        {{#if isHighLevel}}
           {{localize "MDT.spell.levelHigh"}}
         {{else}}
           {{localize "MDT.spell.levelLow"}}
         {{/if}}
       </span>
+      <span class="mdt-pill item-card-uses">
+        {{localize "MDT.spell.usesLabel"}}: {{remainingUses}} / {{maxUses}}
+      </span>
+      {{#if (eq remainingUses 0)}}
+        <span class="mdt-pill item-card-empty-uses">{{localize "MDT.spell.emptyUsesShort"}}</span>
+      {{/if}}
     </div>
   {{/if}}
 </div>

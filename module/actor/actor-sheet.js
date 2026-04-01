@@ -54,7 +54,25 @@ export class MadDragonActorSheet extends ActorSheet {
     ];
 
     context.specialties = actor.items.filter((i) => i.type === "specialty");
-    context.spells = actor.items.filter((i) => i.type === "spell");
+    context.spells = actor.items
+      .filter((i) => i.type === "spell")
+      .map((spell) => {
+        const maxUses = Math.max(0, Number(spell.system.maxUses ?? 0));
+        const usedUses = Math.min(maxUses, Math.max(0, Number(spell.system.usedUses ?? 0)));
+        const remainingUses = Math.max(0, maxUses - usedUses);
+        return {
+          id: spell.id,
+          name: spell.name,
+          type: spell.type,
+          system: {
+            ...spell.system,
+            maxUses,
+            usedUses,
+            remainingUses,
+          },
+          noUses: remainingUses <= 0,
+        };
+      });
     context.equipment = actor.items.filter((i) => i.type === "equipment");
 
     return context;
@@ -87,6 +105,9 @@ export class MadDragonActorSheet extends ActorSheet {
     el.querySelectorAll(".item-toggle").forEach((btn) => {
       btn.addEventListener("click", this._onItemToggle.bind(this));
     });
+    el.querySelectorAll(".item-summary").forEach((summary) => {
+      summary.addEventListener("click", this._onItemSummaryToggle.bind(this));
+    });
 
     // Editar item
     el.querySelectorAll(".item-edit-start").forEach((btn) => {
@@ -113,10 +134,19 @@ export class MadDragonActorSheet extends ActorSheet {
       btn.addEventListener("click", this._onItemToChat.bind(this));
     });
 
+    // Usar magia
+    el.querySelectorAll(".spell-cast").forEach((btn) => {
+      btn.addEventListener("click", this._onSpellCast.bind(this));
+    });
+
     // Rolagem de teste
     el.querySelector(".roll-test")?.addEventListener(
       "click",
       this._onRollTest.bind(this),
+    );
+    el.querySelector(".rest-test")?.addEventListener(
+      "click",
+      this._onRest.bind(this),
     );
 
     this._restoreExpandedItems(el);
@@ -129,7 +159,20 @@ export class MadDragonActorSheet extends ActorSheet {
 
     const row = event.currentTarget.closest(".item-row");
     if (!row) return;
+    this._toggleItemRow(row);
+  }
 
+  _onItemSummaryToggle(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    // Permite usar controles (dado, lixeira, etc) sem abrir/fechar collapse
+    if (event.target.closest(".item-controls")) return;
+    const row = event.currentTarget.closest(".item-row");
+    if (!row) return;
+    this._toggleItemRow(row);
+  }
+
+  _toggleItemRow(row) {
     // Verifica se o item está expandido
     const itemId = row.dataset.itemId;
     const desc = row.querySelector(".item-description");
@@ -175,6 +218,9 @@ export class MadDragonActorSheet extends ActorSheet {
 
     const nameInput = row.querySelector(".item-name-input");
     const descInput = row.querySelector(".item-desc-input");
+    const spellHighLevelInput = row.querySelector(".spell-high-level-input");
+    const spellMaxUsesInput = row.querySelector(".spell-max-uses-input");
+    const spellUsedUsesInput = row.querySelector(".spell-used-uses-input");
     const btnStart = row.querySelector(".item-edit-start");
     const btnSave = row.querySelector(".item-edit-save");
     const btnCancel = row.querySelector(".item-edit-cancel");
@@ -188,6 +234,9 @@ export class MadDragonActorSheet extends ActorSheet {
     // Habilita inputs e mostra botões de salvar/cancelar
     nameInput.disabled = false;
     descInput.disabled = false;
+    if (spellHighLevelInput) spellHighLevelInput.disabled = false;
+    if (spellMaxUsesInput) spellMaxUsesInput.disabled = false;
+    if (spellUsedUsesInput) spellUsedUsesInput.disabled = false;
     btnStart.classList.add("hidden");
     btnSave.classList.remove("hidden");
     btnCancel.classList.remove("hidden");
@@ -208,6 +257,9 @@ export class MadDragonActorSheet extends ActorSheet {
     // Atualiza item com novos valores
     const nameInput = row.querySelector(".item-name-input");
     const descInput = row.querySelector(".item-desc-input");
+    const spellHighLevelInput = row.querySelector(".spell-high-level-input");
+    const spellMaxUsesInput = row.querySelector(".spell-max-uses-input");
+    const spellUsedUsesInput = row.querySelector(".spell-used-uses-input");
 
     const btnStart = row.querySelector(".item-edit-start");
     const btnSave = row.querySelector(".item-edit-save");
@@ -216,14 +268,30 @@ export class MadDragonActorSheet extends ActorSheet {
 
     const newName = (nameInput.value ?? "").trim();
     const newDesc = (descInput.value ?? "").trim();
+    const newHighLevel = spellHighLevelInput?.checked ?? item.system.highLevel ?? false;
+    const newMaxUses = Math.max(0, Number(spellMaxUsesInput?.value ?? item.system.maxUses ?? 0));
+    const rawUsedUses = Math.max(0, Number(spellUsedUsesInput?.value ?? item.system.usedUses ?? 0));
+    const newUsedUses = Math.min(newMaxUses, rawUsedUses);
 
-    await item.update({
+    const updateData = {
       name: newName || item.name,
       "system.description": newDesc,
-    });
+    };
+
+    if (item.type === "spell") {
+      updateData["system.highLevel"] = newHighLevel;
+      updateData["system.level"] = newHighLevel ? "high" : "low";
+      updateData["system.maxUses"] = newMaxUses;
+      updateData["system.usedUses"] = newUsedUses;
+    }
+
+    await item.update(updateData);
 
     nameInput.disabled = true;
     descInput.disabled = true;
+    if (spellHighLevelInput) spellHighLevelInput.disabled = true;
+    if (spellMaxUsesInput) spellMaxUsesInput.disabled = true;
+    if (spellUsedUsesInput) spellUsedUsesInput.disabled = true;
 
     btnStart.classList.remove("hidden");
     btnSave.classList.add("hidden");
@@ -239,6 +307,9 @@ export class MadDragonActorSheet extends ActorSheet {
 
     const nameInput = row.querySelector(".item-name-input");
     const descInput = row.querySelector(".item-desc-input");
+    const spellHighLevelInput = row.querySelector(".spell-high-level-input");
+    const spellMaxUsesInput = row.querySelector(".spell-max-uses-input");
+    const spellUsedUsesInput = row.querySelector(".spell-used-uses-input");
     const btnStart = row.querySelector(".item-edit-start");
     const btnSave = row.querySelector(".item-edit-save");
     const btnCancel = row.querySelector(".item-edit-cancel");
@@ -248,10 +319,16 @@ export class MadDragonActorSheet extends ActorSheet {
     // Restaura valores anteriores
     nameInput.value = nameInput.dataset.originalValue ?? nameInput.value;
     descInput.value = descInput.dataset.originalValue ?? descInput.value;
+    if (spellHighLevelInput) spellHighLevelInput.checked = !!spellHighLevelInput.defaultChecked;
+    if (spellMaxUsesInput) spellMaxUsesInput.value = spellMaxUsesInput.defaultValue ?? spellMaxUsesInput.value;
+    if (spellUsedUsesInput) spellUsedUsesInput.value = spellUsedUsesInput.defaultValue ?? spellUsedUsesInput.value;
 
     // Desabilita inputs
     nameInput.disabled = true;
     descInput.disabled = true;
+    if (spellHighLevelInput) spellHighLevelInput.disabled = true;
+    if (spellMaxUsesInput) spellMaxUsesInput.disabled = true;
+    if (spellUsedUsesInput) spellUsedUsesInput.disabled = true;
 
     // Oculta botões de salvar/cancelar
     btnStart.classList.remove("hidden");
@@ -264,6 +341,36 @@ export class MadDragonActorSheet extends ActorSheet {
     const itemId = event.currentTarget.dataset.itemId;
     const item = this.actor.items.get(itemId);
     if (!item) return;
+    await this._sendItemToChat(item);
+  }
+
+  async _onSpellCast(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const itemId = event.currentTarget.dataset.itemId;
+    const item = this.actor.items.get(itemId);
+    if (!item || item.type !== "spell") return;
+
+    const maxUses = Math.max(0, Number(item.system.maxUses ?? 0));
+    const usedUses = Math.max(0, Number(item.system.usedUses ?? 0));
+    const remainingUses = Math.max(0, maxUses - usedUses);
+
+    if (remainingUses <= 0) {
+      ui.notifications?.warn(game.i18n.localize("MDT.spell.noUses"));
+      return;
+    }
+
+    const nextUsedUses = usedUses + 1;
+    await item.update({ "system.usedUses": nextUsedUses });
+
+    await this._sendItemToChat(item);
+  }
+
+  async _sendItemToChat(item) {
+    const maxUses = Math.max(0, Number(item.system.maxUses ?? 0));
+    const usedUses = Math.min(maxUses, Math.max(0, Number(item.system.usedUses ?? 0)));
+    const remainingUses = Math.max(0, maxUses - usedUses);
+    const isHighLevel = item.system.highLevel ?? item.system.level === "high";
 
     const content = await foundry.applications.handlebars.renderTemplate(
       "systems/mad-dragon-turbo/templates/chat/item-card.hbs",
@@ -271,6 +378,11 @@ export class MadDragonActorSheet extends ActorSheet {
         item,
         system: item.system,
         actorName: this.actor.name,
+        isSpell: item.type === "spell",
+        isHighLevel,
+        maxUses,
+        usedUses,
+        remainingUses,
       },
     );
 
@@ -302,5 +414,16 @@ export class MadDragonActorSheet extends ActorSheet {
   async _onRollTest() {
     const { MDTRoll } = game.mdt;
     await MDTRoll.prompt(this.actor);
+  }
+
+  async _onRest() {
+    const spells = this.actor.items.filter((i) => i.type === "spell");
+    if (!spells.length) {
+      ui.notifications?.info(game.i18n.localize("MDT.spell.restNoSpells"));
+      return;
+    }
+
+    await Promise.all(spells.map((spell) => spell.update({ "system.usedUses": 0 })));
+    ui.notifications?.info(game.i18n.localize("MDT.spell.restDone"));
   }
 }

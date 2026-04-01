@@ -8,6 +8,7 @@ export async function registerMdtPartials() {
       ["mdt/character-header", `${prefix}/character-sheet-header.hbs`],
       ["mdt/character-tabs-nav", `${prefix}/character-tabs-nav.hbs`],
       ["mdt/character-tab-characteristics", `${prefix}/character-tab-characteristics.hbs`],
+      ["mdt/character-spells-list", `${prefix}/character-spells-list.hbs`],
       ["mdt/character-tab-diary", `${prefix}/character-tab-diary.hbs`],
     ];
   

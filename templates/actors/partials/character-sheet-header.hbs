@@ -2,9 +2,14 @@
 <header class="sheet-header">
     <div class="header-left">
         <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
-        <button type="button" class="roll-test" title="{{localize 'MDT.roll.title'}}">
-            <i class="fas fa-dice-d6"></i> {{localize "MDT.roll.titleBtn"}}
-        </button>
+        <div class="header-actions">
+            <button type="button" class="roll-test header-icon-btn" title="{{localize 'MDT.roll.titleBtn'}}">
+                <i class="fas fa-dice-d6"></i>
+            </button>
+            <button type="button" class="rest-test header-icon-btn" title="{{localize 'MDT.spell.rest'}}">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
     </div>
 
     <div class="header-right">

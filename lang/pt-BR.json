@@ -36,10 +36,20 @@
     "spell": {
       "new": "Novo poder/magia",
       "empty": "Nenhum poder/magia",
+      "rest": "Descanso",
+      "restDone": "Descanso concluído: usos de magias restaurados.",
+      "restNoSpells": "Não há magias para restaurar.",
       "levelLabel": "Nível",
       "levelLow": "Baixo Nível",
       "levelHigh": "Alto Nível",
-      "cost": "Custo/Sacrifício"
+      "cost": "Custo/Sacrifício",
+      "highLevelCheckbox": "Magia de alto nível",
+      "maxUsesLabel": "Usos totais",
+      "usedUsesLabel": "Usos gastos",
+      "usesLabel": "Usos",
+      "emptyUsesShort": "Sem usos",
+      "cast": "Usar magia",
+      "noUses": "Essa magia está sem usos disponíveis."
     },
     "equipment": {
       "new": "Novo item",

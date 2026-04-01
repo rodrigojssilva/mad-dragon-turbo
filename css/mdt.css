@@ -83,6 +83,18 @@
   background: #555;
 }
 
+.mad-dragon-turbo .header-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.mad-dragon-turbo .header-icon-btn {
+  width: 34px;
+  height: 30px;
+  padding: 0;
+  justify-content: center;
+}
+
 .mad-dragon-turbo .resource-value-row {
   display: flex;
   align-items: center;
@@ -389,11 +401,83 @@
 
 .mdt-item-card .item-card-meta {
   margin-top: 8px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
 .mdt-item-card .item-card-level {
   background: #d9e8da;
   color: #23422a;
+}
+
+.mdt-item-card .item-card-uses {
+  background: #d6d9e8;
+  color: #25305b;
+}
+
+.mdt-item-card .item-card-empty-uses {
+  background: #f2d3d3;
+  color: #6f1e1e;
+}
+
+.mad-dragon-turbo .spell-fields {
+  margin-top: 8px;
+  padding: 6px;
+  border: 1px dashed #b8b8b8;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.mad-dragon-turbo .spell-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  font-size: 0.85em;
+}
+
+.mad-dragon-turbo .spell-uses-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.mad-dragon-turbo .spell-uses-grid label {
+  font-size: 0.8em;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mad-dragon-turbo .spell-uses-grid input {
+  border: 1px solid #bdbdbd;
+  border-radius: 3px;
+  padding: 2px 4px;
+  background: #fff;
+}
+
+.mad-dragon-turbo .item-row-spell.spell-no-uses {
+  background: rgba(140, 30, 30, 0.06);
+}
+
+.mad-dragon-turbo .spell-empty-badge {
+  margin-left: 6px;
+  font-size: 0.74em;
+  font-weight: 700;
+  color: #7e1f1f;
+}
+
+.mad-dragon-turbo .spell-empty-note {
+  margin: 6px 0 0;
+  font-size: 0.8em;
+  color: #7e1f1f;
+  font-weight: 600;
+}
+
+.mad-dragon-turbo .spell-cast[data-no-uses="true"] {
+  opacity: 0.45;
 }
 
 .mdt-roll .mdt-roll-title {
@@ -428,10 +512,15 @@
 .mdt-roll .dice-results {
   display: flex;
   gap: 6px;
+  font-size: 25px;
 }
 
 .mdt-roll .die {
-  min-width: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
   text-align: center;
   padding: 2px 6px;
   border-radius: 4px;
@@ -461,6 +550,9 @@
 
 .mdt-roll .mdt-reroll-value {
   margin: 0 0 6px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }
 
 .mdt-roll .mdt-roll-result {

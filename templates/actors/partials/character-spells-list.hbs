@@ -1,0 +1,80 @@
+{{!-- PODERES / MAGIAS --}}
+<div class="sheet-section">
+    <div class="section-header">
+        <h3>{{localize "MDT.spells"}}</h3>
+        <a class="add-spell"><i class="fas fa-plus"></i></a>
+    </div>
+    <ul class="items-list">
+        {{#each spells}}
+        <li class="item-row item-row-spell {{#if this.noUses}}spell-no-uses{{/if}}" data-item-id="{{this.id}}">
+            <div class="item-summary">
+                <span class="item-name item-toggle">
+                    <i class="fas fa-chevron-right item-chevron"></i>
+                    {{this.name}}
+                    {{#if this.noUses}}
+                    <span class="spell-empty-badge">{{localize "MDT.spell.emptyUsesShort"}}</span>
+                    {{/if}}
+                </span>
+                <div class="item-controls">
+                    <a class="spell-cast" data-item-id="{{this.id}}"
+                        data-no-uses="{{#if this.noUses}}true{{else}}false{{/if}}"
+                        title="{{localize 'MDT.spell.cast'}}">
+                        <i class="fas fa-dice-d6"></i>
+                    </a>
+                    <a class="item-delete" title="{{localize 'MDT.item.delete'}}">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="item-description hidden">
+                <input class="item-name-input" type="text" disabled value="{{this.name}}"
+                    placeholder="{{localize 'MDT.item.namePlaceholder'}}" />
+                <textarea class="item-desc-input" disabled placeholder="{{localize 'MDT.item.descPlaceholder'}}"
+                    rows="3">{{this.system.description}}</textarea>
+
+                <div class="spell-fields">
+                    <label class="spell-checkbox">
+                        <input class="spell-high-level-input" type="checkbox" disabled {{#if
+                            this.system.highLevel}}checked{{else}}{{#if (eq this.system.level "high"
+                            )}}checked{{/if}}{{/if}} />
+                        {{localize "MDT.spell.highLevelCheckbox"}}
+                    </label>
+
+                    <div class="spell-uses-grid">
+                        <label>
+                            {{localize "MDT.spell.usedUsesLabel"}}
+                            <input class="spell-used-uses-input" type="number" min="0" disabled
+                                value="{{this.system.usedUses}}" />
+                        </label>
+                        <label>
+                            {{localize "MDT.spell.maxUsesLabel"}}
+                            <input class="spell-max-uses-input" type="number" min="0" disabled
+                                value="{{this.system.maxUses}}" />
+                        </label>
+                    </div>
+                    {{#if this.noUses}}
+                    <p class="spell-empty-note">{{localize "MDT.spell.noUses"}}</p>
+                    {{/if}}
+                </div>
+
+                <div class="item-edit-toolbar">
+                    <button type="button" class="item-edit-btn item-edit-start" title="Editar" aria-label="Editar">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                    <button type="button" class="item-edit-btn item-edit-cancel hidden" title="Cancelar"
+                        aria-label="Cancelar">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button type="button" class="item-edit-btn item-edit-save hidden" title="Salvar"
+                        aria-label="Salvar">
+                        <i class="fas fa-floppy-disk"></i>
+                    </button>
+                </div>
+            </div>
+        </li>
+        {{else}}
+        <span>{{localize "MDT.spell.empty"}}</span>
+        {{/each}}
+    </ul>
+</div>

@@ -1,5 +1,5 @@
 const { TypeDataModel } = foundry.abstract;
-const { StringField, HTMLField } = foundry.data.fields;
+const { StringField, HTMLField, NumberField, BooleanField } = foundry.data.fields;
 
 export class SpellModel extends TypeDataModel {
   static defineSchema() {
@@ -13,6 +13,22 @@ export class SpellModel extends TypeDataModel {
         required: true,
         initial: "low",
         choices: ["low", "high"],
+      }),
+      highLevel: new BooleanField({
+        required: true,
+        initial: false,
+      }),
+      maxUses: new NumberField({
+        required: true,
+        integer: true,
+        min: 0,
+        initial: 0,
+      }),
+      usedUses: new NumberField({
+        required: true,
+        integer: true,
+        min: 0,
+        initial: 0,
       }),
       cost: new StringField({ required: false, blank: true, initial: "" }),
     };
