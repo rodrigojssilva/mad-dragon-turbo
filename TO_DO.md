@@ -13,7 +13,7 @@
 [x] Usar dice so nice é possível?
 [x] No combate tem como ocultar o número?
 [x] Aba diário ajustar textArea
-[] Textos nas rolagens especiais de 6
+[x] Textos nas rolagens especiais de 6
     para Primoroso: Com um acerto primoroso você recebe uma vantagem!
     para Espetacular: Com um acerto espetacular você recebe uma vantagem e uma oportunidade!
-[] Tradução En pegar pt-BR
+[x] Tradução En pegar pt-BR
