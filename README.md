@@ -33,15 +33,15 @@ Quando houver `manifest` público no `system.json`, também será possível inst
 - Fichas de **Personagem**, **NPC** e **Inimigo** com o mesmo layout; em NPC/Inimigo, **vida e sanidade máximas** são editáveis manualmente.
 - Itens incorporados: **Especialidade**, **Magia/Poder**, **Equipamento**.
 - **Rolagem de teste**, **descanso** e **uso de magias** exigem um **estilo** escolhido (Porradeiro, Malandro ou Genial).
-- **Iniciativa** com ordem por tipo de ator (ex.: inimigos em posição fixa na ordem).
+- **Iniciativa** com ordem por tipo de personagem (ex.: inimigos em posição fixa na ordem).
 
 ### Estrutura do repositório (desenvolvimento)
 
 ```
 module/
   mdt.js              # Registro do sistema, hooks init/ready
-  actor/              # Classe de documento e ficha de ator
-  models/             # DataModels de ator e item
+  actor/              # Classe de documento e ficha de personagem
+  models/             # DataModels de personagem e item
   helpers/            # Rolagem (MDTRoll), helpers Handlebars
   combat/             # Documento de combate customizado
   templates/          # Registro de partials Handlebars
