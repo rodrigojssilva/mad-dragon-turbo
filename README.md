@@ -1,12 +1,73 @@
-# 🐉 Mad Dragon Turbo (MDT)
+# Mad Dragon Turbo (MDT)
 
-Mad Dragon Turbo é um **RPG de panfleto**: um sistema simples, direto e focado na narrativa, com mecânicas clássicas e fácil de aprender.
+Mad Dragon Turbo é um **RPG de panfleto**: sistema simples, direto e focado na narrativa. Se você já conhece jogos no estilo de *Cthulhu Dark*, *Guaxinins & Gambiarras* ou *Lasers & Feelings*, a proposta soa familiar.
 
-Se você já conhece outros sistemas do estilo, como Cthulhu Dark, Guaxinins & Gambiarras ou Lasers & Feelings, já tem uma boa ideia da proposta.
+**Este repositório** contém o **pacote de sistema para [Foundry Virtual Tabletop](https://foundryvtt.com/)** (fichas, itens, rolagens no chat, combate básico) além de uma **referência das regras do folheto** mais abaixo.
 
 ---
 
-## 🎲 O que você precisa
+## Foundry VTT
+
+### Requisitos
+
+| Item | Versão |
+|------|--------|
+| Foundry VTT | **13** (mínimo, verificado e máximo no `system.json`) |
+
+### Instalação manual
+
+1. Copie a pasta do sistema para o diretório de dados do Foundry, por exemplo:
+   - **Windows:** `%LOCALAPPDATA%\FoundryVTT\Data\systems\`
+   - **Linux / macOS:** `Data/systems/` dentro da pasta de dados do Foundry
+2. Renomeie a pasta para `mad-dragon-turbo` (deve coincidir com o `id` em `system.json`).
+3. No Foundry: **Configuração do mundo → Sistema de jogo** e selecione **Mad Dragon Turbo**.
+
+Quando houver `manifest` público no `system.json`, também será possível instalar pela URL de manifesto na aba de sistemas.
+
+### Idioma da interface
+
+- **Português (Brasil)** (`lang/pt-BR.json`) — único idioma incluído no MVP.
+
+### O que o sistema faz no Foundry
+
+- Fichas de **Personagem**, **NPC** e **Inimigo** com o mesmo layout; em NPC/Inimigo, **vida e sanidade máximas** são editáveis manualmente.
+- Itens incorporados: **Especialidade**, **Magia/Poder**, **Equipamento**.
+- **Rolagem de teste**, **descanso** e **uso de magias** exigem um **estilo** escolhido (Porradeiro, Malandro ou Genial).
+- **Iniciativa** com ordem por tipo de ator (ex.: inimigos em posição fixa na ordem).
+
+### Estrutura do repositório (desenvolvimento)
+
+```
+module/
+  mdt.js              # Registro do sistema, hooks init/ready
+  actor/              # Classe de documento e ficha de ator
+  models/             # DataModels de ator e item
+  helpers/            # Rolagem (MDTRoll), helpers Handlebars
+  combat/             # Documento de combate customizado
+  templates/          # Registro de partials Handlebars
+templates/
+  actors/             # Ficha e partials (.hbs)
+  chat/               # Templates de mensagens no chat
+  dialogs/            # Diálogos (ex.: rolagem)
+css/                  # Estilos por contexto (ficha, chat, combate, etc.)
+lang/                 # Traduções
+system.json           # Manifesto do sistema Foundry
+```
+
+### Autores (sistema Foundry)
+
+- Richard C. Bernardes — O Bardo  
+- Rodrigo J. S. Silva — Capivara Tech  
+
+---
+
+## Referência: regras do folheto (mesa)
+
+O restante deste documento resume o **jogo de mesa** (dados, estilos, testes). A implementação no Foundry segue essa base, com ajustes onde a interface digital pede (ex.: botões de rolagem, usos de magia).
+
+---
+
+## O que você precisa (mesa)
 
 * 3 dados de seis faces (d6)
 * Papel e lápis
@@ -15,7 +76,7 @@ Se você já conhece outros sistemas do estilo, como Cthulhu Dark, Guaxinins & G
 
 ---
 
-## 👥 Estrutura do Jogo
+## Estrutura do Jogo
 
 * **Mestre:** narra o mundo, interpreta NPCs e define consequências
 * **Jogadores:** interpretam os protagonistas da história
@@ -24,7 +85,7 @@ Se você já conhece outros sistemas do estilo, como Cthulhu Dark, Guaxinins & G
 
 ---
 
-# 🧙 Criação de Personagem
+# Criação de Personagem
 
 A criação é feita em **3 passos simples**:
 
@@ -46,7 +107,7 @@ Defina o personagem em uma única frase:
 
 Escolha um dos três arquétipos:
 
-### 💥 Porradeiro
+### Porradeiro
 
 * Foco físico e combate
 * +1 em desafios físicos, resistência e ataques
@@ -54,7 +115,7 @@ Escolha um dos três arquétipos:
 
 ---
 
-### 🧠 Genial
+### Genial
 
 * Foco mental e controle
 * +1 em desafios mentais, controle e percepção
@@ -62,7 +123,7 @@ Escolha um dos três arquétipos:
 
 ---
 
-### 🎭 Malandrão
+### Malandrão
 
 * Foco social e furtividade
 * +1 em desafios sociais, agilidade e furtividade
@@ -82,13 +143,13 @@ Cada especialidade concede **+1 dado** em testes.
 
 ---
 
-## 📌 Resumo do Personagem
+## Resumo do Personagem
 
 > “Sou Solomon J. Hunter, Marinheiro, Porradeiro, especialista em Armas de Fogo, Navegação, Sobrevivência e Artes Marciais.”
 
 ---
 
-# 🎲 Sistema de Testes
+# Sistema de Testes
 
 ## Como funciona:
 
@@ -99,7 +160,7 @@ Cada especialidade concede **+1 dado** em testes.
 
 ---
 
-## 🎯 Resultados
+## Resultados
 
 * **6 → Sucesso (anula falhas)**
 * **1 → Falha (anula acertos simples)**
@@ -107,7 +168,7 @@ Cada especialidade concede **+1 dado** em testes.
 
 ---
 
-## ⚖️ Dificuldades
+## Dificuldades
 
 * **Comum:** 2+
 * **Desafiadora:** 4+
@@ -116,7 +177,7 @@ Cada especialidade concede **+1 dado** em testes.
 
 ---
 
-## 📊 Categorias de Resultado
+## Categorias de Resultado
 
 * **Falha Crítica:** nenhum sucesso + pelo menos um 1
 * **Falha:** nenhum sucesso
@@ -129,7 +190,7 @@ Cada especialidade concede **+1 dado** em testes.
 
 ---
 
-# ⚔️ Combate, Debate e Embate
+# Combate, Debate e Embate
 
 O combate é **narrativo**.
 
@@ -141,7 +202,7 @@ O combate é **narrativo**.
 
 ---
 
-## 🥊 Iniciativa
+## Iniciativa
 
 Ordem fixa:
 
@@ -149,7 +210,7 @@ Ordem fixa:
 
 ---
 
-## 💥 Dano
+## Dano
 
 ### Desarmado
 
@@ -167,16 +228,16 @@ Ordem fixa:
 
 ---
 
-## ❤️ Vida e 🧠 Sanidade
+## Vida e Sanidade
 
-* 0 Vida → Incapacitado → dano adicional = morte
-* 0 Sanidade → Traumatizado → dano adicional = insanidade
+* 0 Vida → Crítico → dano adicional = morte
+* 0 Sanidade → Abalado → dano adicional = insanidade
 
 > Armaduras são narrativas (não reduzem dano diretamente)
 
 ---
 
-## 🧠 Debate
+## Debate
 
 Conflitos sociais/mentais:
 
@@ -185,7 +246,7 @@ Conflitos sociais/mentais:
 
 ---
 
-# ✨ Magia e Poderes
+# Magia e Poderes
 
 Sistema modular definido pela mesa.
 
@@ -201,7 +262,7 @@ Falhas ainda podem gerar custo.
 
 ---
 
-# 🌍 Universo e Regras da Casa
+# Universo e Regras da Casa
 
 O sistema funciona em qualquer cenário.
 
@@ -218,7 +279,7 @@ A lógica do mundo depende da mesa
 
 ---
 
-# 🚀 Resumo
+# Resumo
 
 Mad Dragon Turbo é um sistema:
 

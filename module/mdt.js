@@ -20,12 +20,12 @@ Hooks.on("init", async function () {
     character: CharacterModel,
     npc: NpcModel,
     enemy: EnemyModel,
-    equipment: EquipmentModel,
   });
 
   Object.assign(CONFIG.Item.dataModels, {
     specialty: SpecialtyModel,
     spell: SpellModel,
+    equipment: EquipmentModel,
   });
   
   await registerMdtPartials();
