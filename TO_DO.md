@@ -10,6 +10,5 @@
 [x] NPC e Inimigos tem a mesma ficha que o jogador, com a diferença que o limite máximo de vida e sanidade pode ser alterado manualmente, enquanto o jogador não pode
 [x] Separar CSS por contexto para melhor controle
 [x] Layout do DialogV2 para versão "dark" nos estilos
-[] Textos dos estilos
 [] Usar dice so nice é possível?
 [] Na rolagem tem como ocultar o número?

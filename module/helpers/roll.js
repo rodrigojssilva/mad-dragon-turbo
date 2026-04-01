@@ -98,15 +98,16 @@ export class MDTRoll {
 
     const breakdownParts = [game.i18n.localize("MDT.roll.bonus.diceCount")];
 
-    const roll = await new Roll(`${diceCount}d6`).evaluate();
+    const roll = await new Roll(`${diceCount}d6`).evaluate({ allowInteractive: false });
     let results = roll.dice[0].results.map((r) => r.result);
     const originalResults = [...results];
 
     // Somente para malandrão
     let rerolledResult = null;
     let rerolledIndex = null;
+    let reroll = null;
     if (actorStyle === "trickster" && results.includes(1)) {
-      const reroll = await new Roll("1d6").evaluate();
+      reroll = await new Roll("1d6").evaluate({ allowInteractive: false });
       rerolledResult = reroll.dice[0].results[0].result;
       rerolledIndex = results.indexOf(1);
 
@@ -125,6 +126,8 @@ export class MDTRoll {
       ? MDTRoll.analyzeHidden(results, actorStyle)
       : MDTRoll.analyze(results, difficultyData.min, actorStyle);
 
+    const chatRolls = reroll ? [roll, reroll] : [roll];
+
     await MDTRoll.toChat(actor, {
       originalResults,
       results,
@@ -137,6 +140,7 @@ export class MDTRoll {
         : game.i18n.localize(difficultyData.label),
       diceCount,
       isHidden,
+      rolls: chatRolls,
     });
   }
 
@@ -188,7 +192,20 @@ export class MDTRoll {
   // Envia a mensagem formatada para o chat
   // -----------------------------------------------
   static async toChat(
-    actor, { originalResults, results, rerolledResult, rerolledIndex, analysis, breakdown, difficultyLabel, diceCount, isHidden }) {
+    actor,
+    {
+      originalResults,
+      results,
+      rerolledResult,
+      rerolledIndex,
+      analysis,
+      breakdown,
+      difficultyLabel,
+      diceCount,
+      isHidden,
+      rolls,
+    },
+  ) {
     // Renderiza o template do chat
     const content = await foundry.applications.handlebars.renderTemplate(
       "systems/mad-dragon-turbo/templates/chat/roll-result.hbs",
@@ -207,9 +224,10 @@ export class MDTRoll {
     );
 
     await ChatMessage.create({
+      user: game.user.id,
       speaker: ChatMessage.getSpeaker({ actor }),
       content,
-      rolls: [],
+      rolls,
     });
   }
 }

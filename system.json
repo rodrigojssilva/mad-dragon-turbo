@@ -47,6 +47,6 @@
   "packs": [],
   "socket": false,
   "url": "https://github.com/rodrigojssilva/mad-dragon-turbo.git",
-  "manifest": "https://raw.githubusercontent.com/rodrigojssilva/mad-dragon-turbo/v1.0.0/system.json",
+  "manifest": "https://raw.githubusercontent.com/rodrigojssilva/mad-dragon-turbo/main/system.json",
   "download": "https://github.com/rodrigojssilva/mad-dragon-turbo/archive/refs/tags/v1.0.0.zip"
 }
