@@ -656,16 +656,40 @@
   gap: 6px;
 }
 
-.mad-dragon-turbo .mdt-style-info-dialog .style-desc {
-  margin: 0 0 10px;
-  line-height: 1.35;
+/* Modal de detalhes do estilo — cartão = descendente de .mad-dragon-turbo (igual .mdt-style-card na ficha) */
+.mad-dragon-turbo .mdt-style-info-dialog-root .sheet-section {
+  margin-bottom: 0;
+}
+
+.mad-dragon-turbo .mdt-style-info-dialog-card .mdt-style-info-flavor {
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
+  font-size: 0.95em;
   color: #3d362c;
 }
 
-.mad-dragon-turbo .mdt-style-info-dialog .style-stats-line {
+.mad-dragon-turbo .mdt-style-info-dialog-card .mdt-style-info-special-wrap {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.mad-dragon-turbo .mdt-style-info-dialog-card .mdt-style-info-special-wrap .mdt-style-info-special {
   margin: 0;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.18);
+  line-height: 1.35;
+  font-size: 0.9em;
   font-weight: 700;
   color: #3d362c;
+}
+
+/* Área do DialogV2: contentClasses no window (ApplicationWindowConfiguration.contentClasses) */
+.mad-dragon-turbo.mdt-style-info-dialog-app .window-content.mdt-style-info-dialog-content {
+  padding: 10px 12px;
 }
 
 .mad-dragon-turbo .style-desc {

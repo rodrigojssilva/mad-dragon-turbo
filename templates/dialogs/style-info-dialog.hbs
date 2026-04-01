@@ -1,4 +1,9 @@
-<div class="mad-dragon-turbo mdt-style-info-dialog">
-    <p class="style-desc">{{description}}</p>
-    <p class="style-stats-line">{{stats}}</p>
+{{!-- Ancestral .mad-dragon-turbo + filho .mdt-top-card — o CSS da ficha usa descendente, não o mesmo elemento --}}
+<div class="mad-dragon-turbo mdt-style-info-dialog-root">
+    <div class="sheet-section mdt-top-card mdt-style-info-dialog-card">
+        <p class="mdt-style-info-flavor">{{description}}</p>
+        <div class="mdt-style-info-special-wrap">
+            <p class="mdt-style-info-special">{{stats}}</p>
+        </div>
+    </div>
 </div>

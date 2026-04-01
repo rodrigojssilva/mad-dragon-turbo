@@ -487,9 +487,13 @@ export class MadDragonActorSheet extends ActorSheet {
     );
 
     await foundry.applications.api.DialogV2.wait({
-      window: { title: game.i18n.localize(m.title) },
+      classes: ["mad-dragon-turbo", "mdt-style-info-dialog-app"],
+      window: {
+        title: game.i18n.localize(m.title),
+        contentClasses: ["mad-dragon-turbo", "mdt-style-info-dialog-content"],
+      },
       content,
-      position: { width: 380 },
+      position: { width: 400 },
       buttons: [
         {
           action: "close",
