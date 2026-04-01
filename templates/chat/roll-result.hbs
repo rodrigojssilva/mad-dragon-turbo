@@ -1,11 +1,18 @@
-<div class="mdt-roll">
-  <h3>{{actorName}}</h3>
+<div class="mdt-chat-card mdt-roll">
+  <header class="mdt-chat-card-header">
+    <h3 class="mdt-roll-title">{{actorName}}</h3>
+    <p class="mdt-roll-breakdown">{{breakdown}} = {{diceCount}}d6</p>
+  </header>
 
-  <p class="roll-breakdown">{{breakdown}} = {{diceCount}}d6</p>
-  <p class="roll-difficulty">{{localize "MDT.roll.difficulty"}}: {{difficultyLabel}}</p>
+  <div class="mdt-roll-meta">
+    <span class="mdt-pill mdt-pill-difficulty">
+      {{localize "MDT.roll.difficulty"}}: {{difficultyLabel}}
+    </span>
+  </div>
 
-  {{!-- Resultados originais --}}
-  <div class="dice-results">
+  <section class="mdt-roll-section">
+    <p class="mdt-roll-label">Dados</p>
+    <div class="dice-results">
     {{#each originalResults}}
       {{#if (eq this 6)}}
         <span class="die die-six">{{this}}</span>
@@ -15,38 +22,40 @@
         <span class="die">{{this}}</span>
       {{/if}}
     {{/each}}
-  </div>
+    </div>
+  </section>
 
   {{!-- Reroll do Malandrão --}}
   {{#if rerolledResult}}
-    <p class="reroll">
-      {{localize "MDT.roll.tricksterReroll"}} →
-      {{#if (eq rerolledResult 6)}}
-        <span class="die die-six">{{rerolledResult}}</span>
-      {{else if (eq rerolledResult 1)}}
-        <span class="die die-one">{{rerolledResult}}</span>
-      {{else}}
-        <span class="die">{{rerolledResult}}</span>
-      {{/if}}
-    </p>
-
-    {{!-- Resultados atualizados após reroll --}}
-    <div class="dice-results">
-      {{#each results}}
-        {{#if (eq this 6)}}
-          <span class="die die-six">{{this}}</span>
-        {{else if (eq this 1)}}
-          <span class="die die-one">{{this}}</span>
+    <section class="mdt-roll-section mdt-reroll-box">
+      <p class="mdt-roll-label">{{localize "MDT.roll.tricksterReroll"}}</p>
+      <p class="mdt-reroll-value">
+        {{localize "MDT.roll.tricksterRerollResult"}}:
+        {{#if (eq rerolledResult 6)}}
+          <span class="die die-six">{{rerolledResult}}</span>
+        {{else if (eq rerolledResult 1)}}
+          <span class="die die-one">{{rerolledResult}}</span>
         {{else}}
-          <span class="die">{{this}}</span>
+          <span class="die">{{rerolledResult}}</span>
         {{/if}}
-      {{/each}}
-    </div>
+      </p>
+
+      {{!-- Resultados atualizados após reroll --}}
+      <div class="dice-results">
+        {{#each results}}
+          {{#if (eq this 6)}}
+            <span class="die die-six">{{this}}</span>
+          {{else if (eq this 1)}}
+            <span class="die die-one">{{this}}</span>
+          {{else}}
+            <span class="die">{{this}}</span>
+          {{/if}}
+        {{/each}}
+      </div>
+    </section>
   {{/if}}
 
-  {{!-- Análise final — sempre exibida --}}
-  <div class="roll-result {{analysis.cssClass}}">
+  <div class="roll-result mdt-roll-result {{analysis.cssClass}}">
     {{localize analysis.label}}
   </div>
-
 </div>

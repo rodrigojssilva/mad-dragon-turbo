@@ -61,11 +61,12 @@
       "difficulty": "Dificuldade",
       "useSpecialty": "Usar especialidade?",
       "tricksterReroll": "Malandrão rerola o 1",
+      "tricksterRerollResult": "Novo resultado",
       "useStyle": "Estilo compatível?",
       "useItem": "Usar item de vantagem?",
       "noStyle": "Sem estilo definido",
       "bonus": {
-        "possible": "Ação possível",
+        "diceCount": "Rolou",
         "specialty": "Especialidade",
         "item": "Item de vantagem"
       },

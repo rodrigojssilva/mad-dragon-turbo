@@ -18,8 +18,6 @@ export class MDTRoll {
   // Abre o popup e executa a rolagem
   // -----------------------------------------------
   static async prompt(actor) {
-    const style = actor.system.style;
-
     // Prepara dados para o template do dialog
     const difficulties = Object.entries(MDTRoll.DIFFICULTIES).map(
       ([key, val]) => ({
@@ -28,32 +26,44 @@ export class MDTRoll {
       }),
     );
 
-    // Label do estilo do personagem para mostrar no dialog
-    const styleLabel = style
-      ? game.i18n.localize(MDTRoll.STYLE_ACTIONS[style])
-      : game.i18n.localize("MDT.roll.noStyle");
-
     const content = await foundry.applications.handlebars.renderTemplate(
       "systems/mad-dragon-turbo/templates/dialogs/roll-dialog.hbs",
-      { difficulties, styleLabel },
+      { difficulties },
     );
 
 
     const result = await foundry.applications.api.DialogV2.wait({
       window: { title: game.i18n.localize("MDT.roll.title") },
       content,
-      // ok: {
-      //   label: game.i18n.localize("MDT.roll.rollButton"),
-      //   callback: (event, button) => {
-      //     const fd = new foundry.applications.ux.FormDataExtended(button.form);
-      //     return fd.object;
-      //   },
-      // },
       buttons: [
-        { label: "", action: "a", icon: "fa-solid fa-dice-one" },
-        { label: "", action: "b", icon: "fa-solid fa-dice-two" },
-        { label: "", action: "c", icon: "fa-solid fa-dice-three" },
-      ]
+        {
+          label: "1",
+          action: "roll-1d6",
+          icon: "fa-solid fa-dice-one",
+          callback: (event, button) => {
+            const fd = new foundry.applications.ux.FormDataExtended(button.form);
+            return { difficulty: fd.object.difficulty, diceCount: 1 };
+          },
+        },
+        {
+          label: "2",
+          action: "roll-2d6",
+          icon: "fa-solid fa-dice-two",
+          callback: (event, button) => {
+            const fd = new foundry.applications.ux.FormDataExtended(button.form);
+            return { difficulty: fd.object.difficulty, diceCount: 2 };
+          },
+        },
+        {
+          label: "3",
+          action: "roll-3d6",
+          icon: "fa-solid fa-dice-three",
+          callback: (event, button) => {
+            const fd = new foundry.applications.ux.FormDataExtended(button.form);
+            return { difficulty: fd.object.difficulty, diceCount: 3 };
+          },
+        },
+      ],
     });
 
     if (!result) return;
@@ -64,33 +74,11 @@ export class MDTRoll {
   // Executa a rolagem e manda para o chat
   // -----------------------------------------------
   static async execute(actor, options) {
-    const { difficulty, style, specialty, item } = options;
+    const { difficulty, diceCount } = options;
     const actorStyle = actor.system.style;
     const isHidden = difficulty === "hidden";
 
-    // Ação possível sempre garante 1 dado fixo
-    let diceCount = 1;
-    const breakdownParts = [game.i18n.localize("MDT.roll.bonus.possible")];
-
-    if (style && actorStyle) {
-      diceCount++;
-      breakdownParts.push(
-        game.i18n.localize(MDTRoll.STYLE_ACTIONS[actorStyle]),
-      );
-    }
-
-    if (specialty) {
-      diceCount++;
-      breakdownParts.push(game.i18n.localize("MDT.roll.bonus.specialty"));
-    }
-
-    if (item) {
-      diceCount++;
-      breakdownParts.push(game.i18n.localize("MDT.roll.bonus.item"));
-    }
-
-    // Máximo de 3 dados independente dos bônus
-    diceCount = Math.min(3, diceCount);
+    const breakdownParts = [game.i18n.localize("MDT.roll.bonus.diceCount")];
 
     const roll = await new Roll(`${diceCount}d6`).evaluate();
     let results = roll.dice[0].results.map((r) => r.result);
