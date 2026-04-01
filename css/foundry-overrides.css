@@ -4,3 +4,8 @@
 body.game .app.window-app .window-content {
   background: transparent !important;
 }
+
+/* Ordem de turno continua pela iniciativa; só oculta o valor numérico no tracker */
+.combat-sidebar .combat-tracker .token-initiative {
+  display: none !important;
+}
