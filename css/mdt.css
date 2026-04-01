@@ -85,10 +85,20 @@
 /* ===========================
    FICHA — LAYOUT GERAL
    =========================== */
+/* Fundo da ficha no próprio form. Opacidade da marca: opacity no root de ../assets/MDT_logo.svg (CSS não isola opacidade só do bg-image). */
 .mad-dragon-turbo.sheet {
   font-family: "Signika", sans-serif;
-  background: #f5f0e8;
+  background-color: #f5f0e8;
+  background-image: url("../assets/MDT_logo.svg");
+  background-repeat: no-repeat;
+  background-position: bottom 10px right 10px;
+  background-size: min(220px, 50%) auto;
   color: #1a1a1a;
+}
+
+/* Vence o padrão do Foundry: body.game .app.window-app .window-content { background: url(../ui/parchment.jpg) } */
+body.game .app.window-app .window-content {
+  background: transparent !important
 }
 
 /* CABEÇALHO */
