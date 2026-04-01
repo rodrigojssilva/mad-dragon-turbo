@@ -161,6 +161,22 @@
   padding: 1px 4px;
 }
 
+.mad-dragon-turbo .header-field-concept {
+  align-items: flex-start;
+}
+
+.mad-dragon-turbo .header-field .concept-input {
+  flex: 1;
+  min-height: 36px;
+  resize: vertical;
+}
+
+.mad-dragon-turbo .header-edit-toolbar {
+  display: flex;
+  gap: 6px;
+  margin-top: 2px;
+}
+
 /* COLUNAS */
 .mad-dragon-turbo .sheet-columns {
   display: flex;

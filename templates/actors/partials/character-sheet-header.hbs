@@ -18,9 +18,22 @@
             <label>{{localize "MDT.name"}}:</label>
             <input name="name" type="text" value="{{actor.name}}" />
         </div>
-        <div class="header-field">
+        <div class="header-field header-field-concept">
             <label>{{localize "MDT.concept"}}:</label>
-            <textarea name="system.concept" rows="1" placeholder="...">{{system.concept}}</textarea>
+            <textarea class="concept-input" disabled rows="1" placeholder="...">{{system.concept}}</textarea>
+            <div class="header-edit-toolbar">
+                <button type="button" class="item-edit-btn concept-edit-start" title="{{localize 'MDT.item.edit'}}"
+                    aria-label="{{localize 'MDT.item.edit'}}">
+                    <i class="fas fa-pen"></i>
+                </button>
+                <button type="button" class="item-edit-btn concept-edit-cancel hidden" title="Cancelar"
+                    aria-label="Cancelar">
+                    <i class="fas fa-times"></i>
+                </button>
+                <button type="button" class="item-edit-btn concept-edit-save hidden" title="Salvar" aria-label="Salvar">
+                    <i class="fas fa-floppy-disk"></i>
+                </button>
+            </div>
         </div>
     </div>
 </header>

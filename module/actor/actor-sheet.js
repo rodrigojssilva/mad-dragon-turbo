@@ -158,6 +158,18 @@ export class MadDragonActorSheet extends ActorSheet {
       "click",
       this._onRest.bind(this),
     );
+    el.querySelector(".concept-edit-start")?.addEventListener(
+      "click",
+      this._onConceptEditStart.bind(this),
+    );
+    el.querySelector(".concept-edit-save")?.addEventListener(
+      "click",
+      this._onConceptEditSave.bind(this),
+    );
+    el.querySelector(".concept-edit-cancel")?.addEventListener(
+      "click",
+      this._onConceptEditCancel.bind(this),
+    );
 
     // Diário - editar/salvar/cancelar
     el.querySelectorAll(".diary-edit-start").forEach((btn) => {
@@ -507,6 +519,58 @@ export class MadDragonActorSheet extends ActorSheet {
 
     textarea.value = textarea.dataset.originalValue ?? textarea.value;
     textarea.disabled = true;
+    btnStart.classList.remove("hidden");
+    btnSave.classList.add("hidden");
+    btnCancel.classList.add("hidden");
+  }
+
+  _onConceptEditStart(event) {
+    event.preventDefault();
+    const row = event.currentTarget.closest(".header-field-concept");
+    if (!row) return;
+    const input = row.querySelector(".concept-input");
+    const btnStart = row.querySelector(".concept-edit-start");
+    const btnSave = row.querySelector(".concept-edit-save");
+    const btnCancel = row.querySelector(".concept-edit-cancel");
+    if (!input || !btnStart || !btnSave || !btnCancel) return;
+
+    input.dataset.originalValue = input.value ?? "";
+    input.disabled = false;
+    btnStart.classList.add("hidden");
+    btnSave.classList.remove("hidden");
+    btnCancel.classList.remove("hidden");
+    input.focus();
+  }
+
+  async _onConceptEditSave(event) {
+    event.preventDefault();
+    const row = event.currentTarget.closest(".header-field-concept");
+    if (!row) return;
+    const input = row.querySelector(".concept-input");
+    const btnStart = row.querySelector(".concept-edit-start");
+    const btnSave = row.querySelector(".concept-edit-save");
+    const btnCancel = row.querySelector(".concept-edit-cancel");
+    if (!input || !btnStart || !btnSave || !btnCancel) return;
+
+    await this.actor.update({ "system.concept": input.value ?? "" });
+    input.disabled = true;
+    btnStart.classList.remove("hidden");
+    btnSave.classList.add("hidden");
+    btnCancel.classList.add("hidden");
+  }
+
+  _onConceptEditCancel(event) {
+    event.preventDefault();
+    const row = event.currentTarget.closest(".header-field-concept");
+    if (!row) return;
+    const input = row.querySelector(".concept-input");
+    const btnStart = row.querySelector(".concept-edit-start");
+    const btnSave = row.querySelector(".concept-edit-save");
+    const btnCancel = row.querySelector(".concept-edit-cancel");
+    if (!input || !btnStart || !btnSave || !btnCancel) return;
+
+    input.value = input.dataset.originalValue ?? input.value;
+    input.disabled = true;
     btnStart.classList.remove("hidden");
     btnSave.classList.add("hidden");
     btnCancel.classList.add("hidden");
