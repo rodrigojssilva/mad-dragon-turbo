@@ -10,7 +10,11 @@
                 <input class="resource-input" name="system.health.value" type="number" value="{{system.health.value}}" min="0"
                     max="{{system.health.max}}" />
                 <span class="resource-sep">/</span>
+                {{#if vitalsMaxEditable}}
+                <input class="resource-input resource-max-input" name="system.health.max" type="number" value="{{system.health.max}}" min="0" />
+                {{else}}
                 <span class="resource-max">{{system.health.max}}</span>
+                {{/if}}
             </div>
         </div>
         <div class="resource-col resource-col-pill">
@@ -28,7 +32,11 @@
                 <input class="resource-input" name="system.sanity.value" type="number" value="{{system.sanity.value}}" min="0"
                     max="{{system.sanity.max}}" />
                 <span class="resource-sep">/</span>
+                {{#if vitalsMaxEditable}}
+                <input class="resource-input resource-max-input" name="system.sanity.max" type="number" value="{{system.sanity.max}}" min="0" />
+                {{else}}
                 <span class="resource-max">{{system.sanity.max}}</span>
+                {{/if}}
             </div>
         </div>
         <div class="resource-col resource-col-pill">

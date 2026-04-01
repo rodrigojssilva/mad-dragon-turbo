@@ -1,17 +1,15 @@
+{{!-- Mesmo layout que character-sheet.hbs (template ativo em actor-sheet.js). --}}
 <form class="{{cssClass}} mad-dragon-turbo" autocomplete="off">
-
-  <header class="sheet-header">
-    <img class="profile-img" src="{{actor.img}}" 
-         data-edit="img" title="{{actor.name}}" />
-    <div class="header-fields">
-      <h1>
-        <input name="name" type="text" value="{{actor.name}}" />
-      </h1>
-    </div>
-  </header>
+  {{> mdt/character-header}}
+  {{> mdt/character-tabs-nav}}
 
   <section class="sheet-body">
-    <p>Ficha de NPC em construção!</p>
-  </section>
+    <div class="tab characteristics" data-group="primary" data-tab="characteristics">
+      {{> mdt/character-tab-characteristics}}
+    </div>
 
+    <div class="tab diary" data-group="primary" data-tab="diary">
+      {{> mdt/character-tab-diary}}
+    </div>
+  </section>
 </form>

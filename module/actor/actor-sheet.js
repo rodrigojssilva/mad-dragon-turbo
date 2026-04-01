@@ -1,4 +1,5 @@
 import { CHARACTER_STYLE_STATS } from "../models/actor/character-model.js";
+import { MDTRoll } from "../helpers/roll.js";
 
 export class MadDragonActorSheet extends ActorSheet {
   constructor(object, options) {
@@ -25,7 +26,7 @@ export class MadDragonActorSheet extends ActorSheet {
   }
 
   get template() {
-    return `systems/mad-dragon-turbo/templates/actors/${this.actor.type}-sheet.hbs`;
+    return "systems/mad-dragon-turbo/templates/actors/character-sheet.hbs";
   }
 
   async getData() {
@@ -35,6 +36,9 @@ export class MadDragonActorSheet extends ActorSheet {
 
     context.actor = actor;
     context.system = systemData;
+    context.sheetTitle = game.i18n.localize(`MDT.sheet.${actor.type}`);
+    context.vitalsMaxEditable =
+      actor.type === "npc" || actor.type === "enemy";
     context.healthIconPath = this._getResourceIconPath(
       systemData.health?.value,
       systemData.health?.max,
@@ -232,11 +236,12 @@ export class MadDragonActorSheet extends ActorSheet {
     this._restoreExpandedItems(el);
   }
 
-  close(options = {}) {
+  async close(options = {}) {
     if (this._vitalsActorUpdateHookRegistered) {
       Hooks.off("updateActor", this._onActorUpdateForVitals);
       this._vitalsActorUpdateHookRegistered = false;
     }
+    await this._flushVitalInputsToActor();
     return super.close(options);
   }
 
@@ -254,7 +259,7 @@ export class MadDragonActorSheet extends ActorSheet {
       const t = event.target;
       if (
         !t?.matches?.(
-          'input[name="system.health.value"], input[name="system.sanity.value"]',
+          'input[name="system.health.value"], input[name="system.sanity.value"], input[name="system.health.max"], input[name="system.sanity.max"]',
         )
       ) {
         return;
@@ -267,7 +272,7 @@ export class MadDragonActorSheet extends ActorSheet {
       const t = event.target;
       if (
         !t?.matches?.(
-          'input[name="system.health.value"], input[name="system.sanity.value"]',
+          'input[name="system.health.value"], input[name="system.sanity.value"], input[name="system.health.max"], input[name="system.sanity.max"]',
         )
       ) {
         return;
@@ -307,11 +312,17 @@ export class MadDragonActorSheet extends ActorSheet {
 
     const hInput = root.querySelector('input[name="system.health.value"]');
     const sInput = root.querySelector('input[name="system.sanity.value"]');
-    if (!hInput && !sInput) return;
+    const hMaxInput = root.querySelector('input[name="system.health.max"]');
+    const sMaxInput = root.querySelector('input[name="system.sanity.max"]');
+    if (!hInput && !sInput && !hMaxInput && !sMaxInput) return;
 
     const sys = this.actor.system;
-    const hMax = Math.max(0, Number(sys.health?.max ?? 0));
-    const sMax = Math.max(0, Number(sys.sanity?.max ?? 0));
+    const hMax = hMaxInput
+      ? Math.max(0, this._parseVitalInputValue(hMaxInput.value))
+      : Math.max(0, Number(sys.health?.max ?? 0));
+    const sMax = sMaxInput
+      ? Math.max(0, this._parseVitalInputValue(sMaxInput.value))
+      : Math.max(0, Number(sys.sanity?.max ?? 0));
 
     const hRaw = hInput
       ? this._parseVitalInputValue(hInput.value)
@@ -325,8 +336,12 @@ export class MadDragonActorSheet extends ActorSheet {
 
     const curH = Number(sys.health?.value ?? 0);
     const curS = Number(sys.sanity?.value ?? 0);
+    const curHMax = Math.max(0, Number(sys.health?.max ?? 0));
+    const curSMax = Math.max(0, Number(sys.sanity?.max ?? 0));
 
     const updates = {};
+    if (hMaxInput && hMax !== curHMax) updates["system.health.max"] = hMax;
+    if (sMaxInput && sMax !== curSMax) updates["system.sanity.max"] = sMax;
     if (hVal !== curH) updates["system.health.value"] = hVal;
     if (sVal !== curS) updates["system.sanity.value"] = sVal;
 
@@ -338,18 +353,47 @@ export class MadDragonActorSheet extends ActorSheet {
   _updateVitalsResourceDisplayFromInput(inputEl) {
     const name = inputEl.name;
     const sys = this.actor.system;
+    const root = this.element?.[0];
+    const readMaxFromDom = (resource) => {
+      const maxIn = root?.querySelector(
+        `input[name="system.${resource}.max"]`,
+      );
+      if (maxIn)
+        return Math.max(0, this._parseVitalInputValue(maxIn.value));
+      return Math.max(0, Number(sys[resource]?.max ?? 0));
+    };
     if (name === "system.health.value") {
       this._applyVitalsResourceUi(
         "health",
         this._parseVitalInputValue(inputEl.value),
-        sys.health?.max,
+        readMaxFromDom("health"),
       );
     } else if (name === "system.sanity.value") {
       this._applyVitalsResourceUi(
         "sanity",
         this._parseVitalInputValue(inputEl.value),
-        sys.sanity?.max,
+        readMaxFromDom("sanity"),
       );
+    } else if (name === "system.health.max") {
+      const maxN = Math.max(0, this._parseVitalInputValue(inputEl.value));
+      const hValIn = root?.querySelector(
+        'input[name="system.health.value"]',
+      );
+      const val = hValIn
+        ? this._parseVitalInputValue(hValIn.value)
+        : Number(sys.health?.value ?? 0);
+      if (hValIn) hValIn.setAttribute("max", String(maxN));
+      this._applyVitalsResourceUi("health", val, maxN);
+    } else if (name === "system.sanity.max") {
+      const maxN = Math.max(0, this._parseVitalInputValue(inputEl.value));
+      const sValIn = root?.querySelector(
+        'input[name="system.sanity.value"]',
+      );
+      const val = sValIn
+        ? this._parseVitalInputValue(sValIn.value)
+        : Number(sys.sanity?.value ?? 0);
+      if (sValIn) sValIn.setAttribute("max", String(maxN));
+      this._applyVitalsResourceUi("sanity", val, maxN);
     }
   }
 
@@ -384,6 +428,11 @@ export class MadDragonActorSheet extends ActorSheet {
     await this._flushVitalInputsToActor();
 
     const newStyle = event.currentTarget.value;
+    if (this.actor.type !== "character") {
+      await this.actor.update({ "system.style": newStyle });
+      return;
+    }
+
     const stats = CHARACTER_STYLE_STATS[newStyle];
     if (!stats) return;
 
@@ -680,6 +729,11 @@ export class MadDragonActorSheet extends ActorSheet {
 
     await this._flushVitalInputsToActor();
 
+    if (!MDTRoll.actorHasValidStyle(this.actor)) {
+      ui.notifications?.warn(game.i18n.localize("MDT.styles.required"));
+      return;
+    }
+
     if (item.system.freeUse) {
       await this._sendItemToChat(item);
       return;
@@ -752,11 +806,15 @@ export class MadDragonActorSheet extends ActorSheet {
   }
 
   async _onRollTest() {
-    const { MDTRoll } = game.mdt;
     await MDTRoll.prompt(this.actor);
   }
 
   async _onRest() {
+    if (!MDTRoll.actorHasValidStyle(this.actor)) {
+      ui.notifications?.warn(game.i18n.localize("MDT.styles.required"));
+      return;
+    }
+
     const spells = this.actor.items.filter((i) => i.type === "spell");
     if (!spells.length) {
       ui.notifications?.info(game.i18n.localize("MDT.spell.restNoSpells"));

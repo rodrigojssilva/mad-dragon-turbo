@@ -35,6 +35,7 @@
       }
     },
     "styles": {
+      "required": "Selecione um estilo na ficha antes de rolar, descansar ou usar magias.",
       "brawler": "Porradeiro/a",
       "brawlerDesc": "Ataques, Desafios Físicos ou Resistência. 2 Dano com Armas Brancas. Dano Desarm. Letal.",
       "brawlerStats": "5 Vida / 3 San.",

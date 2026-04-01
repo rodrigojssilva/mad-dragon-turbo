@@ -219,6 +219,11 @@ body.game .app.window-app .window-content {
   color: #555;
 }
 
+.mad-dragon-turbo .resource-max-input {
+  min-width: 40px;
+  max-width: 56px;
+}
+
 .mad-dragon-turbo .header-right {
   flex: 1;
 }

@@ -1,3 +1,5 @@
+import { CHARACTER_STYLE_STATS } from "../models/actor/character-model.js";
+
 export class MDTRoll {
   // Dificuldades e seus valores mínimos para sucesso
   static DIFFICULTIES = {
@@ -14,10 +16,21 @@ export class MDTRoll {
     trickster: "MDT.roll.action.social",
   };
 
+  /** Estilo obrigatório: um dos três definidos em CHARACTER_STYLE_STATS. */
+  static actorHasValidStyle(actor) {
+    const s = actor?.system?.style;
+    return typeof s === "string" && s !== "" && Object.hasOwn(CHARACTER_STYLE_STATS, s);
+  }
+
   // -----------------------------------------------
   // Abre o popup e executa a rolagem
   // -----------------------------------------------
   static async prompt(actor) {
+    if (!MDTRoll.actorHasValidStyle(actor)) {
+      ui.notifications?.warn(game.i18n.localize("MDT.styles.required"));
+      return;
+    }
+
     // Prepara dados para o template do dialog
     const difficulties = Object.entries(MDTRoll.DIFFICULTIES).map(
       ([key, val]) => ({
@@ -74,6 +87,11 @@ export class MDTRoll {
   // Executa a rolagem e manda para o chat
   // -----------------------------------------------
   static async execute(actor, options) {
+    if (!MDTRoll.actorHasValidStyle(actor)) {
+      ui.notifications?.warn(game.i18n.localize("MDT.styles.required"));
+      return;
+    }
+
     const { difficulty, diceCount } = options;
     const actorStyle = actor.system.style;
     const isHidden = difficulty === "hidden";
