@@ -54,20 +54,20 @@ lang/                 # Traduções
 system.json           # Manifesto do sistema Foundry
 ```
 
-### Autores (sistema Foundry)
+### Autores
 
 - Richard C. Bernardes — O Bardo  
 - Rodrigo J. S. Silva — Capivara Tech  
 
 ---
 
-## Referência: regras do folheto (mesa)
+## Referência: regras do folheto
 
-O restante deste documento resume o **jogo de mesa** (dados, estilos, testes). A implementação no Foundry segue essa base, com ajustes onde a interface digital pede (ex.: botões de rolagem, usos de magia).
+O restante deste documento resume o **RPG** (dados, estilos, testes). A implementação no Foundry segue essa base, com ajustes onde a interface digital pede (ex.: botões de rolagem, usos de magia).
 
 ---
 
-## O que você precisa (mesa)
+## O que você precisa
 
 * 3 dados de seis faces (d6)
 * Papel e lápis
@@ -123,7 +123,7 @@ Escolha um dos três arquétipos:
 
 ---
 
-### Malandrão
+### Malandro
 
 * Foco social e furtividade
 * +1 em desafios sociais, agilidade e furtividade
@@ -155,7 +155,7 @@ Cada especialidade concede **+1 dado** em testes.
 
 1. Jogador descreve a ação
 2. Mestre define se é possível (+1 dado)
-3. Soma bônus de Estilo (+1) e Especialidade (+1)
+3. Soma bônus de Estilo (+1), Especialidade (+1) e Itens (+1)
 4. Rola dados d6
 
 ---
@@ -170,6 +170,7 @@ Cada especialidade concede **+1 dado** em testes.
 
 ## Dificuldades
 
+* **Oculta:** O mestre decide
 * **Comum:** 2+
 * **Desafiadora:** 4+
 * **Complexa:** apenas 6
@@ -192,8 +193,6 @@ Cada especialidade concede **+1 dado** em testes.
 
 # Combate, Debate e Embate
 
-O combate é **narrativo**.
-
 ## Ações possíveis:
 
 * Atacar
@@ -206,7 +205,7 @@ O combate é **narrativo**.
 
 Ordem fixa:
 
-* Malandrões → Inimigos → Porradeiros → Geniais
+**Malandrões → Inimigos → Porradeiros → Geniais**
 
 ---
 
