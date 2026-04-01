@@ -1,0 +1,16 @@
+/* Mad Dragon Turbo — combate / tracker */
+
+.mdt-initiative-btn {
+  width: 100%;
+  margin-top: 4px;
+  background: #7a2020;
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.mdt-initiative-btn:hover {
+  background: #9a3030;
+}

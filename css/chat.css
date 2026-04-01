@@ -1,0 +1,193 @@
+/* Mad Dragon Turbo — chat (cards de item, resultado de rolagem) */
+
+.mdt-roll .mdt-die-rerolled {
+  opacity: 0.5;
+}
+
+.mdt-roll .mdt-die-rerolled s {
+  text-decoration: line-through;
+}
+
+/* CARD DO CHAT */
+.mdt-chat-card {
+  border: 1px solid #c5baa5;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: linear-gradient(180deg, #ece5d8 0%, #e1d7c4 100%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.mdt-chat-card-header {
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #c6b89c;
+}
+
+.mdt-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #d6c7ac;
+  color: #3c2f1f;
+  font-size: 0.78em;
+  font-weight: 600;
+}
+
+.mdt-item-card {
+  margin: 0;
+}
+
+.mdt-item-card .item-card-header {
+  font-size: 0.8em;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.mdt-item-card .item-card-type {
+  font-style: italic;
+}
+
+.mdt-item-card .item-card-name {
+  margin: 0;
+  font-size: 1.05em;
+  color: #271e12;
+}
+
+.mdt-item-card .item-card-desc {
+  font-size: 0.9em;
+  color: #26211b;
+  line-height: 1.4;
+}
+
+.mdt-item-card .item-card-meta {
+  margin-top: 8px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.mdt-item-card .item-card-level {
+  background: #d9e8da;
+  color: #23422a;
+}
+
+.mdt-item-card .item-card-uses {
+  background: #d6d9e8;
+  color: #25305b;
+}
+
+.mdt-item-card .item-card-empty-uses {
+  background: #f2d3d3;
+  color: #6f1e1e;
+}
+
+.mdt-item-card .item-card-free-use {
+  background: #d9efe3;
+  color: #1d5a3c;
+}
+
+.mdt-roll .mdt-roll-title {
+  margin: 0;
+  font-size: 1.1em;
+  color: #271e12;
+}
+
+.mdt-roll .mdt-roll-breakdown {
+  margin: 4px 0 0;
+  font-size: 0.86em;
+  color: #4b4234;
+}
+
+.mdt-roll .mdt-roll-meta {
+  margin-bottom: 10px;
+}
+
+.mdt-roll .mdt-roll-section {
+  margin: 8px 0;
+}
+
+.mdt-roll .mdt-roll-label {
+  margin: 0 0 6px;
+  font-size: 0.78em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #5a4d38;
+}
+
+.mdt-roll .dice-results {
+  display: flex;
+  gap: 6px;
+  font-size: 25px;
+}
+
+.mdt-roll .die {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #b7a787;
+  background: #f0e8d9;
+  font-weight: 700;
+}
+
+.mdt-roll .die-six {
+  background: #dff3e2;
+  border-color: #9ccc9f;
+  color: #194d22;
+}
+
+.mdt-roll .die-one {
+  background: #f9dddd;
+  border-color: #e0a2a2;
+  color: #6b1919;
+}
+
+.mdt-roll .mdt-reroll-box {
+  border: 1px dashed #b6a689;
+  border-radius: 6px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.mdt-roll .mdt-reroll-value {
+  margin: 0 0 6px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.mdt-roll .mdt-roll-result {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.mdt-roll .result-critical,
+.mdt-roll .result-failure {
+  background: #f8dede;
+  color: #651717;
+  border: 1px solid #e3aaaa;
+}
+
+.mdt-roll .result-partial,
+.mdt-roll .result-maybe {
+  background: #fff2cf;
+  color: #6a4a00;
+  border: 1px solid #e3cb86;
+}
+
+.mdt-roll .result-success,
+.mdt-roll .result-superb,
+.mdt-roll .result-spectacular {
+  background: #ddf2e0;
+  color: #164524;
+  border: 1px solid #9dcba6;
+}

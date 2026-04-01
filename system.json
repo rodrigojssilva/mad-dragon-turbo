@@ -25,8 +25,11 @@
   ],
   "esmodules": ["module/mdt.js"],
   "styles": [
-    "css/mdt.css",
-    "css/mdt_collapse.css"
+    "css/foundry-overrides.css",
+    "css/sheet-actor.css",
+    "css/chat.css",
+    "css/combat.css",
+    "css/sheet-item-collapse.css"
   ],
   "background": "systems/mad-dragon-turbo/assets/MDT_logo_white.png",
   "documentTypes": {
