@@ -126,6 +126,10 @@
         "spectacular": "🌟 Espetacular",
         "hidden": "🎲 Dificuldade Oculta",
         "maybe": "🤔 Passei?"
+      },
+      "specialFlavor": {
+        "superb": "Com um acerto primoroso você recebe uma vantagem!",
+        "spectacular": "Com um acerto espetacular você recebe uma vantagem e uma oportunidade!"
       }
     },
     "combat": {

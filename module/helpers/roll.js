@@ -152,9 +152,14 @@ export class MDTRoll {
       return {
         label: "MDT.roll.result.spectacular",
         cssClass: "result-spectacular",
+        specialFlavorKey: "MDT.roll.specialFlavor.spectacular",
       };
     if (sixes === 2)
-      return { label: "MDT.roll.result.superb", cssClass: "result-superb" };
+      return {
+        label: "MDT.roll.result.superb",
+        cssClass: "result-superb",
+        specialFlavorKey: "MDT.roll.specialFlavor.superb",
+      };
     if (sixes === 1 && ones === 0)
       return { label: "MDT.roll.result.success", cssClass: "result-success" };
     if (ones > 0 && sixes === 0)
@@ -175,9 +180,19 @@ export class MDTRoll {
     if (sixes > 0 && ones > 0)
       return { category: "partial", label: "MDT.roll.result.partial", cssClass: "result-partial" };
     if (sixes === 3)
-      return { category: "spectacular", label: "MDT.roll.result.spectacular", cssClass: "result-spectacular" };
+      return {
+        category: "spectacular",
+        label: "MDT.roll.result.spectacular",
+        cssClass: "result-spectacular",
+        specialFlavorKey: "MDT.roll.specialFlavor.spectacular",
+      };
     if (sixes === 2)
-      return { category: "superb", label: "MDT.roll.result.superb", cssClass: "result-superb" };
+      return {
+        category: "superb",
+        label: "MDT.roll.result.superb",
+        cssClass: "result-superb",
+        specialFlavorKey: "MDT.roll.specialFlavor.superb",
+      };
     if (sixes === 1)
       return { category: "success", label: "MDT.roll.result.success", cssClass: "result-success" };
     if (hits > 0 && ones === 0)
@@ -207,6 +222,10 @@ export class MDTRoll {
     },
   ) {
     // Renderiza o template do chat
+    const specialFlavorText = analysis.specialFlavorKey
+      ? game.i18n.localize(analysis.specialFlavorKey)
+      : "";
+
     const content = await foundry.applications.handlebars.renderTemplate(
       "systems/mad-dragon-turbo/templates/chat/roll-result.hbs",
       {
@@ -216,6 +235,7 @@ export class MDTRoll {
         rerolledResult,
         rerolledIndex,
         analysis,
+        specialFlavorText,
         breakdown,
         difficultyLabel,
         diceCount,

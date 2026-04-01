@@ -58,4 +58,8 @@
   <div class="roll-result mdt-roll-result {{analysis.cssClass}}">
     {{localize analysis.label}}
   </div>
+
+  {{#if specialFlavorText}}
+    <p class="mdt-roll-special-flavor">{{specialFlavorText}}</p>
+  {{/if}}
 </div>
