@@ -1,43 +1,5 @@
-{{!-- ESTILO --}}
-<div class="sheet-section">
-    <h3>{{localize "MDT.style"}}</h3>
-    <div class="style-option-group">
-        {{#each styles}}
-        <div class="style-option">
-            <div class="style-header">
-                <input type="radio" name="system.style" value="{{this.value}}" {{#if (eq this.value
-                    ../system.style)}}checked{{/if}} />
-                <strong>{{this.label}}</strong>
-            </div>
-            <p class="style-desc">{{this.description}}</p>
-            <span class="style-stats">{{this.stats}}</span>
-        </div>
-        {{/each}}
-    </div>
-</div>
-
-{{!-- VIDA E SANIDADE --}}
-<div class="resource-row">
-    <div class="resource-block">
-        <label>{{localize "MDT.health"}}</label>
-        <div class="resource-value-row">
-            <input class="resource-input" name="system.health.value" type="number" value="{{system.health.value}}"
-                min="0" max="{{system.health.max}}" />
-            <span class="resource-sep">/</span>
-            <span class="resource-max">{{system.health.max}}</span>
-        </div>
-    </div>
-
-    <div class="resource-block">
-        <label>{{localize "MDT.sanity"}}</label>
-        <div class="resource-value-row">
-            <input class="resource-input" name="system.sanity.value" type="number" value="{{system.sanity.value}}"
-                min="0" max="{{system.sanity.max}}" />
-            <span class="resource-sep">/</span>
-            <span class="resource-max">{{system.sanity.max}}</span>
-        </div>
-    </div>
-</div>
+{{> mdt/character-style-section}}
+{{> mdt/character-vitals-row}}
 
 <div class="sheet-columns">
 
@@ -45,7 +7,7 @@
     <div class="col-left">
 
         {{!-- HABILIDADES (ESPECIALIDADES) --}}
-        <div class="sheet-section">
+        <div class="sheet-section mdt-top-card mdt-list-card">
             <div class="section-header">
                 <h3>{{localize "MDT.specialties"}}</h3>
                 <a class="add-specialty"><i class="fas fa-plus"></i></a>

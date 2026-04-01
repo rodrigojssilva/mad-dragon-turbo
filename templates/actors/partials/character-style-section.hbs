@@ -1,0 +1,19 @@
+{{!-- ESTILO — rádio+título escolhem o estilo; ícone abre o modal de detalhes --}}
+<div class="sheet-section mdt-top-card mdt-style-card">
+    <div class="section-header">
+        <h3>{{localize "MDT.style"}}</h3>
+    </div>
+    <div class="style-option-group">
+        {{#each styles}}
+        <div class="style-option">
+            <div class="style-line-title">
+                <input type="radio" id="mdt-style-{{this.value}}" name="system.style" value="{{this.value}}" {{#if (eq this.value ../system.style)}}checked{{/if}} />
+                <label for="mdt-style-{{this.value}}" class="style-label">{{this.label}}</label>
+            </div>
+            <button type="button" class="style-option-icon-btn" data-style-key="{{this.value}}" aria-label="{{localize 'MDT.styles.styleInfoToggle'}}">
+                <i class="{{this.iconClass}}" aria-hidden="true"></i>
+            </button>
+        </div>
+        {{/each}}
+    </div>
+</div>

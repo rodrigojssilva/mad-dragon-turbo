@@ -1,6 +1,13 @@
 const { TypeDataModel } = foundry.abstract;
 const { StringField, NumberField, HTMLField } = foundry.data.fields;
 
+/** Vida máx / sanidade máx por estilo (regras do sistema). */
+export const CHARACTER_STYLE_STATS = {
+  brawler: { healthMax: 5, sanityMax: 3 },
+  genius: { healthMax: 3, sanityMax: 5 },
+  trickster: { healthMax: 3, sanityMax: 3 },
+};
+
 export class CharacterModel extends TypeDataModel {
   static defineSchema() {
     return {
@@ -44,13 +51,7 @@ export class CharacterModel extends TypeDataModel {
   }
 
   _applyStyleStats() {
-    const STYLE_STATS = {
-      brawler: { healthMax: 5, sanityMax: 3 },
-      genius: { healthMax: 3, sanityMax: 5 },
-      trickster: { healthMax: 3, sanityMax: 3 },
-    };
-
-    const stats = STYLE_STATS[this.style];
+    const stats = CHARACTER_STYLE_STATS[this.style];
     if (!stats) return;
 
     this.health.max = stats.healthMax;

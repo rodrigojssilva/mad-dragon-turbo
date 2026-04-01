@@ -1,7 +1,11 @@
+import { CHARACTER_STYLE_STATS } from "../models/actor/character-model.js";
+
 export class MadDragonActorSheet extends ActorSheet {
   constructor(object, options) {
     super(object, options);
     this._expandedItems = new Set();
+    this._vitalsActorUpdateHookRegistered = false;
+    this._onActorUpdateForVitals = this._onActorUpdateForVitals.bind(this);
   }
 
   static get defaultOptions() {
@@ -31,25 +35,50 @@ export class MadDragonActorSheet extends ActorSheet {
 
     context.actor = actor;
     context.system = systemData;
+    context.healthIconPath = this._getResourceIconPath(
+      systemData.health?.value,
+      systemData.health?.max,
+      "health",
+    );
+    context.sanityIconPath = this._getResourceIconPath(
+      systemData.sanity?.value,
+      systemData.sanity?.max,
+      "sanity",
+    );
+    context.healthStatusLabel = this._getResourceTierLabel(
+      systemData.health?.value,
+      systemData.health?.max,
+      "health",
+    );
+    context.sanityStatusLabel = this._getResourceTierLabel(
+      systemData.sanity?.value,
+      systemData.sanity?.max,
+      "sanity",
+    );
+    context.healthTierBand = this._getResourceTierBand(
+      systemData.health?.value,
+      systemData.health?.max,
+    );
+    context.sanityTierBand = this._getResourceTierBand(
+      systemData.sanity?.value,
+      systemData.sanity?.max,
+    );
 
     context.styles = [
       {
         value: "brawler",
         label: game.i18n.localize("MDT.styles.brawler"),
-        description: game.i18n.localize("MDT.styles.brawlerDesc"),
-        stats: game.i18n.localize("MDT.styles.brawlerStats"),
+        iconClass: "fa-solid fa-hand-fist",
       },
       {
         value: "trickster",
         label: game.i18n.localize("MDT.styles.trickster"),
-        description: game.i18n.localize("MDT.styles.tricksterDesc"),
-        stats: game.i18n.localize("MDT.styles.tricksterStats"),
+        iconClass: "fa-solid fa-mask",
       },
       {
         value: "genius",
         label: game.i18n.localize("MDT.styles.genius"),
-        description: game.i18n.localize("MDT.styles.geniusDesc"),
-        stats: game.i18n.localize("MDT.styles.geniusStats"),
+        iconClass: "fa-solid fa-brain",
       },
     ];
 
@@ -95,6 +124,8 @@ export class MadDragonActorSheet extends ActorSheet {
 
     // html é jQuery — convertemos para HTMLElement com [0]
     const el = html[0];
+
+    this._registerVitalsResourceUiSync(el);
 
     if (!this.isEditable) return;
 
@@ -191,7 +222,234 @@ export class MadDragonActorSheet extends ActorSheet {
       btn.addEventListener("click", this._onDiaryEditCancel.bind(this));
     });
 
+    el.querySelectorAll('input[name="system.style"]').forEach((input) => {
+      input.addEventListener("change", this._onStyleChange.bind(this));
+    });
+    el.querySelectorAll(".style-option-icon-btn").forEach((btn) => {
+      btn.addEventListener("click", this._onStyleInfoDialog.bind(this));
+    });
+
     this._restoreExpandedItems(el);
+  }
+
+  close(options = {}) {
+    if (this._vitalsActorUpdateHookRegistered) {
+      Hooks.off("updateActor", this._onActorUpdateForVitals);
+      this._vitalsActorUpdateHookRegistered = false;
+    }
+    return super.close(options);
+  }
+
+  /**
+   * Ícone e pílula de status de vida/sanidade: atualizam ao digitar e quando o ator muda,
+   * sem reabrir a ficha.
+   */
+  _registerVitalsResourceUiSync(el) {
+    if (!this._vitalsActorUpdateHookRegistered) {
+      Hooks.on("updateActor", this._onActorUpdateForVitals);
+      this._vitalsActorUpdateHookRegistered = true;
+    }
+
+    const onVitalInput = (event) => {
+      const t = event.target;
+      if (
+        !t?.matches?.(
+          'input[name="system.health.value"], input[name="system.sanity.value"]',
+        )
+      ) {
+        return;
+      }
+      if (event.type !== "input") return;
+      this._updateVitalsResourceDisplayFromInput(t);
+    };
+
+    const onVitalCommit = (event) => {
+      const t = event.target;
+      if (
+        !t?.matches?.(
+          'input[name="system.health.value"], input[name="system.sanity.value"]',
+        )
+      ) {
+        return;
+      }
+      // focusout borbulha (blur não); necessário para delegação no container
+      if (event.type !== "change" && event.type !== "focusout") return;
+      void this._flushVitalInputsToActor();
+    };
+
+    el.addEventListener("input", onVitalInput);
+    el.addEventListener("change", onVitalCommit);
+    el.addEventListener("focusout", onVitalCommit);
+  }
+
+  _onActorUpdateForVitals(actor, changes) {
+    if (!this.rendered || actor.id !== this.actor.id) return;
+    const sys = changes?.system;
+    if (!sys || (sys.health === undefined && sys.sanity === undefined)) return;
+    this._updateVitalsResourceDisplayFromActor();
+  }
+
+  _parseVitalInputValue(raw) {
+    if (raw === "" || raw === null || raw === undefined) return 0;
+    const n = Number(raw);
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  /**
+   * Grava no ator os valores atuais dos inputs de vida/sanidade (DOM).
+   * Com submitOnChange: false, isso evita perder edições quando a ficha re-renderiza
+   * após salvar item, magia, etc.
+   */
+  async _flushVitalInputsToActor() {
+    if (!this.isEditable) return;
+    const root = this.element?.[0];
+    if (!root) return;
+
+    const hInput = root.querySelector('input[name="system.health.value"]');
+    const sInput = root.querySelector('input[name="system.sanity.value"]');
+    if (!hInput && !sInput) return;
+
+    const sys = this.actor.system;
+    const hMax = Math.max(0, Number(sys.health?.max ?? 0));
+    const sMax = Math.max(0, Number(sys.sanity?.max ?? 0));
+
+    const hRaw = hInput
+      ? this._parseVitalInputValue(hInput.value)
+      : Number(sys.health?.value ?? 0);
+    const sRaw = sInput
+      ? this._parseVitalInputValue(sInput.value)
+      : Number(sys.sanity?.value ?? 0);
+
+    const hVal = Math.min(Math.max(0, hRaw), hMax);
+    const sVal = Math.min(Math.max(0, sRaw), sMax);
+
+    const curH = Number(sys.health?.value ?? 0);
+    const curS = Number(sys.sanity?.value ?? 0);
+
+    const updates = {};
+    if (hVal !== curH) updates["system.health.value"] = hVal;
+    if (sVal !== curS) updates["system.sanity.value"] = sVal;
+
+    if (Object.keys(updates).length) {
+      await this.actor.update(updates);
+    }
+  }
+
+  _updateVitalsResourceDisplayFromInput(inputEl) {
+    const name = inputEl.name;
+    const sys = this.actor.system;
+    if (name === "system.health.value") {
+      this._applyVitalsResourceUi(
+        "health",
+        this._parseVitalInputValue(inputEl.value),
+        sys.health?.max,
+      );
+    } else if (name === "system.sanity.value") {
+      this._applyVitalsResourceUi(
+        "sanity",
+        this._parseVitalInputValue(inputEl.value),
+        sys.sanity?.max,
+      );
+    }
+  }
+
+  _updateVitalsResourceDisplayFromActor() {
+    const sys = this.actor.system;
+    this._applyVitalsResourceUi("health", sys.health?.value, sys.health?.max);
+    this._applyVitalsResourceUi("sanity", sys.sanity?.value, sys.sanity?.max);
+  }
+
+  _applyVitalsResourceUi(resourceType, value, max) {
+    const root = this.element?.[0];
+    if (!root) return;
+    const img = root.querySelector(
+      `img.resource-icon[data-resource="${resourceType}"]`,
+    );
+    const pill = root.querySelector(
+      `.resource-tier-label[data-resource="${resourceType}"]`,
+    );
+    if (!img || !pill) return;
+
+    const path = this._getResourceIconPath(value, max, resourceType);
+    const label = this._getResourceTierLabel(value, max, resourceType);
+    const band = this._getResourceTierBand(value, max);
+
+    img.src = path;
+    pill.textContent = label;
+    pill.classList.remove("tier-high", "tier-mid", "tier-low");
+    pill.classList.add(`tier-${band}`);
+  }
+
+  async _onStyleChange(event) {
+    await this._flushVitalInputsToActor();
+
+    const newStyle = event.currentTarget.value;
+    const stats = CHARACTER_STYLE_STATS[newStyle];
+    if (!stats) return;
+
+    const sys = this.actor.system;
+    const curH = Math.max(0, Number(sys.health?.value ?? 0));
+    const curS = Math.max(0, Number(sys.sanity?.value ?? 0));
+    const nextH = Math.min(curH, stats.healthMax);
+    const nextS = Math.min(curS, stats.sanityMax);
+
+    await this.actor.update({
+      "system.style": newStyle,
+      "system.health.max": stats.healthMax,
+      "system.health.value": nextH,
+      "system.sanity.max": stats.sanityMax,
+      "system.sanity.value": nextS,
+    });
+  }
+
+  async _onStyleInfoDialog(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const key = event.currentTarget.dataset.styleKey;
+    if (!key) return;
+
+    const map = {
+      brawler: {
+        title: "MDT.styles.brawler",
+        desc: "MDT.styles.brawlerDesc",
+        stats: "MDT.styles.brawlerStats",
+      },
+      trickster: {
+        title: "MDT.styles.trickster",
+        desc: "MDT.styles.tricksterDesc",
+        stats: "MDT.styles.tricksterStats",
+      },
+      genius: {
+        title: "MDT.styles.genius",
+        desc: "MDT.styles.geniusDesc",
+        stats: "MDT.styles.geniusStats",
+      },
+    };
+
+    const m = map[key];
+    if (!m) return;
+
+    const description = game.i18n.localize(m.desc);
+    const statsText = game.i18n.localize(m.stats);
+    const content = await foundry.applications.handlebars.renderTemplate(
+      "systems/mad-dragon-turbo/templates/dialogs/style-info-dialog.hbs",
+      { description, stats: statsText },
+    );
+
+    await foundry.applications.api.DialogV2.wait({
+      window: { title: game.i18n.localize(m.title) },
+      content,
+      position: { width: 380 },
+      buttons: [
+        {
+          action: "close",
+          label: game.i18n.localize("MDT.styles.styleInfoClose"),
+          default: true,
+          icon: "fa-solid fa-check",
+        },
+      ],
+    });
   }
 
   // Expandir/Contrair collapse
@@ -293,6 +551,8 @@ export class MadDragonActorSheet extends ActorSheet {
   async _onItemEditSave(event) {
     event.preventDefault();
     event.stopPropagation();
+
+    await this._flushVitalInputsToActor();
 
     const row = event.currentTarget.closest(".item-row");
     if (!row) return;
@@ -417,6 +677,9 @@ export class MadDragonActorSheet extends ActorSheet {
     const itemId = event.currentTarget.dataset.itemId;
     const item = this.actor.items.get(itemId);
     if (!item || item.type !== "spell") return;
+
+    await this._flushVitalInputsToActor();
+
     if (item.system.freeUse) {
       await this._sendItemToChat(item);
       return;
@@ -466,6 +729,8 @@ export class MadDragonActorSheet extends ActorSheet {
   }
 
   async _onAddItem(type) {
+    await this._flushVitalInputsToActor();
+
     const names = {
       specialty: game.i18n.localize("MDT.specialty.new"),
       spell: game.i18n.localize("MDT.spell.new"),
@@ -475,6 +740,8 @@ export class MadDragonActorSheet extends ActorSheet {
   }
 
   async _onDeleteItem(event) {
+    await this._flushVitalInputsToActor();
+
     const itemId = event.currentTarget.closest("[data-item-id]").dataset.itemId;
     await this.actor.items.get(itemId)?.delete();
   }
@@ -495,6 +762,8 @@ export class MadDragonActorSheet extends ActorSheet {
       ui.notifications?.info(game.i18n.localize("MDT.spell.restNoSpells"));
       return;
     }
+
+    await this._flushVitalInputsToActor();
 
     await Promise.all(spells.map((spell) => spell.update({ "system.usedUses": 0 })));
     ui.notifications?.info(game.i18n.localize("MDT.spell.restDone"));
@@ -528,6 +797,8 @@ export class MadDragonActorSheet extends ActorSheet {
     const btnSave = block.querySelector(".diary-edit-save");
     const btnCancel = block.querySelector(".diary-edit-cancel");
     if (!field || !textarea || !btnStart || !btnSave || !btnCancel) return;
+
+    await this._flushVitalInputsToActor();
 
     await this.actor.update({ [`system.${field}`]: textarea.value ?? "" });
     textarea.disabled = true;
@@ -581,6 +852,8 @@ export class MadDragonActorSheet extends ActorSheet {
     const btnCancel = row.querySelector(".concept-edit-cancel");
     if (!input || !btnStart || !btnSave || !btnCancel) return;
 
+    await this._flushVitalInputsToActor();
+
     await this.actor.update({ "system.concept": input.value ?? "" });
     input.disabled = true;
     btnStart.classList.remove("hidden");
@@ -619,5 +892,41 @@ export class MadDragonActorSheet extends ActorSheet {
     }
     maxUsesInput.disabled = isFreeUse;
     usedUsesInput.disabled = isFreeUse;
+  }
+
+  /**
+   * Faixa do ícone (1–3), independente do máximo m:
+   * - Tier 1 (Crítico / Abalado): **somente** valor 0.
+   * - Entre 1 e m: limiar = ceil(m/2); abaixo = Ferido/Nervoso; desde o limiar = Saudável/Tranquilo.
+   * Ex.: m=5 → 0 crítico; 1–2 ferido; 3–5 saudável.
+   * Valor atual arredondado para cima e limitado a [0, m] quando m > 0.
+   */
+  _getResourceTier(value, max) {
+    const m = Math.max(0, Math.floor(Number(max ?? 0)));
+    const vRaw = Math.max(0, Number(value ?? 0));
+    const v = m > 0 ? Math.min(Math.ceil(vRaw), m) : 0;
+
+    if (v <= 0) return 1;
+    if (m <= 0) return 1;
+
+    const threshold = Math.ceil(m / 2);
+    return v >= threshold ? 3 : 2;
+  }
+
+  _getResourceIconPath(value, max, resourceType = "health") {
+    const tier = this._getResourceTier(value, max);
+    return `systems/mad-dragon-turbo/assets/${resourceType}_${tier}.svg`;
+  }
+
+  _getResourceTierBand(value, max) {
+    const tier = this._getResourceTier(value, max);
+    return tier === 3 ? "high" : tier === 2 ? "mid" : "low";
+  }
+
+  _getResourceTierLabel(value, max, resourceType = "health") {
+    const tier = this._getResourceTier(value, max);
+    const branch = resourceType === "sanity" ? "sanity" : "health";
+    const band = tier === 3 ? "high" : tier === 2 ? "mid" : "low";
+    return game.i18n.localize(`MDT.resourceTier.${branch}.${band}`);
   }
 }

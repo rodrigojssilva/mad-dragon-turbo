@@ -1,0 +1,38 @@
+{{!-- VIDA E SANIDADE — 3 colunas: ícone | título+valores | pílula (proporções fixas) --}}
+<div class="resource-row mdt-vitals-card">
+    <div class="resource-block mdt-top-card">
+        <div class="resource-col resource-col-icon">
+            <img class="resource-icon" data-resource="health" src="{{healthIconPath}}" alt="{{localize 'MDT.health'}}" />
+        </div>
+        <div class="resource-col resource-col-values">
+            <label>{{localize "MDT.health"}}</label>
+            <div class="resource-value-row">
+                <input class="resource-input" name="system.health.value" type="number" value="{{system.health.value}}" min="0"
+                    max="{{system.health.max}}" />
+                <span class="resource-sep">/</span>
+                <span class="resource-max">{{system.health.max}}</span>
+            </div>
+        </div>
+        <div class="resource-col resource-col-pill">
+            <p class="resource-tier-label resource-tier-health tier-{{healthTierBand}}" data-resource="health">{{healthStatusLabel}}</p>
+        </div>
+    </div>
+
+    <div class="resource-block mdt-top-card">
+        <div class="resource-col resource-col-icon">
+            <img class="resource-icon" data-resource="sanity" src="{{sanityIconPath}}" alt="{{localize 'MDT.sanity'}}" />
+        </div>
+        <div class="resource-col resource-col-values">
+            <label>{{localize "MDT.sanity"}}</label>
+            <div class="resource-value-row">
+                <input class="resource-input" name="system.sanity.value" type="number" value="{{system.sanity.value}}" min="0"
+                    max="{{system.sanity.max}}" />
+                <span class="resource-sep">/</span>
+                <span class="resource-max">{{system.sanity.max}}</span>
+            </div>
+        </div>
+        <div class="resource-col resource-col-pill">
+            <p class="resource-tier-label resource-tier-sanity tier-{{sanityTierBand}}" data-resource="sanity">{{sanityStatusLabel}}</p>
+        </div>
+    </div>
+</div>

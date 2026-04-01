@@ -5,4 +5,7 @@
 [x] Aba 2: notas + recursos
 [x] Campos do diário não estão editando
 [x] Campo "Conceito" não está editando
-[] Colocar check "Uso livre" nas magias que irá desabilitar o controle de usos, deixando infinito
+[x] Colocar check "Uso livre" nas magias que irá desabilitar o controle de usos, deixando infinito
+[] Ajuste visual da ficha
+[] NPC e Inimigos tem a mesma ficha que o jogador, com a diferença que o limite máximo de vida e sanidade pode ser alterado manualmente, enquanto o jogador não pode
+[] Separar CSS por contexto para melhor controle

@@ -18,16 +18,35 @@
     "spells": "Poderes/Magias",
     "equipments": "Itens",
     "resources": "Recursos",
+    "status": {
+      "incapacitated": "Crítico",
+      "shaken": "Abalado"
+    },
+    "resourceTier": {
+      "health": {
+        "high": "Saudável",
+        "mid": "Ferido",
+        "low": "Crítico"
+      },
+      "sanity": {
+        "high": "Tranquilo",
+        "mid": "Nervoso",
+        "low": "Abalado"
+      }
+    },
     "styles": {
       "brawler": "Porradeiro/a",
       "brawlerDesc": "Ataques, Desafios Físicos ou Resistência. 2 Dano com Armas Brancas. Dano Desarm. Letal.",
       "brawlerStats": "5 Vida / 3 San.",
-      "trickster": "Malandrão/na",
+      "trickster": "Malandro/a",
       "tricksterDesc": "Furtividade, Desafios Agilidade ou Sociais. Podem rerolar um resultado 1 no dado por jogada.",
       "tricksterStats": "3 Vida / 3 San.",
       "genius": "Genial",
       "geniusDesc": "Percepção, Desafios Mentais ou Controle. Podem usar Magia e Poderes Avançados.",
-      "geniusStats": "3 Vida / 5 San."
+      "geniusStats": "3 Vida / 5 San.",
+      "styleInfoToggle": "Ver informações do estilo",
+      "styleInfoClose": "Fechar",
+      "learnMore": "Saiba mais"
     },
     "specialty": {
       "new": "Nova Especialidade",

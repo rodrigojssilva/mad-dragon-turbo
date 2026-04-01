@@ -1,5 +1,5 @@
 {{!-- CABEÇALHO --}}
-<header class="sheet-header">
+<header class="sheet-header mdt-top-card mdt-header-card">
     <div class="header-left">
         <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
         <div class="header-actions">
@@ -15,25 +15,29 @@
     <div class="header-right">
         <h1 class="sheet-title">{{localize "MDT.sheet.title"}}</h1>
         <div class="header-field">
-            <label>{{localize "MDT.name"}}:</label>
-            <input name="name" type="text" value="{{actor.name}}" />
+            <label for="mdt-header-name">{{localize "MDT.name"}}</label>
+            <input id="mdt-header-name" name="name" type="text" value="{{actor.name}}" />
         </div>
         <div class="header-field header-field-concept">
-            <label>{{localize "MDT.concept"}}:</label>
-            <textarea class="concept-input" disabled rows="1" placeholder="...">{{system.concept}}</textarea>
-            <div class="header-edit-toolbar">
-                <button type="button" class="item-edit-btn concept-edit-start" title="{{localize 'MDT.item.edit'}}"
-                    aria-label="{{localize 'MDT.item.edit'}}">
-                    <i class="fas fa-pen"></i>
-                </button>
-                <button type="button" class="item-edit-btn concept-edit-cancel hidden" title="Cancelar"
-                    aria-label="Cancelar">
-                    <i class="fas fa-times"></i>
-                </button>
-                <button type="button" class="item-edit-btn concept-edit-save hidden" title="Salvar" aria-label="Salvar">
-                    <i class="fas fa-floppy-disk"></i>
-                </button>
+            <div class="header-field-concept-top">
+                <label for="mdt-header-concept">{{localize "MDT.concept"}}</label>
+                <div class="header-edit-toolbar">
+                    <button type="button" class="item-edit-btn concept-edit-start" title="{{localize 'MDT.item.edit'}}"
+                        aria-label="{{localize 'MDT.item.edit'}}">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                    <button type="button" class="item-edit-btn concept-edit-cancel hidden" title="Cancelar"
+                        aria-label="Cancelar">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button type="button" class="item-edit-btn concept-edit-save hidden" title="Salvar"
+                        aria-label="Salvar">
+                        <i class="fas fa-floppy-disk"></i>
+                    </button>
+                </div>
             </div>
+            <textarea id="mdt-header-concept" class="concept-input" disabled rows="1"
+                placeholder="...">{{system.concept}}</textarea>
         </div>
     </div>
 </header>
