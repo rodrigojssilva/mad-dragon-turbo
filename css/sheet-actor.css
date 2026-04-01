@@ -740,18 +740,20 @@
   font-family: inherit;
 }
 
-/* DIARIO */
+/* DIARIO — colunas em stack vertical; altura dos blocos segue a viewport (sem flex na cadeia da ficha, que colapsava o conteúdo) */
 .mad-dragon-turbo .tab.diary {
   height: 100%;
 }
 
 .mad-dragon-turbo .tab.diary .sheet-columns {
   height: 100%;
+  align-items: stretch;
 }
 
 .mad-dragon-turbo .tab.diary .col-left,
 .mad-dragon-turbo .tab.diary .col-right {
   display: flex;
+  flex-direction: column;
 }
 
 .mad-dragon-turbo .tab.diary .diary-block {
@@ -766,8 +768,9 @@
 
 .mad-dragon-turbo .tab.diary .diary-textarea {
   flex: 1;
-  min-height: 480px;
-  resize: none;
+  min-height: clamp(10rem, 42vh, 28rem);
+  resize: vertical;
+  box-sizing: border-box;
 }
 
 /* Linhas de magia / equipamento na ficha (edição inline) */

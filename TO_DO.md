@@ -11,5 +11,8 @@
 [x] Separar CSS por contexto para melhor controle
 [x] Layout do DialogV2 para versão "dark" nos estilos
 [x] Usar dice so nice é possível?
-[] No combate tem como ocultar o número?
-[] Aba diário ajustar textArea
+[x] No combate tem como ocultar o número?
+[x] Aba diário ajustar textArea
+[] Textos nas rolagens especiais de 6
+para Primoroso: Com um acerto primoroso você recebe uma vantagem!
+para Espetacular: Com um acerto espetacular você recebe uma vantagem e uma oportunidade!
