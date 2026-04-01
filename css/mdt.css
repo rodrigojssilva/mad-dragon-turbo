@@ -88,6 +88,7 @@
   align-items: center;
   gap: 4px;
   margin-bottom: 4px;
+  font-size: 22px;
 }
 
 .mad-dragon-turbo .resource-input {
@@ -156,11 +157,11 @@
 }
 
 .mad-dragon-turbo .col-left {
-  flex: 1.1;
+  flex: 1;
 }
 
 .mad-dragon-turbo .col-right {
-  flex: 0.9;
+  flex: 1;
 }
 
 /* SEÇÕES */
@@ -207,10 +208,14 @@
   display: flex;
   gap: 10px;
   margin-bottom: 12px;
+  justify-content: space-evenly;
+  font-size: 22px;
 }
 
 .mad-dragon-turbo .resource-block {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .mad-dragon-turbo .resource-block label {
@@ -228,7 +233,7 @@
   padding: 0;
 }
 
-.mad-dragon-turbo .item-row {  
+.mad-dragon-turbo .item-row {
   padding: 2px 4px;
   border-bottom: 1px solid #ddd;
   font-size: 0.85em;
@@ -260,6 +265,10 @@
 }
 
 /* ESTILO */
+.mad-dragon-turbo .style-option-group {
+  display: flex;
+}
+
 .mad-dragon-turbo .style-option {
   margin-bottom: 8px;
   padding: 4px;

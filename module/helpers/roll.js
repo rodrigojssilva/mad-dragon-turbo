@@ -38,16 +38,22 @@ export class MDTRoll {
       { difficulties, styleLabel },
     );
 
-    const result = await foundry.applications.api.DialogV2.prompt({
+
+    const result = await foundry.applications.api.DialogV2.wait({
       window: { title: game.i18n.localize("MDT.roll.title") },
       content,
-      ok: {
-        label: game.i18n.localize("MDT.roll.rollButton"),
-        callback: (event, button) => {
-          const fd = new foundry.applications.ux.FormDataExtended(button.form);
-          return fd.object;
-        },
-      },
+      // ok: {
+      //   label: game.i18n.localize("MDT.roll.rollButton"),
+      //   callback: (event, button) => {
+      //     const fd = new foundry.applications.ux.FormDataExtended(button.form);
+      //     return fd.object;
+      //   },
+      // },
+      buttons: [
+        { label: "", action: "a", icon: "fa-solid fa-dice-one" },
+        { label: "", action: "b", icon: "fa-solid fa-dice-two" },
+        { label: "", action: "c", icon: "fa-solid fa-dice-three" },
+      ]
     });
 
     if (!result) return;
@@ -89,9 +95,6 @@ export class MDTRoll {
     const roll = await new Roll(`${diceCount}d6`).evaluate();
     let results = roll.dice[0].results.map((r) => r.result);
     const originalResults = [...results];
-    // console.log("MDT | Resultados:", results);
-    // console.log("MDT | Tem 1?", results.includes(1));
-    // console.log("MDT | Estilo:", actorStyle);
 
     // Somente para malandrão
     let rerolledResult = null;
@@ -160,66 +163,26 @@ export class MDTRoll {
     const hits = results.filter((r) => r >= minSuccess && r !== 1).length;
 
     if (sixes > 0 && ones > 0)
-      return {
-        category: "partial",
-        label: "MDT.roll.result.partial",
-        cssClass: "result-partial",
-      };
+      return { category: "partial", label: "MDT.roll.result.partial", cssClass: "result-partial" };
     if (sixes === 3)
-      return {
-        category: "spectacular",
-        label: "MDT.roll.result.spectacular",
-        cssClass: "result-spectacular",
-      };
+      return { category: "spectacular", label: "MDT.roll.result.spectacular", cssClass: "result-spectacular" };
     if (sixes === 2)
-      return {
-        category: "superb",
-        label: "MDT.roll.result.superb",
-        cssClass: "result-superb",
-      };
+      return { category: "superb", label: "MDT.roll.result.superb", cssClass: "result-superb" };
     if (sixes === 1)
-      return {
-        category: "success",
-        label: "MDT.roll.result.success",
-        cssClass: "result-success",
-      };
+      return { category: "success", label: "MDT.roll.result.success", cssClass: "result-success" };
     if (hits > 0 && ones === 0)
-      return {
-        category: "success",
-        label: "MDT.roll.result.success",
-        cssClass: "result-success",
-      };
+      return { category: "success", label: "MDT.roll.result.success", cssClass: "result-success" };
     if (ones > 0)
-      return {
-        category: "critical",
-        label: "MDT.roll.result.critical",
-        cssClass: "result-critical",
-      };
+      return { category: "critical", label: "MDT.roll.result.critical", cssClass: "result-critical" };
 
-    return {
-      category: "failure",
-      label: "MDT.roll.result.failure",
-      cssClass: "result-failure",
-    };
+    return { category: "failure", label: "MDT.roll.result.failure", cssClass: "result-failure" };
   }
 
   // -----------------------------------------------
   // Envia a mensagem formatada para o chat
   // -----------------------------------------------
   static async toChat(
-    actor,
-    {
-      originalResults,
-      results,
-      rerolledResult,
-      rerolledIndex,
-      analysis,
-      breakdown,
-      difficultyLabel,
-      diceCount,
-      isHidden,
-    },
-  ) {
+    actor, { originalResults, results, rerolledResult, rerolledIndex, analysis, breakdown, difficultyLabel, diceCount, isHidden }) {
     // Renderiza o template do chat
     const content = await foundry.applications.handlebars.renderTemplate(
       "systems/mad-dragon-turbo/templates/chat/roll-result.hbs",

@@ -10,8 +10,9 @@ import { SpellModel } from "./models/item/spell-model.js";
 import { MDTRoll } from "./helpers/roll.js";
 import { MDTCombat } from "./combat/combat.js";
 import { EquipmentModel } from "./models/item/equipment-model.js";
+import { registerMdtPartials } from "./templates/register-partials.js";
 
-Hooks.on("init", function () {
+Hooks.on("init", async function () {
   console.log("MDT | Inicializando Mad Dragon Turbo...");
 
   // Registra os DataModels — substitui o template.json
@@ -26,6 +27,9 @@ Hooks.on("init", function () {
     specialty: SpecialtyModel,
     spell: SpellModel,
   });
+  
+  await registerMdtPartials();
+  registerHandlebarsHelpers();
 
   // Registra classes de documento
   CONFIG.Actor.documentClass = MadDragonActor;

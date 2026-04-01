@@ -1,4 +1,5 @@
 [] Adicionar Slots (Usos) para magias
 [] Adicionar input de quantidade nos itens
-[] Aba 1: rolagem, vida/sanidade, especialidades, magias, estilo, itens
-[] Aba 2: notas + recursos
+[] Mudar regra de rolagem e template para comportar escolha de quantidade de dados
+[x] Aba 1: rolagem, vida/sanidade, especialidades, magias, estilo, itens
+[x] Aba 2: notas + recursos

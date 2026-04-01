@@ -1,0 +1,21 @@
+{{!-- CABEÇALHO --}}
+<header class="sheet-header">
+    <div class="header-left">
+        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+        <button type="button" class="roll-test" title="{{localize 'MDT.roll.title'}}">
+            <i class="fas fa-dice-d6"></i> {{localize "MDT.roll.titleBtn"}}
+        </button>
+    </div>
+
+    <div class="header-right">
+        <h1 class="sheet-title">{{localize "MDT.sheet.title"}}</h1>
+        <div class="header-field">
+            <label>{{localize "MDT.name"}}:</label>
+            <input name="name" type="text" value="{{actor.name}}" />
+        </div>
+        <div class="header-field">
+            <label>{{localize "MDT.concept"}}:</label>
+            <textarea name="system.concept" rows="1" placeholder="...">{{system.concept}}</textarea>
+        </div>
+    </div>
+</header>

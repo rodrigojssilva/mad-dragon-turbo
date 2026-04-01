@@ -8,8 +8,14 @@ export class MadDragonActorSheet extends ActorSheet {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["mad-dragon-turbo", "sheet", "actor"],
       width: 560,
-      height: 780,
-      tabs: [],
+      height: 800,
+      tabs: [
+        {
+          navSelector: "nav.sheet-tabs",
+          contentSelector: "section.sheet-body",
+          initial: "characteristics"
+        }
+      ],
       submitOnChange: false
     });
   }

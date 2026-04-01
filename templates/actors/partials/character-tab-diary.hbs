@@ -1,0 +1,19 @@
+<div class="sheet-columns">
+    {{!-- COLUNA ESQUERDA --}}
+    <div class="col-left">
+        {{!-- ANOTAÇÕES --}}
+        <div class="sheet-section">
+            <h3>{{localize "MDT.notes"}}</h3>
+            <textarea name="system.notes" rows="4" placeholder="...">{{system.notes}}</textarea>
+        </div>
+    </div>
+
+    {{!-- COLUNA DIREITA --}}
+    <div class="col-right">
+        {{!-- RECURSOS --}}
+        <div class="sheet-section">
+            <h3>{{localize "MDT.resources"}}:</h3>
+            <textarea name="system.resources" rows="4" placeholder="...">{{system.resources}}</textarea>
+        </div>
+    </div>
+</div>

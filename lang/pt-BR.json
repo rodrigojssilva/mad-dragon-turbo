@@ -11,17 +11,19 @@
       "title": "Ficha de Personagem",
       "character": "Ficha de Personagem",
       "npc": "Ficha de NPC",
-      "enemy": "Ficha de Inimigo"
+      "enemy": "Ficha de Inimigo",
+      "tabCharacteristics": "• Características",
+      "tabDiary": "• Diário"
     },
     "spells": "Poderes/Magias",
     "equipments": "Itens",
     "resources": "Recursos",
     "styles": {
       "brawler": "Porradeiro/a",
-      "brawlerDesc": "Ataques, Desafios Físicos ou Resistência.",
-      "brawlerStats": "2 Dano com Armas Brancas. Dano Desarm. Letal. 5 Vida / 3 San.",
+      "brawlerDesc": "Ataques, Desafios Físicos ou Resistência. 2 Dano com Armas Brancas. Dano Desarm. Letal.",
+      "brawlerStats": "5 Vida / 3 San.",
       "trickster": "Malandrão/na",
-      "tricksterDesc": "Furtividade, Desafios Agilidade ou Sociais. Podem rerolar um resultado no dado por jogada.",
+      "tricksterDesc": "Furtividade, Desafios Agilidade ou Sociais. Podem rerolar um resultado 1 no dado por jogada.",
       "tricksterStats": "3 Vida / 3 San.",
       "genius": "Genial",
       "geniusDesc": "Percepção, Desafios Mentais ou Controle. Podem usar Magia e Poderes Avançados.",
@@ -53,7 +55,7 @@
     },
     "roll": {
       "titleBtn": "Rolagem",
-      "title": "Teste MDT",
+      "title": "Quantos dados?",
       "rollButton": "Rolar",
       "possible": "Ação possível!",
       "difficulty": "Dificuldade",
@@ -68,9 +70,9 @@
         "item": "Item de vantagem"
       },
       "action": {
-        "physical": "Ação física (Porradeiro)",
-        "mental": "Ação mental (Genial)",
-        "social": "Ação social (Malandrão)"
+        "physical": "Porradeiro",
+        "mental": "Genial",
+        "social": "Malandrão"
       },
       "difficulties": {
         "common": "Comum (2+)",
