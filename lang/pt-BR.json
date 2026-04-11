@@ -2,6 +2,7 @@
   "MDT": {
     "name": "Nome",
     "concept": "Conceito",
+    "conceptEmptyChat": "Nada para enviar: conceito vazio.",
     "style": "Estilo",
     "health": "Vida",
     "sanity": "Sanidade",

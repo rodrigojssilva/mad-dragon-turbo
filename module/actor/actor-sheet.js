@@ -12,7 +12,7 @@ export class MadDragonActorSheet extends ActorSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["mad-dragon-turbo", "sheet", "actor"],
-      width: 560,
+      width: 570,
       height: 800,
       tabs: [
         {
@@ -213,6 +213,10 @@ export class MadDragonActorSheet extends ActorSheet {
     el.querySelector(".concept-edit-cancel")?.addEventListener(
       "click",
       this._onConceptEditCancel.bind(this),
+    );
+    el.querySelector(".concept-to-chat")?.addEventListener(
+      "click",
+      this._onConceptToChat.bind(this),
     );
 
     // Diário - editar/salvar/cancelar
@@ -714,6 +718,32 @@ export class MadDragonActorSheet extends ActorSheet {
     btnStart.classList.remove("hidden");
     btnSave.classList.add("hidden");
     btnCancel.classList.add("hidden");
+  }
+
+  async _onConceptToChat(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    await this._flushVitalInputsToActor();
+    const root = this.element?.[0];
+    const input = root?.querySelector(".concept-input");
+    const conceptText = (input?.value ?? this.actor.system.concept ?? "").trim();
+    if (!conceptText) {
+      ui.notifications?.info(game.i18n.localize("MDT.conceptEmptyChat"));
+      return;
+    }
+
+    const content = await foundry.applications.handlebars.renderTemplate(
+      "systems/mad-dragon-turbo/templates/chat/concept-card.hbs",
+      {
+        concept: conceptText,
+        actorName: this.actor.name,
+      },
+    );
+
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content,
+    });
   }
 
   // Enviar item para o chat

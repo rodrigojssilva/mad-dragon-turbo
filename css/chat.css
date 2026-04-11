@@ -38,6 +38,11 @@
   margin: 0;
 }
 
+.mdt-concept-card .mdt-concept-chat-body {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 .mdt-item-card .item-card-header {
   font-size: 0.8em;
   color: #666;
