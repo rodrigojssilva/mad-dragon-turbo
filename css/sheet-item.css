@@ -1,0 +1,156 @@
+/* Mad Dragon Turbo — janela da ficha de Item (sidebar / compendium) */
+
+.mad-dragon-turbo.sheet.item {
+  min-height: 280px;
+}
+
+.mad-dragon-turbo.sheet.item .window-content {
+  padding: 0;
+}
+
+.mad-dragon-turbo.sheet.item form.sheet-form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 8px;
+  gap: 8px;
+  box-sizing: border-box;
+}
+
+.mad-dragon-turbo.sheet.item .sheet-header.item-sheet-header {
+  max-height: 125px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.mad-dragon-turbo.sheet.item .item-sheet-header .profile-img {
+  height: 100%;
+  width: auto;
+  max-width: min(220px, 45%);
+  object-fit: contain;
+  align-self: center;
+}
+
+.mad-dragon-turbo.sheet.item .item-sheet-header .header-fields {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Pill à esquerda, ações (editar/salvar/cancelar) à direita — mesma linha */
+.mad-dragon-turbo.sheet.item .item-sheet-pill-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.mad-dragon-turbo.sheet.item .item-sheet-header-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+/* Ícones centralizados no botão */
+.mad-dragon-turbo.sheet.item .item-sheet-header-actions .item-edit-btn {
+  position: relative;
+}
+
+.mad-dragon-turbo.sheet.item .item-sheet-header-actions .item-edit-btn > i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* Mesmo padrão da ficha de personagem: texto do label + campo */
+.mad-dragon-turbo.sheet.item .item-sheet-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.8em;
+  font-weight: bold;
+  color: #333;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.mad-dragon-turbo.sheet.item .item-sheet-label .item-name-input,
+.mad-dragon-turbo.sheet.item .item-sheet-label .item-desc-input,
+.mad-dragon-turbo.sheet.item .item-sheet-label .equipment-qty-input,
+.mad-dragon-turbo.sheet.item .item-sheet-label .spell-used-uses-input,
+.mad-dragon-turbo.sheet.item .item-sheet-label .spell-max-uses-input {
+  font-weight: normal;
+}
+
+.mad-dragon-turbo.sheet.item .item-sheet-header .item-name-input {
+  font-size: 20px;
+}
+
+.mad-dragon-turbo.sheet.item .item-sheet-body .sheet-section > .item-sheet-label {
+  margin-bottom: 8px;
+}
+
+.mad-dragon-turbo.sheet.item .item-sheet-body .equipment-fields {
+  margin-top: 4px;
+}
+
+.mad-dragon-turbo.sheet.item .item-type-pill {
+  font-size: 0.75em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #4a4338;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #ccbfa6;
+  background: rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+  max-height: 25px;
+}
+
+.mad-dragon-turbo.sheet.item .item-sheet-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.mad-dragon-turbo.sheet.item .item-sheet-body input,
+.mad-dragon-turbo.sheet.item .item-sheet-body textarea,
+.mad-dragon-turbo.sheet.item .item-sheet-body select {
+  font-size: 1em;
+}
+
+.mad-dragon-turbo.sheet.item .item-sheet-header-actions .item-edit-save {
+  border-color: #333;
+  background: #333;
+  color: #f5f0e8;
+}
+
+.mad-dragon-turbo.sheet.item .item-sheet-header-actions .item-edit-save:hover {
+  background: #222;
+}
+
+.mad-dragon-turbo.sheet.item .item-sheet-spell-fields {
+  margin-top: 8px;
+}
+
+.mad-dragon-turbo.sheet.item .spell-used-uses-item-locked {
+  opacity: 0.85;
+  cursor: not-allowed;
+  background: #eceae6 !important;
+}

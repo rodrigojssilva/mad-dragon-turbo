@@ -13,7 +13,8 @@
       "npc": "Ficha de NPC",
       "enemy": "Ficha de Inimigo",
       "tabCharacteristics": "• Características",
-      "tabDiary": "• Diário"
+      "tabDiary": "• Diário",
+      "item": "Ficha de item"
     },
     "spells": "Poderes/Magias",
     "equipments": "Itens",
@@ -71,7 +72,8 @@
       "usesLabel": "Usos",
       "emptyUsesShort": "Sem usos",
       "cast": "Usar magia",
-      "noUses": "Essa magia está sem usos disponíveis."
+      "noUses": "Essa magia está sem usos disponíveis.",
+      "usedUsesLockedItem": "Controlado na ficha do personagem ao usar a magia."
     },
     "equipment": {
       "new": "Novo item",
@@ -86,7 +88,9 @@
       "nameLabel": "Nome",
       "descLabel": "Descrição",
       "namePlaceholder": "Nome do item",
-      "descPlaceholder": "Descrição..."
+      "descPlaceholder": "Descrição...",
+      "save": "Salvar",
+      "cancel": "Cancelar"
     },
     "roll": {
       "titleBtn": "Rolagem",

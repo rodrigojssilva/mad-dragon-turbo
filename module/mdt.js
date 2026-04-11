@@ -10,6 +10,7 @@ import { SpellModel } from "./models/item/spell-model.js";
 import { MDTRoll } from "./helpers/roll.js";
 import { MDTCombat } from "./combat/combat.js";
 import { EquipmentModel } from "./models/item/equipment-model.js";
+import { MdtItemSheet } from "./item/mdt-item-sheet.js";
 import { registerMdtPartials } from "./templates/register-partials.js";
 
 Hooks.on("init", async function () {
@@ -62,6 +63,17 @@ Hooks.on("init", async function () {
       label: "MDT.sheet.character",
     },
   );
+
+  foundry.documents.collections.Items.unregisterSheet(
+    "core",
+    foundry.appv1.sheets.ItemSheet,
+  );
+
+  foundry.documents.collections.Items.registerSheet("mad-dragon-turbo", MdtItemSheet, {
+    types: ["specialty", "spell", "equipment"],
+    makeDefault: true,
+    label: "MDT.sheet.item",
+  });
 
   // Registra o sistema de combate customizado
   CONFIG.Combat.documentClass = MDTCombat;

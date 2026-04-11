@@ -1,0 +1,54 @@
+<form class="sheet-form flexcol" autocomplete="off">
+    <header class="sheet-header item-sheet-header">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+        <div class="header-fields flexcol">
+            <label class="item-sheet-label flexcol">
+                {{localize "MDT.item.nameLabel"}}
+                <input class="item-name-input" name="name" type="text" value="{{item.name}}"
+                    placeholder="{{localize 'MDT.item.namePlaceholder'}}"
+                    {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}} />
+            </label>
+            <div class="item-sheet-pill-row">
+                <div class="item-type-pill">{{localize "TYPES.Item.equipment"}}</div>
+                {{#if editable}}
+                <div class="item-sheet-header-actions item-edit-toolbar">
+                    {{#if itemEditing}}
+                    <button type="button" class="item-edit-btn item-edit-cancel" title="{{localize 'MDT.item.cancel'}}"
+                        aria-label="{{localize 'MDT.item.cancel'}}">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button type="button" class="item-edit-btn item-edit-save" title="{{localize 'MDT.item.save'}}"
+                        aria-label="{{localize 'MDT.item.save'}}">
+                        <i class="fas fa-floppy-disk"></i>
+                    </button>
+                    {{else}}
+                    <button type="button" class="item-edit-btn item-edit-start" title="{{localize 'MDT.item.edit'}}"
+                        aria-label="{{localize 'MDT.item.edit'}}">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                    {{/if}}
+                </div>
+                {{/if}}
+            </div>
+        </div>
+    </header>
+
+    <section class="sheet-body item-sheet-body">
+        <div class="sheet-section mdt-top-card">
+            <label class="item-sheet-label flexcol">
+                {{localize "MDT.item.descLabel"}}
+                <textarea class="item-desc-input" name="system.description" rows="6"
+                    placeholder="{{localize 'MDT.item.descPlaceholder'}}"
+                    {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}}>{{{system.description}}}</textarea>
+            </label>
+
+            <div class="equipment-fields">
+                <label class="item-sheet-label flexcol">
+                    {{localize "MDT.equipment.quantityLabel"}}
+                    <input class="equipment-qty-input" type="number" name="system.quantity" min="0" value="{{system.quantity}}"
+                        {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}} />
+                </label>
+            </div>
+        </div>
+    </section>
+</form>

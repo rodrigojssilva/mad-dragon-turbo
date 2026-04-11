@@ -17,3 +17,5 @@
     para Primoroso: Com um acerto primoroso você recebe uma vantagem!
     para Espetacular: Com um acerto espetacular você recebe uma vantagem e uma oportunidade!
 [x] Tradução En pegar pt-BR
+[] Enviar "Conceito" para o chat
+[] Ficha de itens (poderes/magias, equipamentos e especialidades) com os mesmos campos da ficha do personagem

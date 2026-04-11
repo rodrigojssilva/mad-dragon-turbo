@@ -29,7 +29,8 @@
     "css/sheet-actor.css",
     "css/chat.css",
     "css/combat.css",
-    "css/sheet-item-collapse.css"
+    "css/sheet-item-collapse.css",
+    "css/sheet-item.css"
   ],
   "background": "systems/mad-dragon-turbo/assets/MDT_logo_white.png",
   "documentTypes": {

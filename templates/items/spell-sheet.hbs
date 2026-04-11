@@ -1,0 +1,78 @@
+<form class="sheet-form flexcol" autocomplete="off">
+    <header class="sheet-header item-sheet-header">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+        <div class="header-fields flexcol">
+            <label class="item-sheet-label flexcol">
+                {{localize "MDT.item.nameLabel"}}
+                <input class="item-name-input" name="name" type="text" value="{{item.name}}"
+                    placeholder="{{localize 'MDT.item.namePlaceholder'}}"
+                    {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}} />
+            </label>
+            <div class="item-sheet-pill-row">
+                <div class="item-type-pill">{{localize "TYPES.Item.spell"}}</div>
+                {{#if editable}}
+                <div class="item-sheet-header-actions item-edit-toolbar">
+                    {{#if itemEditing}}
+                    <button type="button" class="item-edit-btn item-edit-cancel" title="{{localize 'MDT.item.cancel'}}"
+                        aria-label="{{localize 'MDT.item.cancel'}}">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button type="button" class="item-edit-btn item-edit-save" title="{{localize 'MDT.item.save'}}"
+                        aria-label="{{localize 'MDT.item.save'}}">
+                        <i class="fas fa-floppy-disk"></i>
+                    </button>
+                    {{else}}
+                    <button type="button" class="item-edit-btn item-edit-start" title="{{localize 'MDT.item.edit'}}"
+                        aria-label="{{localize 'MDT.item.edit'}}">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                    {{/if}}
+                </div>
+                {{/if}}
+            </div>
+        </div>
+    </header>
+
+    <section class="sheet-body item-sheet-body">
+        <div class="sheet-section mdt-top-card">
+            <label class="item-sheet-label flexcol">
+                {{localize "MDT.item.descLabel"}}
+                <textarea class="item-desc-input" name="system.description" rows="5"
+                    placeholder="{{localize 'MDT.item.descPlaceholder'}}"
+                    {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}}>{{{system.description}}}</textarea>
+            </label>
+
+            <div class="spell-fields item-sheet-spell-fields">
+                <div class="spell-checkbox-row">
+                    <label class="spell-checkbox">
+                        <input name="system.highLevel" type="checkbox" {{#if system.highLevel}}checked{{else}}{{#if (eq system.level "high")}}checked{{/if}}{{/if}}
+                            {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}} />
+                        {{localize "MDT.spell.highLevelCheckbox"}}
+                    </label>
+                    <label class="spell-checkbox">
+                        <input name="system.freeUse" type="checkbox" {{#if system.freeUse}}checked{{/if}}
+                            {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}} />
+                        {{localize "MDT.spell.freeUseCheckbox"}}
+                    </label>
+                </div>
+
+                <div class="spell-uses-grid">
+                    <label class="item-sheet-label flexcol">
+                        {{localize "MDT.spell.usedUsesLabel"}}
+                        <input class="spell-used-uses-input spell-used-uses-item-locked" type="number" min="0" value="{{system.usedUses}}"
+                            disabled title="{{localize 'MDT.spell.usedUsesLockedItem'}}" aria-readonly="true" />
+                    </label>
+                    <label class="item-sheet-label flexcol">
+                        {{localize "MDT.spell.maxUsesLabel"}}
+                        <input class="spell-max-uses-input" type="number" name="system.maxUses" min="0" value="{{system.maxUses}}"
+                            {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}} />
+                    </label>
+                </div>
+
+                {{#if spellFreeUseActive}}
+                <p class="spell-free-use-note">{{localize "MDT.spell.freeUseEnabled"}}</p>
+                {{/if}}
+            </div>
+        </div>
+    </section>
+</form>
