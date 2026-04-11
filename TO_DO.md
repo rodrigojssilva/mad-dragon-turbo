@@ -19,3 +19,4 @@
 [x] Tradução En pegar pt-BR
 [x] Enviar "Conceito" para o chat
 [x] Ficha de itens (poderes/magias, equipamentos e especialidades) com os mesmos campos da ficha do personagem
+[x] Abrir compêndio com tipo definidio

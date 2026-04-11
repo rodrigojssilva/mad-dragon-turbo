@@ -12,6 +12,7 @@ import { MDTCombat } from "./combat/combat.js";
 import { EquipmentModel } from "./models/item/equipment-model.js";
 import { MdtItemSheet } from "./item/mdt-item-sheet.js";
 import { registerMdtPartials } from "./templates/register-partials.js";
+import { registerForcePackItemType } from "./compendium/force-pack-item-type.js";
 
 Hooks.on("init", async function () {
   console.log("MDT | Inicializando Mad Dragon Turbo...");
@@ -28,7 +29,9 @@ Hooks.on("init", async function () {
     spell: SpellModel,
     equipment: EquipmentModel,
   });
-  
+
+  registerForcePackItemType();
+
   await registerMdtPartials();
   registerHandlebarsHelpers();
 
