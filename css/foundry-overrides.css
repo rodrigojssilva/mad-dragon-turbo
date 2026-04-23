@@ -33,10 +33,11 @@ body.game .app.window-app .window-content {
 }
 
 .mdt-roll-dialog-form .mdt-difficulty-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 6px 12px;
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 6px;
   margin-top: 8px;
 }
 
@@ -45,7 +46,6 @@ body.game .app.window-app .window-content {
 }
 
 .mdt-roll-dialog-form .mdt-difficulty-group-title {
-  flex: 0 0 6.5rem;
   font-weight: 600;
   font-size: 0.88em;
   color: #444;
@@ -74,6 +74,7 @@ body.game .app.window-app .window-content {
 .mdt-roll-dialog-form .mdt-difficulty-hidden-row {
   padding-top: 2px;
   border-top: 1px dashed rgba(0, 0, 0, 0.12);
+  padding-left: calc(6.5rem + 12px);
 }
 
 .mdt-roll-dialog-form .mdt-difficulty-hidden-label {

@@ -259,6 +259,8 @@ export class MDTRoll {
   static analyzeHidden(results, style) {
     const sixes = results.filter((r) => r === 6).length;
     const ones = results.filter((r) => r === 1).length;
+    const sorted = [...results].sort((a, b) => a - b);
+    const key = sorted.join(",");
 
     if (sixes === 3)
       return {
@@ -266,18 +268,44 @@ export class MDTRoll {
         cssClass: "result-spectacular",
         specialFlavorKey: "MDT.roll.specialFlavor.spectacular",
       };
-    if (sixes === 2)
+    if (sixes === 2 && ones === 0)
       return {
         label: "MDT.roll.result.superb",
         cssClass: "result-superb",
         specialFlavorKey: "MDT.roll.specialFlavor.superb",
       };
-    if (sixes === 1 && ones === 0)
-      return { label: "MDT.roll.result.success", cssClass: "result-success" };
-    if (ones > 0 && sixes === 0)
-      return { label: "MDT.roll.result.critical_maybe", cssClass: "result-critical-maybe" };
-    if (ones > 1 && sixes === 1)
+
+    if (ones === 3) return { label: "MDT.roll.result.critical", cssClass: "result-critical" };
+    if (ones === 2 && sixes === 1)
+      return { label: "MDT.roll.result.critical", cssClass: "result-critical" };
+    if (results.length === 2 && ones === 2 && sixes === 0)
+      return { label: "MDT.roll.result.critical", cssClass: "result-critical" };
+    if (ones === 2 && sixes === 0)
+      return { label: "MDT.roll.result.failure_maybe", cssClass: "result-failure" };
+
+    if (results.length === 2 && ones === 1 && sixes === 0)
       return { label: "MDT.roll.result.failure", cssClass: "result-failure" };
+
+    if (sixes > 0 && ones > 0)
+      return { label: "MDT.roll.result.partial_maybe", cssClass: "result-partial" };
+
+    if (results.length === 3 && sixes === 1 && ones === 0) {
+      // Mantem o "jogo de incerteza" aprovado na tabela verdade das rolagens ocultas.
+      const successMaybeKeys = new Set([
+        "2,3,6",
+        "2,4,6",
+        "2,5,6",
+        "3,3,6",
+        "3,4,6",
+        "3,5,6",
+        "5,5,6",
+      ]);
+      if (successMaybeKeys.has(key))
+        return { label: "MDT.roll.result.success_maybe", cssClass: "result-success" };
+    }
+
+    if (results.length === 1 && ones === 1)
+      return { label: "MDT.roll.result.critical", cssClass: "result-critical" };
 
     // Zona cinza — Mestre decide
     return { label: "MDT.roll.result.maybe", cssClass: "result-maybe" };
@@ -289,10 +317,9 @@ export class MDTRoll {
   static analyze(results, minSuccess, style) {
     const sixes = results.filter((r) => r === 6).length;
     const ones = results.filter((r) => r === 1).length;
-    const hits = results.filter((r) => r >= minSuccess && r !== 1).length;
+    const hits = results.filter((r) => r >= minSuccess).length;
+    const effectiveHits = hits - ones;
 
-    if (sixes > 0 && ones > 0)
-      return { category: "partial", label: "MDT.roll.result.partial", cssClass: "result-partial" };
     if (sixes === 3)
       return {
         category: "spectacular",
@@ -300,18 +327,25 @@ export class MDTRoll {
         cssClass: "result-spectacular",
         specialFlavorKey: "MDT.roll.specialFlavor.spectacular",
       };
-    if (sixes === 2)
+
+    // Dois 6 com nenhum 1 vira Primoroso.
+    if (sixes === 2 && ones === 0)
       return {
         category: "superb",
         label: "MDT.roll.result.superb",
         cssClass: "result-superb",
         specialFlavorKey: "MDT.roll.specialFlavor.superb",
       };
-    if (sixes === 1)
+
+    // Caso especial confirmado em regra: 6 + 1 sem acerto liquido = Parcial.
+    if (sixes > 0 && ones === 1 && effectiveHits <= 0)
+      return { category: "partial", label: "MDT.roll.result.partial", cssClass: "result-partial" };
+
+    if (effectiveHits > 0)
       return { category: "success", label: "MDT.roll.result.success", cssClass: "result-success" };
-    if (hits > 0 && ones === 0)
-      return { category: "success", label: "MDT.roll.result.success", cssClass: "result-success" };
-    if (ones > 0)
+
+    // Falha critica apenas quando nao existe acerto bruto e ha pelo menos um 1.
+    if (hits === 0 && ones > 0)
       return { category: "critical", label: "MDT.roll.result.critical", cssClass: "result-critical" };
 
     return { category: "failure", label: "MDT.roll.result.failure", cssClass: "result-failure" };
