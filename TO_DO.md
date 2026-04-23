@@ -26,5 +26,5 @@
 [x] Informações complementares por estilo (nº especialidades e magias)
 [x] Corrigir edição do nome e conceito
 [x] Ajustar textAreas com espaços em branco
+[x] Adionar tooltip no ícone do estilo
 [] Nas magias adicionar opção "Pronto"
-[] Efeito nos ícones no "on hover"

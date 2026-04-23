@@ -10,7 +10,7 @@
                 <input type="radio" id="mdt-style-{{this.value}}" name="system.style" value="{{this.value}}" {{#if (eq this.value ../system.style)}}checked{{/if}} />
                 <label for="mdt-style-{{this.value}}" class="style-label">{{this.label}}</label>
             </div>
-            <button type="button" class="style-option-icon-btn" data-style-key="{{this.value}}" aria-label="{{localize 'MDT.styles.styleInfoToggle'}}">
+            <button type="button" class="style-option-icon-btn" data-style-key="{{this.value}}" title="{{localize 'MDT.styles.styleInfoToggle'}}" aria-label="{{localize 'MDT.styles.styleInfoToggle'}}">
                 <i class="{{this.iconClass}}" aria-hidden="true"></i>
             </button>
         </div>
