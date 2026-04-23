@@ -470,16 +470,20 @@
   height: 36px;
   margin: 0;
   padding: 0;
-  border: none;
-  border-radius: 6px;
+  border: none;  
   background: transparent;
   color: #5a4a3a;
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   opacity: 0.92;
   cursor: pointer;
   box-sizing: border-box;
   appearance: none;
   -webkit-appearance: none;
+}
+
+.mad-dragon-turbo .mdt-style-card .style-option-icon-btn i {
+  display: block;
+  line-height: 1;
 }
 
 .mad-dragon-turbo .mdt-style-card .style-option-icon-btn:hover {
@@ -699,6 +703,18 @@
   font-size: 0.9em;
   font-weight: 700;
   color: #3d362c;
+}
+
+.mad-dragon-turbo .mdt-style-info-dialog-card .mdt-style-info-special-wrap .mdt-style-info-extras {
+  margin: 8px 0 0;
+  padding: 0 0 0 18px;
+  line-height: 1.35;
+  font-size: 0.88em;
+  color: #3d362c;
+}
+
+.mad-dragon-turbo .mdt-style-info-dialog-card .mdt-style-info-special-wrap .mdt-style-info-extras li {
+  margin: 0 0 4px;
 }
 
 /* Área do DialogV2: contentClasses no window (ApplicationWindowConfiguration.contentClasses) */

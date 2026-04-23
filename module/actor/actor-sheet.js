@@ -467,16 +467,34 @@ export class MadDragonActorSheet extends ActorSheet {
         title: "MDT.styles.brawler",
         desc: "MDT.styles.brawlerDesc",
         stats: "MDT.styles.brawlerStats",
+        extras: [
+          "MDT.styles.brawlerSpecialtiesBase",
+          "MDT.styles.brawlerSpellsBase",
+          "MDT.styles.lowLevelSpellsAll",
+          "MDT.styles.highLevelSpellsGeniusOnly",
+        ],
       },
       trickster: {
         title: "MDT.styles.trickster",
         desc: "MDT.styles.tricksterDesc",
         stats: "MDT.styles.tricksterStats",
+        extras: [
+          "MDT.styles.tricksterSpecialtiesBase",
+          "MDT.styles.tricksterSpellsBase",
+          "MDT.styles.lowLevelSpellsAll",
+          "MDT.styles.highLevelSpellsGeniusOnly",
+        ],
       },
       genius: {
         title: "MDT.styles.genius",
         desc: "MDT.styles.geniusDesc",
         stats: "MDT.styles.geniusStats",
+        extras: [
+          "MDT.styles.geniusSpecialtiesBase",
+          "MDT.styles.geniusSpellsBase",
+          "MDT.styles.lowLevelSpellsAll",
+          "MDT.styles.highLevelSpellsGeniusOnly",
+        ],
       },
     };
 
@@ -485,9 +503,10 @@ export class MadDragonActorSheet extends ActorSheet {
 
     const description = game.i18n.localize(m.desc);
     const statsText = game.i18n.localize(m.stats);
+    const extras = Array.isArray(m.extras) ? m.extras.map((k) => game.i18n.localize(k)) : [];
     const content = await foundry.applications.handlebars.renderTemplate(
       "systems/mad-dragon-turbo/templates/dialogs/style-info-dialog.hbs",
-      { description, stats: statsText },
+      { description, stats: statsText, extras },
     );
 
     await foundry.applications.api.DialogV2.wait({

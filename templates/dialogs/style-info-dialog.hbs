@@ -4,6 +4,13 @@
         <p class="mdt-style-info-flavor">{{description}}</p>
         <div class="mdt-style-info-special-wrap">
             <p class="mdt-style-info-special">{{stats}}</p>
+            {{#if extras.length}}
+            <ul class="mdt-style-info-extras">
+                {{#each extras}}
+                <li>{{this}}</li>
+                {{/each}}
+            </ul>
+            {{/if}}
         </div>
     </div>
 </div>
