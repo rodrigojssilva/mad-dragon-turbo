@@ -89,17 +89,46 @@ export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
     return data;
   }
 
+  /**
+   * Remove recuos artificiais em textos multiline preservando o conteúdo.
+   */
+  _normalizeMultilineText(value) {
+    const text = (value ?? "").toString().replace(/\r\n/g, "\n");
+    const lines = text.split("\n");
+    if (lines.length <= 1) return text.trimEnd();
+
+    const firstIndent = (lines[0].match(/^[ \t]*/) ?? [""])[0].length;
+    const laterNonEmpty = lines.slice(1).filter((l) => l.trim().length > 0);
+    if (!laterNonEmpty.length) return text.trimEnd();
+
+    const laterIndents = laterNonEmpty.map((l) => {
+      const m = l.match(/^[ \t]*/);
+      return m ? m[0].length : 0;
+    });
+    const minLaterIndent = Math.min(...laterIndents);
+
+    if (minLaterIndent > firstIndent) {
+      const removeCount = minLaterIndent - firstIndent;
+      for (let i = 1; i < lines.length; i += 1) {
+        lines[i] = lines[i].replace(new RegExp(`^[ \\t]{0,${removeCount}}`), "");
+      }
+    }
+
+    return lines.join("\n").trimEnd();
+  }
+
   async _persistFromForm(form) {
     const flat = this._serializeFormToFlat(form);
     const expanded = foundry.utils.expandObject(flat);
     const name = (flat.name ?? "").toString().trim() || this.item.name;
     const sysIn = expanded.system ?? {};
+    const description = this._normalizeMultilineText(sysIn.description ?? "");
 
     if (this.item.type === "specialty") {
       return this.item.update({
         name,
         system: {
-          description: sysIn.description ?? "",
+          description,
         },
       });
     }
@@ -108,7 +137,7 @@ export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
       return this.item.update({
         name,
         system: {
-          description: sysIn.description ?? "",
+          description,
           quantity: Math.max(0, Number(sysIn.quantity ?? 1)),
         },
       });
@@ -131,7 +160,7 @@ export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
       return this.item.update({
         name,
         system: {
-          description: sysIn.description ?? "",
+          description,
           highLevel,
           level: highLevel ? "high" : "low",
           freeUse,
@@ -171,6 +200,8 @@ export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
     const el = html[0];
     if (!el) return;
 
+    this._normalizeTextareasInRoot(el);
+
     const form = el.querySelector("form.sheet-form");
     if (form) {
       form.addEventListener("submit", (ev) => {
@@ -194,5 +225,12 @@ export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
       freeUse?.addEventListener("change", sync);
       sync();
     }
+  }
+
+  _normalizeTextareasInRoot(root) {
+    root.querySelectorAll("textarea").forEach((textarea) => {
+      const normalized = this._normalizeMultilineText(textarea.value);
+      if (normalized !== textarea.value) textarea.value = normalized;
+    });
   }
 }

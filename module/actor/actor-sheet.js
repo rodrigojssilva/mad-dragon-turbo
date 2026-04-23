@@ -128,6 +128,9 @@ export class MadDragonActorSheet extends ActorSheet {
 
     // html é jQuery — convertemos para HTMLElement com [0]
     const el = html[0];
+    if (!el) return;
+
+    this._normalizeTextareasInRoot(el);
 
     this._registerVitalsResourceUiSync(el);
 
@@ -238,6 +241,13 @@ export class MadDragonActorSheet extends ActorSheet {
     });
 
     this._restoreExpandedItems(el);
+  }
+
+  _normalizeTextareasInRoot(root) {
+    root.querySelectorAll("textarea").forEach((textarea) => {
+      const normalized = this._normalizeMultilineText(textarea.value);
+      if (normalized !== textarea.value) textarea.value = normalized;
+    });
   }
 
   async close(options = {}) {
@@ -652,7 +662,7 @@ export class MadDragonActorSheet extends ActorSheet {
     if (!nameInput || !descInput || !btnStart || !btnSave || !btnCancel) return;
 
     const newName = (nameInput.value ?? "").trim();
-    const newDesc = (descInput.value ?? "").trim();
+    const newDesc = this._normalizeMultilineText(descInput.value);
     const newHighLevel = spellHighLevelInput?.checked ?? item.system.highLevel ?? false;
     const newFreeUse = spellFreeUseInput?.checked ?? item.system.freeUse ?? false;
     const newMaxUses = newFreeUse
@@ -737,6 +747,37 @@ export class MadDragonActorSheet extends ActorSheet {
     btnStart.classList.remove("hidden");
     btnSave.classList.add("hidden");
     btnCancel.classList.add("hidden");
+  }
+
+  /**
+   * Remove recuos artificiais em textos multiline preservando o conteúdo.
+   * Corrige casos em que linhas após a primeira ficam com espaços extras.
+   */
+  _normalizeMultilineText(value) {
+    const text = (value ?? "").toString().replace(/\r\n/g, "\n");
+    const lines = text.split("\n");
+    if (lines.length <= 1) return text.trimEnd();
+
+    const firstIndent = (lines[0].match(/^[ \t]*/) ?? [""])[0].length;
+    const laterNonEmpty = lines.slice(1).filter((l) => l.trim().length > 0);
+    if (!laterNonEmpty.length) return text.trimEnd();
+
+    const laterIndents = laterNonEmpty.map((l) => {
+      const m = l.match(/^[ \t]*/);
+      return m ? m[0].length : 0;
+    });
+    const minLaterIndent = Math.min(...laterIndents);
+
+    // Dedenta apenas quando as linhas posteriores têm recuo comum maior
+    // que a primeira linha (padrão típico de indentação acidental).
+    if (minLaterIndent > firstIndent) {
+      const removeCount = minLaterIndent - firstIndent;
+      for (let i = 1; i < lines.length; i += 1) {
+        lines[i] = lines[i].replace(new RegExp(`^[ \\t]{0,${removeCount}}`), "");
+      }
+    }
+
+    return lines.join("\n").trimEnd();
   }
 
   async _onConceptToChat(event) {
@@ -911,7 +952,7 @@ export class MadDragonActorSheet extends ActorSheet {
 
     await this._flushVitalInputsToActor();
 
-    await this.actor.update({ [`system.${field}`]: textarea.value ?? "" });
+    await this.actor.update({ [`system.${field}`]: this._normalizeMultilineText(textarea.value) });
     textarea.disabled = true;
     btnStart.classList.remove("hidden");
     btnSave.classList.add("hidden");
@@ -971,7 +1012,7 @@ export class MadDragonActorSheet extends ActorSheet {
 
     await this.actor.update({
       name: (nameInput.value ?? "").trim() || this.actor.name,
-      "system.concept": conceptInput.value ?? "",
+      "system.concept": this._normalizeMultilineText(conceptInput.value),
     });
 
     nameInput.disabled = true;
