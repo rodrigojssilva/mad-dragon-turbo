@@ -87,5 +87,6 @@ Hooks.on("init", async function () {
 Hooks.on("ready", function () {
   console.log("MDT | Mad Dragon Turbo pronto!");
 
+  MDTRoll.registerChatHooks();
   game.mdt = { MDTRoll }; // facilita testes no console
 });

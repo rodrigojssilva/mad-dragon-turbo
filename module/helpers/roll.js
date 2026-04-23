@@ -1,6 +1,10 @@
 import { CHARACTER_STYLE_STATS } from "../models/actor/character-model.js";
 
 export class MDTRoll {
+  static FLAG_SCOPE = "mad-dragon-turbo";
+
+  static ROLL_STATE_FLAG = "rollState";
+
   // Dificuldades e seus valores mínimos para sucesso (UI: radios em grupos no diálogo)
   static DIFFICULTIES = {
     hidden: { label: "MDT.roll.difficulties.hidden", min: null },
@@ -22,6 +26,115 @@ export class MDTRoll {
   static actorHasValidStyle(actor) {
     const s = actor?.system?.style;
     return typeof s === "string" && s !== "" && Object.hasOwn(CHARACTER_STYLE_STATS, s);
+  }
+
+  static registerChatHooks() {
+    Hooks.on("renderChatMessage", (message, html) => {
+      MDTRoll.activateChatListeners(message, html);
+    });
+  }
+
+  static activateChatListeners(message, html) {
+    const root = html?.[0] ?? html;
+    if (!root) return;
+
+    root.querySelectorAll(".mdt-reroll-trigger").forEach((button) => {
+      button.addEventListener("click", async (event) => {
+        event.preventDefault();
+        await MDTRoll.handleManualReroll(message, button);
+      });
+    });
+  }
+
+  static userCanTriggerReroll(message, actor) {
+    if (game.user?.isGM) return true;
+    if (message.user?.id === game.user?.id) return true;
+    if (actor?.isOwner) return true;
+    return false;
+  }
+
+  static async handleManualReroll(message, button) {
+    const state = message.getFlag(MDTRoll.FLAG_SCOPE, MDTRoll.ROLL_STATE_FLAG);
+    if (!state) return;
+    if (state.rerollUsed) {
+      ui.notifications?.info(game.i18n.localize("MDT.roll.rerollAlreadyUsed"));
+      return;
+    }
+
+    const actor = game.actors.get(state.actorId);
+    if (!actor) {
+      ui.notifications?.warn(game.i18n.localize("MDT.roll.rerollActorMissing"));
+      return;
+    }
+
+    if (!MDTRoll.userCanTriggerReroll(message, actor)) {
+      ui.notifications?.warn(game.i18n.localize("MDT.roll.rerollNotAllowed"));
+      return;
+    }
+
+    if (actor.system.style !== "trickster") {
+      ui.notifications?.warn(game.i18n.localize("MDT.roll.rerollNotAllowed"));
+      return;
+    }
+
+    const baseResults = Array.isArray(state.currentResults) ? [...state.currentResults] : [];
+    const rerolledIndex = baseResults.indexOf(1);
+    if (rerolledIndex < 0) {
+      ui.notifications?.warn(game.i18n.localize("MDT.roll.rerollNoOne"));
+      return;
+    }
+
+    button.disabled = true;
+
+    try {
+      const reroll = await new Roll("1d6").evaluate({ allowInteractive: false });
+      const rerolledResult = reroll.dice[0].results[0].result;
+      const results = [
+        ...baseResults.slice(0, rerolledIndex),
+        rerolledResult,
+        ...baseResults.slice(rerolledIndex + 1),
+      ];
+
+      const difficultyKey = state.difficulty;
+      const difficultyData = MDTRoll.DIFFICULTIES[difficultyKey];
+      const isHidden = Boolean(state.isHidden);
+      const actorStyle = actor.system.style;
+      const analysis = isHidden
+        ? MDTRoll.analyzeHidden(results, actorStyle)
+        : MDTRoll.analyze(results, difficultyData.min, actorStyle);
+      const difficultyLabel = isHidden
+        ? game.i18n.localize("MDT.roll.difficulties.hiddenLabel")
+        : game.i18n.localize(difficultyData.label);
+
+      const updatedState = {
+        ...state,
+        currentResults: results,
+        rerollUsed: true,
+        rerolledResult,
+        rerolledIndex,
+      };
+
+      await MDTRoll.toChat(actor, {
+        originalResults: Array.isArray(state.originalResults) ? state.originalResults : baseResults,
+        results,
+        rerolledResult,
+        rerolledIndex,
+        analysis,
+        breakdown: state.breakdown,
+        difficultyLabel,
+        diceCount: state.diceCount,
+        isHidden,
+        rolls: [reroll],
+        showRerollButton: false,
+        rollState: updatedState,
+      });
+
+      await message.setFlag(MDTRoll.FLAG_SCOPE, MDTRoll.ROLL_STATE_FLAG, updatedState);
+    } catch (error) {
+      console.error("MDT | Falha ao aplicar re-rolagem manual:", error);
+      ui.notifications?.error(game.i18n.localize("MDT.roll.rerollFailed"));
+      button.disabled = false;
+    }
   }
 
   // -----------------------------------------------
@@ -99,50 +212,47 @@ export class MDTRoll {
     const isHidden = difficulty === "hidden";
 
     const breakdownParts = [game.i18n.localize("MDT.roll.bonus.diceCount")];
+    const breakdown = breakdownParts.join(" + ");
 
     const roll = await new Roll(`${diceCount}d6`).evaluate({ allowInteractive: false });
-    let results = roll.dice[0].results.map((r) => r.result);
+    const results = roll.dice[0].results.map((r) => r.result);
     const originalResults = [...results];
-
-    // Somente para malandrão
-    let rerolledResult = null;
-    let rerolledIndex = null;
-    let reroll = null;
-    if (actorStyle === "trickster" && results.includes(1)) {
-      reroll = await new Roll("1d6").evaluate({ allowInteractive: false });
-      rerolledResult = reroll.dice[0].results[0].result;
-      rerolledIndex = results.indexOf(1);
-
-      // Substitui para análise correta do resultado
-      results = [
-        ...results.slice(0, rerolledIndex),
-        rerolledResult,
-        ...results.slice(rerolledIndex + 1),
-      ];
-    }
 
     const difficultyData = MDTRoll.DIFFICULTIES[difficulty];
 
     // Se oculta, analisa apenas resultados absolutos
-    let analysis = isHidden
+    const analysis = isHidden
       ? MDTRoll.analyzeHidden(results, actorStyle)
       : MDTRoll.analyze(results, difficultyData.min, actorStyle);
 
-    const chatRolls = reroll ? [roll, reroll] : [roll];
+    const difficultyLabel = isHidden
+      ? game.i18n.localize("MDT.roll.difficulties.hiddenLabel")
+      : game.i18n.localize(difficultyData.label);
+    const canManualReroll = actorStyle === "trickster" && results.includes(1);
 
     await MDTRoll.toChat(actor, {
       originalResults,
       results,
-      rerolledResult,
-      rerolledIndex,
+      rerolledResult: null,
+      rerolledIndex: null,
       analysis,
-      breakdown: breakdownParts.join(" + "),
-      difficultyLabel: isHidden
-        ? game.i18n.localize("MDT.roll.difficulties.hiddenLabel")
-        : game.i18n.localize(difficultyData.label),
+      breakdown,
+      difficultyLabel,
       diceCount,
       isHidden,
-      rolls: chatRolls,
+      rolls: [roll],
+      showRerollButton: canManualReroll,
+      rollState: {
+        actorId: actor.id,
+        style: actorStyle,
+        difficulty,
+        isHidden,
+        diceCount,
+        breakdown,
+        originalResults,
+        currentResults: results,
+        rerollUsed: !canManualReroll,
+      },
     });
   }
 
@@ -223,6 +333,8 @@ export class MDTRoll {
       diceCount,
       isHidden,
       rolls,
+      showRerollButton = false,
+      rollState = null,
     },
   ) {
     // Renderiza o template do chat
@@ -244,14 +356,25 @@ export class MDTRoll {
         difficultyLabel,
         diceCount,
         isHidden,
+        showRerollButton,
       },
     );
 
-    await ChatMessage.create({
+    const messageData = {
       user: game.user.id,
       speaker: ChatMessage.getSpeaker({ actor }),
       content,
       rolls,
-    });
+    };
+
+    if (rollState) {
+      messageData.flags = {
+        [MDTRoll.FLAG_SCOPE]: {
+          [MDTRoll.ROLL_STATE_FLAG]: rollState,
+        },
+      };
+    }
+
+    await ChatMessage.create(messageData);
   }
 }

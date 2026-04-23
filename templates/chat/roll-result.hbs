@@ -12,16 +12,29 @@
 
   <section class="mdt-roll-section">
     <p class="mdt-roll-label">Dados</p>
-    <div class="dice-results">
-    {{#each originalResults}}
-      {{#if (eq this 6)}}
-        <span class="die die-six">{{this}}</span>
-      {{else if (eq this 1)}}
-        <span class="die die-one">{{this}}</span>
-      {{else}}
-        <span class="die">{{this}}</span>
+    <div class="mdt-dice-results-wrap">
+      <div class="dice-results">
+      {{#each originalResults}}
+        {{#if (eq this 6)}}
+          <span class="die die-six">{{this}}</span>
+        {{else if (eq this 1)}}
+          <span class="die die-one">{{this}}</span>
+        {{else}}
+          <span class="die">{{this}}</span>
+        {{/if}}
+      {{/each}}
+      </div>
+
+      {{#if showRerollButton}}
+        <button
+          type="button"
+          class="mdt-reroll-trigger"
+          title="{{localize 'MDT.roll.manualRerollAction'}}"
+          aria-label="{{localize 'MDT.roll.manualRerollAction'}}"
+        >
+          <i class="fa-solid fa-mask" aria-hidden="true"></i>
+        </button>
       {{/if}}
-    {{/each}}
     </div>
   </section>
 
