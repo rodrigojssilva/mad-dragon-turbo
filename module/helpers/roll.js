@@ -1,11 +1,13 @@
 import { CHARACTER_STYLE_STATS } from "../models/actor/character-model.js";
 
 export class MDTRoll {
-  // Dificuldades e seus valores mínimos para sucesso
+  // Dificuldades e seus valores mínimos para sucesso (UI: radios em grupos no diálogo)
   static DIFFICULTIES = {
     hidden: { label: "MDT.roll.difficulties.hidden", min: null },
-    common: { label: "MDT.roll.difficulties.common", min: 2 },
-    challenging: { label: "MDT.roll.difficulties.challenging", min: 4 },
+    common2: { label: "MDT.roll.difficulties.common2", min: 2 },
+    common3: { label: "MDT.roll.difficulties.common3", min: 3 },
+    challenging4: { label: "MDT.roll.difficulties.challenging4", min: 4 },
+    challenging5: { label: "MDT.roll.difficulties.challenging5", min: 5 },
     complex: { label: "MDT.roll.difficulties.complex", min: 6 },
   };
 
@@ -31,22 +33,17 @@ export class MDTRoll {
       return;
     }
 
-    // Prepara dados para o template do dialog
-    const difficulties = Object.entries(MDTRoll.DIFFICULTIES).map(
-      ([key, val]) => ({
-        key,
-        label: val.label,
-      }),
-    );
-
     const content = await foundry.applications.handlebars.renderTemplate(
       "systems/mad-dragon-turbo/templates/dialogs/roll-dialog.hbs",
-      { difficulties },
     );
 
 
     const result = await foundry.applications.api.DialogV2.wait({
-      window: { title: game.i18n.localize("MDT.roll.title") },
+      classes: ["mad-dragon-turbo", "mdt-roll-dialog-app"],
+      window: {
+        title: game.i18n.localize("MDT.roll.title"),
+        contentClasses: ["mad-dragon-turbo", "mdt-roll-dialog-content"],
+      },
       content,
       buttons: [
         {
@@ -93,6 +90,11 @@ export class MDTRoll {
     }
 
     const { difficulty, diceCount } = options;
+    if (!Object.hasOwn(MDTRoll.DIFFICULTIES, difficulty)) {
+      ui.notifications?.warn(game.i18n.localize("MDT.roll.invalidDifficulty"));
+      return;
+    }
+
     const actorStyle = actor.system.style;
     const isHidden = difficulty === "hidden";
 
@@ -163,7 +165,9 @@ export class MDTRoll {
     if (sixes === 1 && ones === 0)
       return { label: "MDT.roll.result.success", cssClass: "result-success" };
     if (ones > 0 && sixes === 0)
-      return { label: "MDT.roll.result.critical", cssClass: "result-critical" };
+      return { label: "MDT.roll.result.critical_maybe", cssClass: "result-critical-maybe" };
+    if (ones > 1 && sixes === 1)
+      return { label: "MDT.roll.result.failure", cssClass: "result-failure" };
 
     // Zona cinza — Mestre decide
     return { label: "MDT.roll.result.maybe", cssClass: "result-maybe" };

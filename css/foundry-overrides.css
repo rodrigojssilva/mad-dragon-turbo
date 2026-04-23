@@ -9,3 +9,78 @@ body.game .app.window-app .window-content {
 .combat-sidebar .combat-tracker .token-initiative {
   display: none !important;
 }
+
+/* Diálogo de rolagem: dificuldade em grupos (Comum / Desafiadora / Complexa + Oculta) */
+.mad-dragon-turbo.mdt-roll-dialog-app .window-content.mdt-roll-dialog-content {
+  padding: 10px 12px 12px;
+}
+
+.mdt-roll-dialog-form {
+  margin: 0;
+}
+
+.mdt-roll-dialog-form fieldset.mdt-difficulty-tiers {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+  padding: 8px 10px 10px;
+  margin: 0 0 10px;
+}
+
+.mdt-roll-dialog-form fieldset.mdt-difficulty-tiers > legend {
+  padding: 0 4px;
+  font-weight: 700;
+  font-size: 0.95em;
+}
+
+.mdt-roll-dialog-form .mdt-difficulty-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 12px;
+  margin-top: 8px;
+}
+
+.mdt-roll-dialog-form .mdt-difficulty-row:first-of-type {
+  margin-top: 4px;
+}
+
+.mdt-roll-dialog-form .mdt-difficulty-group-title {
+  flex: 0 0 6.5rem;
+  font-weight: 600;
+  font-size: 0.88em;
+  color: #444;
+}
+
+.mdt-roll-dialog-form .mdt-difficulty-options {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  align-items: center;
+}
+
+.mdt-roll-dialog-form .mdt-difficulty-opt {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9em;
+  cursor: pointer;
+  user-select: none;
+}
+
+.mdt-roll-dialog-form .mdt-difficulty-opt input {
+  margin: 0;
+}
+
+.mdt-roll-dialog-form .mdt-difficulty-hidden-row {
+  padding-top: 2px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.12);
+}
+
+.mdt-roll-dialog-form .mdt-difficulty-hidden-label {
+  font-weight: 600;
+}
+
+/* Oculta ativa: faixas numéricas ficam secundárias (ainda é possível clicar para trocar) */
+.mdt-roll-dialog-form:has(input[name="difficulty"][value="hidden"]:checked) fieldset.mdt-difficulty-tiers {
+  opacity: 0.5;
+}

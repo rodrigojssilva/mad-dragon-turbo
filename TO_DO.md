@@ -20,3 +20,6 @@
 [x] Enviar "Conceito" para o chat
 [x] Ficha de itens (poderes/magias, equipamentos e especialidades) com os mesmos campos da ficha do personagem
 [x] Abrir compêndio com tipo definidio
+[] Nas magias adicionar opção "Pronto"
+[] Tirar a opção de re-roll do malandrão
+[] Efeito nos ícones no "on hover"

@@ -1,10 +1,50 @@
-<form>
-  <div class="form-group">
-    <label>{{localize "MDT.roll.difficulty"}}</label>
-    <select name="difficulty">
-      {{#each difficulties}}
-        <option value="{{this.key}}">{{localize this.label}}</option>
-      {{/each}}
-    </select>
+<form class="mdt-roll-dialog-form">
+  <fieldset class="mdt-difficulty-tiers">
+    <legend>{{localize "MDT.roll.difficulty"}}</legend>
+
+    <div class="mdt-difficulty-row">
+      <span class="mdt-difficulty-group-title">{{localize "MDT.roll.difficulties.groupCommon"}}</span>
+      <span class="mdt-difficulty-options" role="group" aria-label="{{localize 'MDT.roll.difficulties.groupCommon'}}">
+        <label class="mdt-difficulty-opt">
+          <input type="radio" name="difficulty" value="common2" />
+          {{localize "MDT.roll.difficulties.opt2"}}
+        </label>
+        <label class="mdt-difficulty-opt">
+          <input type="radio" name="difficulty" value="common3" checked />
+          {{localize "MDT.roll.difficulties.opt3"}}
+        </label>
+      </span>
+    </div>
+
+    <div class="mdt-difficulty-row">
+      <span class="mdt-difficulty-group-title">{{localize "MDT.roll.difficulties.groupChallenging"}}</span>
+      <span class="mdt-difficulty-options" role="group" aria-label="{{localize 'MDT.roll.difficulties.groupChallenging'}}">
+        <label class="mdt-difficulty-opt">
+          <input type="radio" name="difficulty" value="challenging4" />
+          {{localize "MDT.roll.difficulties.opt4"}}
+        </label>
+        <label class="mdt-difficulty-opt">
+          <input type="radio" name="difficulty" value="challenging5" />
+          {{localize "MDT.roll.difficulties.opt5"}}
+        </label>
+      </span>
+    </div>
+
+    <div class="mdt-difficulty-row">
+      <span class="mdt-difficulty-group-title">{{localize "MDT.roll.difficulties.groupComplex"}}</span>
+      <span class="mdt-difficulty-options" role="group" aria-label="{{localize 'MDT.roll.difficulties.groupComplex'}}">
+        <label class="mdt-difficulty-opt">
+          <input type="radio" name="difficulty" value="complex" />
+          {{localize "MDT.roll.difficulties.opt6"}}
+        </label>
+      </span>
+    </div>
+  </fieldset>
+
+  <div class="mdt-difficulty-hidden-row">
+    <label class="mdt-difficulty-opt mdt-difficulty-hidden-label">
+      <input type="radio" name="difficulty" value="hidden" />
+      {{localize "MDT.roll.difficulties.hidden"}}
+    </label>
   </div>
 </form>

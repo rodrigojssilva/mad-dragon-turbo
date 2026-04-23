@@ -95,6 +95,7 @@
     },
     "roll": {
       "titleBtn": "Rolagem",
+      "invalidDifficulty": "Dificuldade inválida.",
       "title": "Quantos dados?",
       "rollButton": "Rolar",
       "possible": "Ação possível!",
@@ -116,14 +117,25 @@
         "social": "Malandrão"
       },
       "difficulties": {
-        "common": "Comum (2+)",
-        "challenging": "Desafiadora (4+)",
+        "groupCommon": "Comum",
+        "groupChallenging": "Desafiadora",
+        "groupComplex": "Complexa",
+        "opt2": "2+",
+        "opt3": "3+",
+        "opt4": "4+",
+        "opt5": "5+",
+        "opt6": "6",
+        "common2": "Comum (2+)",
+        "common3": "Comum (3+)",
+        "challenging4": "Desafiadora (4+)",
+        "challenging5": "Desafiadora (5+)",
         "complex": "Complexa (6)",
-        "hidden": "🎲 Oculta",
+        "hidden": "Oculta",
         "hiddenLabel": "???"
       },
       "result": {
         "critical": "💀 Falha Crítica",
+        "critical_maybe": "💀 Falha Crítica???",
         "failure": "❌ Falha",
         "partial": "⚠️ Sucesso Parcial",
         "success": "✅ Sucesso",
