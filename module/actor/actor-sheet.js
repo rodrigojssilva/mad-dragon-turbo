@@ -937,36 +937,45 @@ export class MadDragonActorSheet extends ActorSheet {
 
   _onConceptEditStart(event) {
     event.preventDefault();
-    const row = event.currentTarget.closest(".header-field-concept");
-    if (!row) return;
-    const input = row.querySelector(".concept-input");
-    const btnStart = row.querySelector(".concept-edit-start");
-    const btnSave = row.querySelector(".concept-edit-save");
-    const btnCancel = row.querySelector(".concept-edit-cancel");
-    if (!input || !btnStart || !btnSave || !btnCancel) return;
+    const root = this.element?.[0];
+    if (!root) return;
+    const nameInput = root.querySelector("#mdt-header-name");
+    const conceptInput = root.querySelector(".concept-input");
+    const btnStart = root.querySelector(".concept-edit-start");
+    const btnSave = root.querySelector(".concept-edit-save");
+    const btnCancel = root.querySelector(".concept-edit-cancel");
+    if (!nameInput || !conceptInput || !btnStart || !btnSave || !btnCancel) return;
 
-    input.dataset.originalValue = input.value ?? "";
-    input.disabled = false;
+    nameInput.dataset.originalValue = nameInput.value ?? "";
+    conceptInput.dataset.originalValue = conceptInput.value ?? "";
+    nameInput.disabled = false;
+    conceptInput.disabled = false;
     btnStart.classList.add("hidden");
     btnSave.classList.remove("hidden");
     btnCancel.classList.remove("hidden");
-    input.focus();
+    nameInput.focus();
   }
 
   async _onConceptEditSave(event) {
     event.preventDefault();
-    const row = event.currentTarget.closest(".header-field-concept");
-    if (!row) return;
-    const input = row.querySelector(".concept-input");
-    const btnStart = row.querySelector(".concept-edit-start");
-    const btnSave = row.querySelector(".concept-edit-save");
-    const btnCancel = row.querySelector(".concept-edit-cancel");
-    if (!input || !btnStart || !btnSave || !btnCancel) return;
+    const root = this.element?.[0];
+    if (!root) return;
+    const nameInput = root.querySelector("#mdt-header-name");
+    const conceptInput = root.querySelector(".concept-input");
+    const btnStart = root.querySelector(".concept-edit-start");
+    const btnSave = root.querySelector(".concept-edit-save");
+    const btnCancel = root.querySelector(".concept-edit-cancel");
+    if (!nameInput || !conceptInput || !btnStart || !btnSave || !btnCancel) return;
 
     await this._flushVitalInputsToActor();
 
-    await this.actor.update({ "system.concept": input.value ?? "" });
-    input.disabled = true;
+    await this.actor.update({
+      name: (nameInput.value ?? "").trim() || this.actor.name,
+      "system.concept": conceptInput.value ?? "",
+    });
+
+    nameInput.disabled = true;
+    conceptInput.disabled = true;
     btnStart.classList.remove("hidden");
     btnSave.classList.add("hidden");
     btnCancel.classList.add("hidden");
@@ -974,16 +983,19 @@ export class MadDragonActorSheet extends ActorSheet {
 
   _onConceptEditCancel(event) {
     event.preventDefault();
-    const row = event.currentTarget.closest(".header-field-concept");
-    if (!row) return;
-    const input = row.querySelector(".concept-input");
-    const btnStart = row.querySelector(".concept-edit-start");
-    const btnSave = row.querySelector(".concept-edit-save");
-    const btnCancel = row.querySelector(".concept-edit-cancel");
-    if (!input || !btnStart || !btnSave || !btnCancel) return;
+    const root = this.element?.[0];
+    if (!root) return;
+    const nameInput = root.querySelector("#mdt-header-name");
+    const conceptInput = root.querySelector(".concept-input");
+    const btnStart = root.querySelector(".concept-edit-start");
+    const btnSave = root.querySelector(".concept-edit-save");
+    const btnCancel = root.querySelector(".concept-edit-cancel");
+    if (!nameInput || !conceptInput || !btnStart || !btnSave || !btnCancel) return;
 
-    input.value = input.dataset.originalValue ?? input.value;
-    input.disabled = true;
+    nameInput.value = nameInput.dataset.originalValue ?? nameInput.value;
+    conceptInput.value = conceptInput.dataset.originalValue ?? conceptInput.value;
+    nameInput.disabled = true;
+    conceptInput.disabled = true;
     btnStart.classList.remove("hidden");
     btnSave.classList.add("hidden");
     btnCancel.classList.add("hidden");

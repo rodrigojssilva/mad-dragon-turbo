@@ -22,7 +22,8 @@
 [x] Abrir compêndio com tipo definidio
 [x] Tirar a opção de auto re-roll do malandrão
 [x] Revisão geral das regras de rolagem
-[] Informações complementares por estilo (nº especialidades e magias)
-[] Ajustar textAreas
+[x] Informações complementares por estilo (nº especialidades e magias)
+[x] Corrigir edição do nome e conceito
+[] Ajustar textAreas com espaços em branco
 [] Nas magias adicionar opção "Pronto"
 [] Efeito nos ícones no "on hover"

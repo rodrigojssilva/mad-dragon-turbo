@@ -14,13 +14,9 @@
 
     <div class="header-right">
         <h1 class="sheet-title">{{sheetTitle}}</h1>
-        <div class="header-field">
-            <label for="mdt-header-name">{{localize "MDT.name"}}</label>
-            <input id="mdt-header-name" name="name" type="text" value="{{actor.name}}" />
-        </div>
-        <div class="header-field header-field-concept">
-            <div class="header-field-concept-top">
-                <label for="mdt-header-concept">{{localize "MDT.concept"}}</label>
+        <div class="header-field header-field-name">
+            <div class="header-field-name-top">
+                <label for="mdt-header-name">{{localize "MDT.name"}}</label>
                 <div class="header-edit-toolbar">
                     <button type="button" class="item-edit-btn concept-edit-start" title="{{localize 'MDT.item.edit'}}"
                         aria-label="{{localize 'MDT.item.edit'}}">
@@ -35,6 +31,12 @@
                         <i class="fas fa-floppy-disk"></i>
                     </button>
                 </div>
+            </div>
+            <input id="mdt-header-name" name="name" type="text" value="{{actor.name}}" disabled />
+        </div>
+        <div class="header-field header-field-concept">
+            <div class="header-field-concept-top">
+                <label for="mdt-header-concept">{{localize "MDT.concept"}}</label>
                 <a class="concept-to-chat" href="#" title="{{localize 'MDT.item.toChat'}}" aria-label="{{localize 'MDT.item.toChat'}}">
                     <i class="fas fa-comment"></i>
                 </a>
