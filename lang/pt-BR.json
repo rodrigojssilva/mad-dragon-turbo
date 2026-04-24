@@ -66,6 +66,10 @@
       "geniusDamageInfo": "Causa 1 Ponto de Dano Físico com Armas Brancas e 2 Pontos de Dano Físico com Armas de Fogo.",
       "unarmedDamageInfo": "Desarmado: 1 Ponto de Dano Físico não letal.",
       "brawlerUnarmedChoiceInfo": "O Dano Físico Desarmado pode ser letal ou não letal, à escolha.",
+      "infoSectionDefense": "Defesa",
+      "brawlerDefenseInfo": "Porradeiro: +1 Dado - Por ser Resistente.",
+      "tricksterDefenseInfo": "Malandrão: +1 Dado - Por ser Esguio.",
+      "geniusDefenseInfo": "Genial: Não recebe dados extras para defesa.",
       "styleInfoToggle": "Informações do estilo",
       "styleInfoClose": "Fechar",
       "learnMore": "Saiba mais"

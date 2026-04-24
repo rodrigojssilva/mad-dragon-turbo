@@ -499,6 +499,12 @@ export class MadDragonActorSheet extends ActorSheet {
               "MDT.styles.brawlerUnarmedChoiceInfo",
             ],
           },
+          {
+            title: "MDT.styles.infoSectionDefense",
+            items: [
+              "MDT.styles.brawlerDefenseInfo",
+            ],
+          },
         ],
       },
       trickster: {
@@ -526,6 +532,12 @@ export class MadDragonActorSheet extends ActorSheet {
               "MDT.styles.unarmedDamageInfo",
             ],
           },
+          {
+            title: "MDT.styles.infoSectionDefense",
+            items: [
+              "MDT.styles.tricksterDefenseInfo",
+            ],
+          },
         ],
       },
       genius: {
@@ -551,6 +563,12 @@ export class MadDragonActorSheet extends ActorSheet {
             items: [
               "MDT.styles.geniusDamageInfo",
               "MDT.styles.unarmedDamageInfo",
+            ],
+          },
+          {
+            title: "MDT.styles.infoSectionDefense",
+            items: [
+              "MDT.styles.geniusDefenseInfo",
             ],
           },
         ],
