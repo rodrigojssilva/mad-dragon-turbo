@@ -90,3 +90,33 @@ Hooks.on("ready", function () {
   MDTRoll.registerChatHooks();
   game.mdt = { MDTRoll }; // facilita testes no console
 });
+
+Hooks.on("updateActor", async (actor, change) => {
+  // Sincroniza nome do token quando o nome da ficha muda.
+  if (!Object.hasOwn(change ?? {}, "name")) return;
+
+  const nextName = (actor.name ?? "").toString().trim();
+  if (!nextName) return;
+
+  try {
+    // Novos tokens criados a partir do ator.
+    if ((actor.prototypeToken?.name ?? "") !== nextName) {
+      await actor.update({ "prototypeToken.name": nextName });
+    }
+
+    // Tokens já existentes nas cenas.
+    const updatesByScene = [];
+    for (const scene of game.scenes ?? []) {
+      const updates = scene.tokens
+        .filter((token) => token.actorId === actor.id && token.name !== nextName)
+        .map((token) => ({ _id: token.id, name: nextName }));
+      if (updates.length) updatesByScene.push({ scene, updates });
+    }
+
+    for (const { scene, updates } of updatesByScene) {
+      await scene.updateEmbeddedDocuments("Token", updates);
+    }
+  } catch (error) {
+    console.error("MDT | Falha ao sincronizar nome do token com o ator:", error);
+  }
+});
