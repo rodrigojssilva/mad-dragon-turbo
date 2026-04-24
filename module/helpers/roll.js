@@ -211,8 +211,8 @@ export class MDTRoll {
     const actorStyle = actor.system.style;
     const isHidden = difficulty === "hidden";
 
-    const breakdownParts = [game.i18n.localize("MDT.roll.bonus.diceCount")];
-    const breakdown = breakdownParts.join(" + ");
+    const styleLabelKey = `MDT.styles.${actorStyle}`;
+    const breakdown = game.i18n.localize(styleLabelKey);
 
     const roll = await new Roll(`${diceCount}d6`).evaluate({ allowInteractive: false });
     const results = roll.dice[0].results.map((r) => r.result);

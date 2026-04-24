@@ -30,6 +30,6 @@
 ---------
 [x] Alterar o nome na ficha de personagem/npc altera o nome do token
 [x] Complementar informações sobre cada estilo
-[] Na mensagem de rolagem do chat trocar o "Rolou = xd6" pelo estilo do personagem
+[x] Na mensagem de rolagem do chat trocar o "Rolou = xd6" pelo estilo do personagem
 ---------
 [] Nas magias adicionar opção "Pronto"
