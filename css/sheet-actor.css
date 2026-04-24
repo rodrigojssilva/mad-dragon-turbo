@@ -719,6 +719,23 @@
   margin: 0 0 4px;
 }
 
+.mad-dragon-turbo .mdt-style-info-dialog-card .mdt-style-info-special-wrap .mdt-style-info-sections {
+  margin-top: 10px;
+}
+
+.mad-dragon-turbo .mdt-style-info-dialog-card .mdt-style-info-special-wrap .mdt-style-info-section {
+  margin-top: 8px;
+}
+
+.mad-dragon-turbo .mdt-style-info-dialog-card .mdt-style-info-special-wrap .mdt-style-info-section-title {
+  margin: 0;
+  font-size: 0.84em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #4a4338;
+}
+
 /* Área do DialogV2: contentClasses no window (ApplicationWindowConfiguration.contentClasses) */
 .mad-dragon-turbo.mdt-style-info-dialog-app .window-content.mdt-style-info-dialog-content {
   padding: 10px 12px;

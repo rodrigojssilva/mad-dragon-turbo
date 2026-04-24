@@ -27,4 +27,9 @@
 [x] Corrigir edição do nome e conceito
 [x] Ajustar textAreas com espaços em branco
 [x] Adionar tooltip no ícone do estilo
+---------
+[x] Alterar o nome na ficha de personagem/npc altera o nome do token
+[x] Complementar informações sobre cada estilo
+[] Na mensagem de rolagem do chat trocar o "Rolou = xd6" pelo estilo do personagem
+---------
 [] Nas magias adicionar opção "Pronto"

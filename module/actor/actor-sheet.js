@@ -477,33 +477,82 @@ export class MadDragonActorSheet extends ActorSheet {
         title: "MDT.styles.brawler",
         desc: "MDT.styles.brawlerDesc",
         stats: "MDT.styles.brawlerStats",
-        extras: [
-          "MDT.styles.brawlerSpecialtiesBase",
-          "MDT.styles.brawlerSpellsBase",
-          "MDT.styles.lowLevelSpellsAll",
-          "MDT.styles.highLevelSpellsGeniusOnly",
+        sections: [
+          {
+            title: "MDT.styles.infoSectionSpecialties",
+            items: [
+              "MDT.styles.brawlerSpecialtiesBase",
+            ],
+          },
+          {
+            title: "MDT.styles.infoSectionPowers",
+            items: [
+              "MDT.styles.brawlerSpellsBase",
+              "MDT.styles.brawlerPowersInfo",
+            ],
+          },
+          {
+            title: "MDT.styles.infoSectionDamage",
+            items: [
+              "MDT.styles.brawlerDamageInfo",
+              "MDT.styles.unarmedDamageInfo",
+              "MDT.styles.brawlerUnarmedChoiceInfo",
+            ],
+          },
         ],
       },
       trickster: {
         title: "MDT.styles.trickster",
         desc: "MDT.styles.tricksterDesc",
         stats: "MDT.styles.tricksterStats",
-        extras: [
-          "MDT.styles.tricksterSpecialtiesBase",
-          "MDT.styles.tricksterSpellsBase",
-          "MDT.styles.lowLevelSpellsAll",
-          "MDT.styles.highLevelSpellsGeniusOnly",
+        sections: [
+          {
+            title: "MDT.styles.infoSectionSpecialties",
+            items: [
+              "MDT.styles.tricksterSpecialtiesBase",
+            ],
+          },
+          {
+            title: "MDT.styles.infoSectionPowers",
+            items: [
+              "MDT.styles.tricksterSpellsBase",
+              "MDT.styles.tricksterPowersInfo",
+            ],
+          },
+          {
+            title: "MDT.styles.infoSectionDamage",
+            items: [
+              "MDT.styles.tricksterDamageInfo",
+              "MDT.styles.unarmedDamageInfo",
+            ],
+          },
         ],
       },
       genius: {
         title: "MDT.styles.genius",
         desc: "MDT.styles.geniusDesc",
         stats: "MDT.styles.geniusStats",
-        extras: [
-          "MDT.styles.geniusSpecialtiesBase",
-          "MDT.styles.geniusSpellsBase",
-          "MDT.styles.lowLevelSpellsAll",
-          "MDT.styles.highLevelSpellsGeniusOnly",
+        sections: [
+          {
+            title: "MDT.styles.infoSectionSpecialties",
+            items: [
+              "MDT.styles.geniusSpecialtiesBase",
+            ],
+          },
+          {
+            title: "MDT.styles.infoSectionPowers",
+            items: [
+              "MDT.styles.geniusSpellsBase",
+              "MDT.styles.geniusPowersInfo",
+            ],
+          },
+          {
+            title: "MDT.styles.infoSectionDamage",
+            items: [
+              "MDT.styles.geniusDamageInfo",
+              "MDT.styles.unarmedDamageInfo",
+            ],
+          },
         ],
       },
     };
@@ -513,10 +562,15 @@ export class MadDragonActorSheet extends ActorSheet {
 
     const description = game.i18n.localize(m.desc);
     const statsText = game.i18n.localize(m.stats);
-    const extras = Array.isArray(m.extras) ? m.extras.map((k) => game.i18n.localize(k)) : [];
+    const sections = Array.isArray(m.sections)
+      ? m.sections.map((section) => ({
+        title: game.i18n.localize(section.title),
+        items: Array.isArray(section.items) ? section.items.map((k) => game.i18n.localize(k)) : [],
+      }))
+      : [];
     const content = await foundry.applications.handlebars.renderTemplate(
       "systems/mad-dragon-turbo/templates/dialogs/style-info-dialog.hbs",
-      { description, stats: statsText, extras },
+      { description, stats: statsText, sections },
     );
 
     await foundry.applications.api.DialogV2.wait({
