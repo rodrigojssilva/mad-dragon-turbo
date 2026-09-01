@@ -239,7 +239,7 @@ export class MDTRoll {
           title: game.i18n.localize("MDT.roll.title"),
           contentClasses: ["mad-dragon-turbo", "mdt-roll-dialog-content"],
         },
-        position: { width: 285 },
+        position: { width: 310 },
         content,
         buttons: [
           {
