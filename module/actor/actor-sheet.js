@@ -184,6 +184,11 @@ export class MadDragonActorSheet extends ActorSheet {
       btn.addEventListener("click", this._onItemToChat.bind(this));
     });
 
+    // Enviar detalhes da magia para o chat (sem consumir uso)
+    el.querySelectorAll(".spell-to-chat").forEach((btn) => {
+      btn.addEventListener("click", this._onSpellToChat.bind(this));
+    });
+
     // Usar magia
     el.querySelectorAll(".spell-cast").forEach((btn) => {
       btn.addEventListener("click", this._onSpellCast.bind(this));
@@ -886,6 +891,15 @@ export class MadDragonActorSheet extends ActorSheet {
     await this._sendItemToChat(item);
   }
 
+  async _onSpellToChat(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const itemId = event.currentTarget.dataset.itemId;
+    const item = this.actor.items.get(itemId);
+    if (!item || item.type !== "spell") return;
+    await this._sendSpellDetailsToChat(item);
+  }
+
   async _onSpellCast(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -920,6 +934,33 @@ export class MadDragonActorSheet extends ActorSheet {
     await this._sendItemToChat(item);
   }
 
+  async _sendSpellDetailsToChat(item) {
+    const actorStyle = this.actor.system.style;
+    const styleLabel = actorStyle
+      ? game.i18n.localize(`MDT.styles.${actorStyle}`)
+      : "";
+    const isHighLevel = item.system.highLevel ?? item.system.level === "high";
+    const freeUse = !!item.system.freeUse;
+
+    const content = await foundry.applications.handlebars.renderTemplate(
+      "systems/mad-dragon-turbo/templates/chat/spell-details-card.hbs",
+      {
+        item,
+        system: item.system,
+        actorName: this.actor.name,
+        styleLabel,
+        isHighLevel,
+        freeUse,
+        showTags: isHighLevel || freeUse,
+      },
+    );
+
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content,
+    });
+  }
+
   async _sendItemToChat(item) {
     const maxUses = Math.max(0, Number(item.system.maxUses ?? 0));
     const usedUses = Math.min(maxUses, Math.max(0, Number(item.system.usedUses ?? 0)));
@@ -945,6 +986,15 @@ export class MadDragonActorSheet extends ActorSheet {
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content,
+      flags: {
+        [MDTRoll.FLAG_SCOPE]: {
+          actorId: this.actor.id,
+          [MDTRoll.SPELL_USES_FLAG]:
+            item.type === "spell" && !freeUse
+              ? { remainingUses, maxUses }
+              : null,
+        },
+      },
     });
   }
 

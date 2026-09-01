@@ -1,5 +1,9 @@
 /* Mad Dragon Turbo — chat (cards de item, resultado de rolagem) */
 
+.chat-message .message-header .message-sender {
+  white-space: normal !important;
+}
+
 .mdt-roll .mdt-die-rerolled {
   opacity: 0.5;
 }
@@ -59,6 +63,18 @@
   color: #271e12;
 }
 
+.mdt-spell-details-card .item-card-style {
+  margin: 4px 0 0;
+  font-size: 0.86em;
+  color: #4b4234;
+}
+
+.mdt-spell-details-card .item-card-spell-name {
+  margin: 0 0 8px;
+  font-size: 0.98em;
+  color: #271e12;
+}
+
 .mdt-item-card .item-card-desc {
   font-size: 0.9em;
   color: #26211b;
@@ -92,6 +108,15 @@
   color: #1d5a3c;
 }
 
+/* Usos de magia no chat: ocultos por padrão; liberados só para dono/GM via JS */
+.mdt-item-card .mdt-spell-uses-private {
+  display: none !important;
+}
+
+.mdt-item-card .mdt-spell-uses-private.mdt-spell-uses-visible {
+  display: inline-flex !important;
+}
+
 .mdt-roll .mdt-roll-title {
   margin: 0;
   font-size: 1.1em;
@@ -106,6 +131,9 @@
 
 .mdt-roll .mdt-roll-meta {
   margin-bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .mdt-roll .mdt-roll-section {

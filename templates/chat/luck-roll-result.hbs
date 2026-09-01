@@ -1,0 +1,19 @@
+<div class="mdt-chat-card mdt-roll mdt-luck-roll">
+  <header class="mdt-chat-card-header">
+    <h3 class="mdt-roll-title">{{actorName}}</h3>
+    <p class="mdt-roll-breakdown">{{styleLabel}}</p>
+  </header>
+
+  <div class="mdt-roll-meta">
+    <span class="mdt-pill">
+      {{localize "MDT.roll.luck.chose"}}: {{choiceLabel}}
+    </span>
+    <span class="mdt-pill">
+      {{localize "MDT.roll.luck.fate"}}: {{fateLabel}}
+    </span>
+  </div>
+
+  <div class="roll-result mdt-roll-result {{analysis.cssClass}}">
+    {{localize analysis.label}}
+  </div>
+</div>

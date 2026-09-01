@@ -1,0 +1,27 @@
+<div class="mdt-chat-card mdt-item-card mdt-spell-details-card">
+  <header class="mdt-chat-card-header">
+    <h3 class="item-card-name">{{actorName}}</h3>
+    {{#if styleLabel}}
+      <p class="item-card-style">{{styleLabel}}</p>
+    {{/if}}
+  </header>
+
+  <h4 class="item-card-spell-name">{{item.name}}</h4>
+
+  {{#if system.description}}
+    <div class="item-card-desc">
+      {{{system.description}}}
+    </div>
+  {{/if}}
+
+  {{#if showTags}}
+    <div class="item-card-meta">
+      {{#if isHighLevel}}
+        <span class="mdt-pill item-card-level">{{localize "MDT.spell.highLevelCheckbox"}}</span>
+      {{/if}}
+      {{#if freeUse}}
+        <span class="mdt-pill item-card-free-use">{{localize "MDT.spell.freeUseCheckbox"}}</span>
+      {{/if}}
+    </div>
+  {{/if}}
+</div>

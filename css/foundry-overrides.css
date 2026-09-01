@@ -10,23 +10,36 @@ body.game .app.window-app .window-content {
   display: none !important;
 }
 
-/* Diálogo de rolagem: dificuldade em grupos (Comum / Desafiadora / Complexa + Oculta) */
+/* Diálogo de rolagem: tipos de rolagem em seções */
+.mad-dragon-turbo.mdt-roll-dialog-app {
+  width: 285px;
+  min-width: 285px;
+}
+
 .mad-dragon-turbo.mdt-roll-dialog-app .window-content.mdt-roll-dialog-content {
   padding: 10px 12px 12px;
 }
 
-.mdt-roll-dialog-form {
-  margin: 0;
+.mad-dragon-turbo.mdt-roll-dialog-app .form-footer:empty {
+  display: none;
 }
 
-.mdt-roll-dialog-form fieldset.mdt-difficulty-tiers {
+.mdt-roll-dialog-form {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color-scheme: light;
+}
+
+.mdt-roll-dialog-form fieldset.mdt-roll-section {
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 6px;
   padding: 8px 10px 10px;
-  margin: 0 0 10px;
+  margin: 0;
 }
 
-.mdt-roll-dialog-form fieldset.mdt-difficulty-tiers > legend {
+.mdt-roll-dialog-form fieldset.mdt-roll-section > legend {
   padding: 0 4px;
   font-weight: 700;
   font-size: 0.95em;
@@ -45,6 +58,10 @@ body.game .app.window-app .window-content {
   margin-top: 4px;
 }
 
+.mdt-roll-dialog-form .mdt-difficulty-hidden-option {
+  display: block;
+}
+
 .mdt-roll-dialog-form .mdt-difficulty-group-title {
   font-weight: 600;
   font-size: 0.88em;
@@ -58,30 +75,101 @@ body.game .app.window-app .window-content {
   align-items: center;
 }
 
+/* Radios no mesmo padrão de tamanho/layout de .style-line-title */
 .mdt-roll-dialog-form .mdt-difficulty-opt {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  font-size: 0.9em;
+  gap: 6px;
+  min-width: 0;
+  text-align: left;
+  line-height: 1.25;
+  font-size: inherit;
+  font-weight: 700;
   cursor: pointer;
   user-select: none;
 }
 
-.mdt-roll-dialog-form .mdt-difficulty-opt input {
+.mdt-roll-dialog-form .mdt-difficulty-opt input[type="radio"] {
+  flex-shrink: 0;
   margin: 0;
-}
-
-.mdt-roll-dialog-form .mdt-difficulty-hidden-row {
-  padding-top: 2px;
-  border-top: 1px dashed rgba(0, 0, 0, 0.12);
-  padding-left: calc(6.5rem + 12px);
+  accent-color: #5a4a3a;
+  color-scheme: light;
+  opacity: 1;
+  filter: none;
+  cursor: pointer;
 }
 
 .mdt-roll-dialog-form .mdt-difficulty-hidden-label {
+  font-weight: 700;
+}
+
+.mdt-roll-dialog-form .mdt-action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.mdt-roll-dialog-form .mdt-dice-count-buttons button {
+  flex: 1 1 calc(33.333% - 6px);
+}
+
+.mdt-roll-dialog-form .mdt-luck-buttons button {
+  flex: 1 1 calc(50% - 6px);
+}
+
+.mdt-roll-dialog-form .mdt-only-gm-row {
+  display: flex;
+  align-items: center;
+  padding-top: 2px;
+}
+
+.mdt-roll-dialog-form .mdt-only-gm-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-weight: 600;
+  line-height: 1;
+  min-height: 1.25rem;
+  cursor: pointer;
+  color: #3d362c;
+}
+
+.mdt-roll-dialog-form .mdt-only-gm-label input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  align-self: center;
+  accent-color: #5a4a3a;
+  color-scheme: light;
+  opacity: 1;
+  filter: none;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.mdt-roll-dialog-form .mdt-only-gm-label .mdt-only-gm-text {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  color: #3d362c;
+}
+
+.mdt-roll-dialog-form .mdt-only-gm-label i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  line-height: 1;
+  flex: 0 0 auto;
+  color: #5a4a3a;
+  opacity: 0.92;
 }
 
 /* Oculta ativa: faixas numéricas ficam secundárias (ainda é possível clicar para trocar) */
-.mdt-roll-dialog-form:has(input[name="difficulty"][value="hidden"]:checked) fieldset.mdt-difficulty-tiers {
+.mdt-roll-dialog-form:has(input[name="difficulty"][value="hidden"]:checked)
+  .mdt-difficulty-row:not(.mdt-difficulty-hidden-option) {
   opacity: 0.5;
 }

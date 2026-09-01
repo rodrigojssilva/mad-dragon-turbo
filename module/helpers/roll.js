@@ -5,6 +5,8 @@ export class MDTRoll {
 
   static ROLL_STATE_FLAG = "rollState";
 
+  static SPELL_USES_FLAG = "spellUses";
+
   // Dificuldades e seus valores mínimos para sucesso (UI: radios em grupos no diálogo)
   static DIFFICULTIES = {
     hidden: { label: "MDT.roll.difficulties.hidden", min: null },
@@ -29,20 +31,90 @@ export class MDTRoll {
   }
 
   static registerChatHooks() {
-    Hooks.on("renderChatMessage", (message, html) => {
+    if (MDTRoll._chatHooksRegistered) return;
+    MDTRoll._chatHooksRegistered = true;
+
+    const apply = (message, html) => {
       MDTRoll.activateChatListeners(message, html);
-    });
+      MDTRoll.applySpellUsesVisibility(message, html);
+    };
+
+    // Foundry v13: renderChatMessageHTML (HTMLElement). v12 legado: renderChatMessage.
+    Hooks.on("renderChatMessageHTML", apply);
+    Hooks.on("renderChatMessage", apply);
+  }
+
+  /** Reaplica visibilidade nas mensagens já renderizadas (ex.: após F5). */
+  static refreshSpellUsesVisibilityInChat() {
+    for (const message of game.messages ?? []) {
+      const el =
+        document.querySelector(`.chat-message[data-message-id="${message.id}"]`) ??
+        ui.chat?.element?.querySelector?.(`.chat-message[data-message-id="${message.id}"]`);
+      if (el) MDTRoll.applySpellUsesVisibility(message, el);
+    }
   }
 
   static activateChatListeners(message, html) {
-    const root = html?.[0] ?? html;
+    const root = MDTRoll._chatHtmlRoot(html);
     if (!root) return;
 
     root.querySelectorAll(".mdt-reroll-trigger").forEach((button) => {
+      if (button.dataset.mdtRerollBound === "1") return;
+      button.dataset.mdtRerollBound = "1";
       button.addEventListener("click", async (event) => {
         event.preventDefault();
         await MDTRoll.handleManualReroll(message, button);
       });
+    });
+  }
+
+  static _chatHtmlRoot(html) {
+    if (!html) return null;
+    if (html instanceof HTMLElement) return html;
+    if (html?.[0] instanceof HTMLElement) return html[0];
+    if (typeof html.querySelectorAll === "function") return html;
+    return null;
+  }
+
+  /** Usos restantes de magia no chat: só dono do personagem e mestre (usuário logado). */
+  static userCanSeeSpellUses(message) {
+    const user = game.user;
+    if (!user) return false;
+    if (user.isGM) return true;
+
+    const flagActorId = message.getFlag?.(MDTRoll.FLAG_SCOPE, "actorId");
+    const actorId = flagActorId || message.speaker?.actor;
+    const actor = actorId ? game.actors.get(actorId) : null;
+    if (actor?.isOwner) return true;
+    if (
+      actor &&
+      typeof actor.testUserPermission === "function" &&
+      actor.testUserPermission(user, CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER)
+    ) {
+      return true;
+    }
+
+    const authorId =
+      message.author?.id ??
+      message.user?.id ??
+      message._source?.author ??
+      message._source?.user;
+    if (authorId && authorId === user.id) return true;
+
+    return false;
+  }
+
+  static applySpellUsesVisibility(message, html) {
+    const root = MDTRoll._chatHtmlRoot(html);
+    if (!root) return;
+
+    const privateUses = root.querySelectorAll(".mdt-spell-uses-private");
+    if (!privateUses.length) return;
+
+    const canSee = MDTRoll.userCanSeeSpellUses(message);
+    privateUses.forEach((el) => {
+      el.classList.toggle("mdt-spell-uses-visible", canSee);
+      el.hidden = !canSee;
     });
   }
 
@@ -124,6 +196,7 @@ export class MDTRoll {
         difficultyLabel,
         diceCount: state.diceCount,
         isHidden,
+        onlyGM: !!state.onlyGM,
         rolls: [reroll],
         showRerollButton: false,
         rollState: updatedState,
@@ -150,47 +223,169 @@ export class MDTRoll {
       "systems/mad-dragon-turbo/templates/dialogs/roll-dialog.hbs",
     );
 
+    const readForm = (button) => new foundry.applications.ux.FormDataExtended(button.form).object;
 
-    const result = await foundry.applications.api.DialogV2.wait({
-      classes: ["mad-dragon-turbo", "mdt-roll-dialog-app"],
-      window: {
-        title: game.i18n.localize("MDT.roll.title"),
-        contentClasses: ["mad-dragon-turbo", "mdt-roll-dialog-content"],
-      },
-      content,
-      buttons: [
-        {
-          label: "1",
-          action: "roll-1d6",
-          icon: "fa-solid fa-dice-one",
-          callback: (event, button) => {
-            const fd = new foundry.applications.ux.FormDataExtended(button.form);
-            return { difficulty: fd.object.difficulty, diceCount: 1 };
-          },
+    const result = await new Promise((resolve) => {
+      let settled = false;
+      const finish = (payload) => {
+        if (settled) return;
+        settled = true;
+        resolve(payload);
+      };
+
+      const app = new foundry.applications.api.DialogV2({
+        classes: ["mad-dragon-turbo", "mdt-roll-dialog-app"],
+        window: {
+          title: game.i18n.localize("MDT.roll.title"),
+          contentClasses: ["mad-dragon-turbo", "mdt-roll-dialog-content"],
         },
-        {
-          label: "2",
-          action: "roll-2d6",
-          icon: "fa-solid fa-dice-two",
-          callback: (event, button) => {
-            const fd = new foundry.applications.ux.FormDataExtended(button.form);
-            return { difficulty: fd.object.difficulty, diceCount: 2 };
+        position: { width: 285 },
+        content,
+        buttons: [
+          {
+            label: "1",
+            action: "roll-1d6",
+            icon: "fa-solid fa-dice-one",
+            callback: (_event, button) => {
+              const fd = readForm(button);
+              finish({
+                difficulty: fd.difficulty,
+                diceCount: 1,
+                onlyGM: !!fd.onlyGM,
+              });
+            },
           },
-        },
-        {
-          label: "3",
-          action: "roll-3d6",
-          icon: "fa-solid fa-dice-three",
-          callback: (event, button) => {
-            const fd = new foundry.applications.ux.FormDataExtended(button.form);
-            return { difficulty: fd.object.difficulty, diceCount: 3 };
+          {
+            label: "2",
+            action: "roll-2d6",
+            icon: "fa-solid fa-dice-two",
+            callback: (_event, button) => {
+              const fd = readForm(button);
+              finish({
+                difficulty: fd.difficulty,
+                diceCount: 2,
+                onlyGM: !!fd.onlyGM,
+              });
+            },
           },
-        },
-      ],
+          {
+            label: "3",
+            action: "roll-3d6",
+            icon: "fa-solid fa-dice-three",
+            callback: (_event, button) => {
+              const fd = readForm(button);
+              finish({
+                difficulty: fd.difficulty,
+                diceCount: 3,
+                onlyGM: !!fd.onlyGM,
+              });
+            },
+          },
+          {
+            label: game.i18n.localize("MDT.roll.luckEven"),
+            action: "luck-even",
+            icon: "fa-solid fa-clover",
+            callback: (_event, button) => {
+              const fd = readForm(button);
+              finish({ type: "luck", choice: "even", onlyGM: !!fd.onlyGM });
+            },
+          },
+          {
+            label: game.i18n.localize("MDT.roll.luckOdd"),
+            action: "luck-odd",
+            icon: "fa-solid fa-clover",
+            callback: (_event, button) => {
+              const fd = readForm(button);
+              finish({ type: "luck", choice: "odd", onlyGM: !!fd.onlyGM });
+            },
+          },
+        ],
+      });
+
+      app.addEventListener("render", () => {
+        MDTRoll._repositionRollDialogButtons(app);
+      });
+      app.addEventListener("close", () => finish(null), { once: true });
+      app.render({ force: true });
     });
 
     if (!result) return;
+    if (result.type === "luck") {
+      await MDTRoll.executeLuck(actor, result);
+      return;
+    }
     await MDTRoll.execute(actor, result);
+  }
+
+  /** Move os botões do rodapé do DialogV2 para os fieldsets do formulário. */
+  static _repositionRollDialogButtons(dialog) {
+    const root = dialog?.element ?? dialog;
+    if (!root) return;
+
+    const diceSlot = root.querySelector('[data-mdt-button-slot="dice"]');
+    const luckSlot = root.querySelector('[data-mdt-button-slot="luck"]');
+    if (!diceSlot || !luckSlot) return;
+    if (diceSlot.childElementCount || luckSlot.childElementCount) return;
+
+    const footer = root.querySelector(".form-footer");
+    if (!footer) return;
+
+    const move = (action, slot) => {
+      const btn = footer.querySelector(`button[data-action="${action}"]`);
+      if (btn) slot.appendChild(btn);
+    };
+
+    move("roll-1d6", diceSlot);
+    move("roll-2d6", diceSlot);
+    move("roll-3d6", diceSlot);
+    move("luck-even", luckSlot);
+    move("luck-odd", luckSlot);
+  }
+
+  // -----------------------------------------------
+  // Sorte (par/ímpar) — rolagem de 1d2
+  // -----------------------------------------------
+  static async executeLuck(actor, options) {
+    if (!MDTRoll.actorHasValidStyle(actor)) {
+      ui.notifications?.warn(game.i18n.localize("MDT.styles.required"));
+      return;
+    }
+
+    const { choice, onlyGM = false } = options;
+    if (choice !== "even" && choice !== "odd") return;
+
+    const actorStyle = actor.system.style;
+    const styleLabel = game.i18n.localize(`MDT.styles.${actorStyle}`);
+
+    const roll = await new Roll("1d2").evaluate({ allowInteractive: false });
+    const face = roll.dice[0].results[0].result;
+    const fate = face % 2 === 0 ? "even" : "odd";
+    const success = choice === fate;
+
+    const analysis = success
+      ? { label: "MDT.roll.result.success", cssClass: "result-success" }
+      : { label: "MDT.roll.result.failure", cssClass: "result-failure" };
+
+    const content = await foundry.applications.handlebars.renderTemplate(
+      "systems/mad-dragon-turbo/templates/chat/luck-roll-result.hbs",
+      {
+        actorName: actor.name,
+        styleLabel,
+        choiceLabel: game.i18n.localize(`MDT.roll.luck.${choice}`),
+        fateLabel: game.i18n.localize(`MDT.roll.luck.${fate}`),
+        analysis,
+      },
+    );
+
+    const messageData = {
+      user: game.user.id,
+      speaker: ChatMessage.getSpeaker({ actor }),
+      content,
+      rolls: [roll],
+    };
+
+    if (onlyGM) ChatMessage.applyRollMode(messageData, "gmroll");
+    await ChatMessage.create(messageData, onlyGM ? { rollMode: "gmroll" } : {});
   }
 
   // -----------------------------------------------
@@ -202,7 +397,7 @@ export class MDTRoll {
       return;
     }
 
-    const { difficulty, diceCount } = options;
+    const { difficulty, diceCount, onlyGM = false } = options;
     if (!Object.hasOwn(MDTRoll.DIFFICULTIES, difficulty)) {
       ui.notifications?.warn(game.i18n.localize("MDT.roll.invalidDifficulty"));
       return;
@@ -240,6 +435,7 @@ export class MDTRoll {
       difficultyLabel,
       diceCount,
       isHidden,
+      onlyGM: !!onlyGM,
       rolls: [roll],
       showRerollButton: canManualReroll,
       rollState: {
@@ -247,6 +443,7 @@ export class MDTRoll {
         style: actorStyle,
         difficulty,
         isHidden,
+        onlyGM: !!onlyGM,
         diceCount,
         breakdown,
         originalResults,
@@ -366,6 +563,7 @@ export class MDTRoll {
       difficultyLabel,
       diceCount,
       isHidden,
+      onlyGM = false,
       rolls,
       showRerollButton = false,
       rollState = null,
@@ -409,6 +607,7 @@ export class MDTRoll {
       };
     }
 
-    await ChatMessage.create(messageData);
+    if (onlyGM) ChatMessage.applyRollMode(messageData, "gmroll");
+    await ChatMessage.create(messageData, onlyGM ? { rollMode: "gmroll" } : {});
   }
 }

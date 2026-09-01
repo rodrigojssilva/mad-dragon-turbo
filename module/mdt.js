@@ -82,13 +82,16 @@ Hooks.on("init", async function () {
   CONFIG.Combat.documentClass = MDTCombat;
 
   registerHandlebarsHelpers();
+
+  MDTRoll.registerChatHooks();
 });
 
 Hooks.on("ready", function () {
   console.log("MDT | Mad Dragon Turbo pronto!");
 
-  MDTRoll.registerChatHooks();
   game.mdt = { MDTRoll }; // facilita testes no console
+  // Mensagens já no log (F5/login) podem ter renderizado antes do usuário estar pronto
+  MDTRoll.refreshSpellUsesVisibilityInChat();
 });
 
 Hooks.on("updateActor", async (actor, change) => {

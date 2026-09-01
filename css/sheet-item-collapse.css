@@ -75,13 +75,15 @@
   color: #333;
 }
 
-.mad-dragon-turbo .item-to-chat {
+.mad-dragon-turbo .item-to-chat,
+.mad-dragon-turbo .spell-to-chat {
   cursor: pointer;
   color: #558;
   opacity: 0.7;
 }
 
-.mad-dragon-turbo .item-to-chat:hover {
+.mad-dragon-turbo .item-to-chat:hover,
+.mad-dragon-turbo .spell-to-chat:hover {
   opacity: 1;
 }
 

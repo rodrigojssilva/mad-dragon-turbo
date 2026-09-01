@@ -1,6 +1,13 @@
-<form class="mdt-roll-dialog-form">
-  <fieldset class="mdt-difficulty-tiers">
-    <legend>{{localize "MDT.roll.difficulty"}}</legend>
+<div class="mdt-roll-dialog-form">
+  <fieldset class="mdt-roll-section mdt-difficulty-tiers">
+    <legend>{{localize "MDT.roll.rollTest"}}</legend>
+
+    <div class="mdt-difficulty-row mdt-difficulty-hidden-option">
+      <label class="mdt-difficulty-opt mdt-difficulty-hidden-label">
+        <input type="radio" name="difficulty" value="hidden" checked />
+        {{localize "MDT.roll.difficulties.hidden"}}
+      </label>
+    </div>
 
     <div class="mdt-difficulty-row">
       <span class="mdt-difficulty-group-title">{{localize "MDT.roll.difficulties.groupCommon"}}</span>
@@ -41,10 +48,21 @@
     </div>
   </fieldset>
 
-  <div class="mdt-difficulty-hidden-row">
-    <label class="mdt-difficulty-opt mdt-difficulty-hidden-label">
-      <input type="radio" name="difficulty" value="hidden" checked />
-      {{localize "MDT.roll.difficulties.hidden"}}
+  <fieldset class="mdt-roll-section mdt-dice-count-section">
+    <legend>{{localize "MDT.roll.diceCount"}}</legend>
+    <div class="mdt-action-buttons mdt-dice-count-buttons" data-mdt-button-slot="dice"></div>
+  </fieldset>
+
+  <fieldset class="mdt-roll-section mdt-luck-section">
+    <legend>{{localize "MDT.roll.rollLuck"}}</legend>
+    <div class="mdt-action-buttons mdt-luck-buttons" data-mdt-button-slot="luck"></div>
+  </fieldset>
+
+  <div class="mdt-only-gm-row">
+    <label class="mdt-difficulty-opt mdt-only-gm-label" title="{{localize 'MDT.roll.onlyGMHint'}}">
+      <input type="checkbox" name="onlyGM" value="1" />
+      <span class="mdt-only-gm-text">{{localize "MDT.roll.onlyGM"}}</span>
+      <i class="fas fa-user-secret" aria-hidden="true"></i>
     </label>
   </div>
-</form>
+</div>
