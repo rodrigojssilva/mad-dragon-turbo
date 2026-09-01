@@ -76,11 +76,13 @@
     },
     "specialty": {
       "new": "Nova Especialidade",
-      "empty": "Nenhuma especialidade."
+      "empty": "Nenhuma especialidade.",
+      "alreadyExists": "A especialidade \"{name}\" já está na ficha e não pode ser adicionada novamente."
     },
     "spell": {
       "new": "Novo poder/magia",
       "empty": "Nenhum poder/magia",
+      "alreadyExists": "O poder/magia \"{name}\" já está na ficha e não pode ser adicionado novamente.",
       "rest": "Descanso",
       "restDone": "Descanso concluído: usos de magias restaurados.",
       "restNoSpells": "Não há magias para restaurar.",
@@ -102,7 +104,12 @@
     "equipment": {
       "new": "Novo item",
       "empty": "Nenhum item.",
-      "quantityLabel": "Quantidade"
+      "quantityLabel": "Quantidade",
+      "confirmStackTitle": "Item já existe",
+      "confirmStack": "O item \"{name}\" já está na ficha (quantidade atual: {quantity}). Deseja continuar? A quantidade será aumentada em 1.",
+      "confirmStackYes": "Adicionar",
+      "confirmStackNo": "Cancelar",
+      "stacked": "Quantidade de \"{name}\" aumentada para {quantity}."
     },
     "item": {
       "toChat": "Enviar para o chat",

@@ -1009,6 +1009,93 @@ export class MadDragonActorSheet extends ActorSheet {
     await Item.create({ name: names[type], type }, { parent: this.actor });
   }
 
+  /**
+   * Drop de item na ficha:
+   * - equipamento duplicado: confirma e soma +1 na quantidade
+   * - especialidade/magia duplicada: bloqueia criação
+   */
+  async _onDropItemCreate(itemData, event) {
+    const items = Array.isArray(itemData) ? itemData : [itemData];
+    const toCreate = [];
+
+    for (const data of items) {
+      const type = data?.type;
+
+      if (type === "specialty" || type === "spell") {
+        const existing = this._findExistingItem(data, type);
+        if (existing) {
+          const key =
+            type === "specialty"
+              ? "MDT.specialty.alreadyExists"
+              : "MDT.spell.alreadyExists";
+          ui.notifications?.warn(
+            game.i18n.format(key, { name: existing.name }),
+          );
+          continue;
+        }
+        toCreate.push(data);
+        continue;
+      }
+
+      if (type !== "equipment") {
+        toCreate.push(data);
+        continue;
+      }
+
+      const existing = this._findExistingItem(data, "equipment");
+      if (!existing) {
+        toCreate.push(data);
+        continue;
+      }
+
+      const currentQty = Math.max(0, Number(existing.system.quantity ?? 1));
+      const confirmed = await foundry.applications.api.DialogV2.confirm({
+        window: { title: game.i18n.localize("MDT.equipment.confirmStackTitle") },
+        content: `<p>${game.i18n.format("MDT.equipment.confirmStack", {
+          name: existing.name,
+          quantity: currentQty,
+        })}</p>`,
+        modal: true,
+        yes: { label: game.i18n.localize("MDT.equipment.confirmStackYes") },
+        no: { label: game.i18n.localize("MDT.equipment.confirmStackNo") },
+      });
+
+      if (!confirmed) continue;
+
+      const nextQty = currentQty + 1;
+      await existing.update({ "system.quantity": nextQty });
+      ui.notifications?.info(
+        game.i18n.format("MDT.equipment.stacked", {
+          name: existing.name,
+          quantity: nextQty,
+        }),
+      );
+    }
+
+    if (!toCreate.length) return [];
+    return super._onDropItemCreate(toCreate, event);
+  }
+
+  _findExistingItem(itemData, type) {
+    const sourceId =
+      foundry.utils.getProperty(itemData, "flags.core.sourceId") ||
+      foundry.utils.getProperty(itemData, "_stats.compendiumSource") ||
+      null;
+    const name = (itemData?.name ?? "").toString().trim().toLowerCase();
+
+    return this.actor.items.find((item) => {
+      if (item.type !== type) return false;
+      if (sourceId) {
+        const itemSource =
+          item.getFlag?.("core", "sourceId") ||
+          item._stats?.compendiumSource ||
+          null;
+        if (itemSource && itemSource === sourceId) return true;
+      }
+      return (item.name ?? "").toString().trim().toLowerCase() === name;
+    });
+  }
+
   async _onDeleteItem(event) {
     await this._flushVitalInputsToActor();
 
