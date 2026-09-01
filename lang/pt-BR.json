@@ -82,6 +82,7 @@
     "spell": {
       "new": "Novo poder/magia",
       "empty": "Nenhum poder/magia",
+      "labelPrefix": "Poder/Magia",
       "alreadyExists": "O poder/magia \"{name}\" já está na ficha e não pode ser adicionado novamente.",
       "rest": "Descanso",
       "restDone": "Descanso concluído: usos de magias restaurados.",
@@ -135,6 +136,12 @@
       "rollLuck": "Rolar sorte",
       "onlyGM": "GM",
       "onlyGMHint": "Rolagem privada pro Mestre",
+      "selectTargetPrompt": "Clique em um token para selecionar como alvo do poder/magia",
+      "selectTargetCancel": "Cancelar",
+      "selectTargetCancelled": "Seleção de alvo cancelada.",
+      "selectTargetOther": "Selecione outro token como alvo.",
+      "selectTargetNoCanvas": "Não há cena ativa para selecionar um alvo.",
+      "target": "Alvo",
       "luckEven": "Sorte (par)",
       "luckOdd": "Sorte (ímpar)",
       "luck": {

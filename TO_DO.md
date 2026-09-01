@@ -45,7 +45,9 @@
 - [x] Adicionar opção de rolagem privada para o GM
 - [x] Adicionar opção de rolagem de sorte
 - [x] Quantidade de poderes/magias restante deve aparecer somente para o dono do personagem e o mestre
-- [x] Os itens poderiam ter "stack", hoje quando eu arrasto os itens para a ficha, os equipados ele cria duas vezes, por exemplo uma "espada x1 e espada x1", ao invés disso, ele deveria somar itens iguais e multiplicar. "espada x2"
+- [x] Tratamentos: Ao arrastar dados para a ficha bloquear duplicar especialidade e poder/magia
+- [x] Tratamentos: Ao arrastar dados para a ficha incrementar quantidade do item (alerta o usuário e pede confirmação)
+- [x] Indicar alvo do ataque ao usar poderes/magias
 
 ---
 
@@ -56,8 +58,6 @@
 - [ ] Tentar adicionar controle no turno de batalha para pular os inimigos derrotados (acredito que já está funcionando)
 - [ ] Tentar adicionar opção para exibir turno igual o plugin usado pelo Ricky
 - [ ] Adicionar no ataque inimigo para que a rolagem de defesa seja ativada a partir do chat
-- [ ] Indicar alvo do ataque ao usar poderes/magias
 - [ ] Os itens tem que ter um botão pra usar, que nem as magias , e um contador no mesmo estilo do dito acima.
-
 - [ ] Criar mais duas estâncias de itens "armas" e "proteções" sendo equipamentos divididos em "armas", "proteções" e "itens"
 - [ ] Quando clicar no item arma, ele pede um alvo, quando vc clica no alvo ele pede a rolagem (1,2 ou 3 dados), depois na mensagem ele diz o nome.dl.personagem, que armas ele está atacando, se acertou e quanto dano vai causar com ela.

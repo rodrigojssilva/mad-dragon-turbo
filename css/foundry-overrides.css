@@ -16,6 +16,13 @@ body.game .app.window-app .window-content {
   min-width: 285px;
 }
 
+.mad-dragon-turbo.mdt-select-target-app .mdt-select-target-msg {
+  margin: 0;
+  text-align: center;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
 .mad-dragon-turbo.mdt-roll-dialog-app .window-content.mdt-roll-dialog-content {
   padding: 10px 12px 12px;
 }

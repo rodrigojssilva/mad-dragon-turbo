@@ -216,7 +216,7 @@ export class MDTRoll {
   static async prompt(actor) {
     if (!MDTRoll.actorHasValidStyle(actor)) {
       ui.notifications?.warn(game.i18n.localize("MDT.styles.required"));
-      return;
+      return false;
     }
 
     const content = await foundry.applications.handlebars.renderTemplate(
@@ -309,12 +309,202 @@ export class MDTRoll {
       app.render({ force: true });
     });
 
-    if (!result) return;
+    if (!result) return false;
+
     if (result.type === "luck") {
       await MDTRoll.executeLuck(actor, result);
-      return;
+      return true;
     }
     await MDTRoll.execute(actor, result);
+    return true;
+  }
+
+  /**
+   * Aguarda clique em um token. Mostra diálogo com instrução + Cancelar.
+   * Usa coordenadas do canvas (funciona para GM e jogadores).
+   */
+  static async pickTargetToken({ excludeActorId = null } = {}) {
+    if (!canvas?.ready || !canvas.tokens) {
+      ui.notifications?.warn(game.i18n.localize("MDT.roll.selectTargetNoCanvas"));
+      return null;
+    }
+
+    const pointerRoot = MDTRoll._getCanvasPointerRoot();
+    if (!pointerRoot) {
+      ui.notifications?.warn(game.i18n.localize("MDT.roll.selectTargetNoCanvas"));
+      return null;
+    }
+
+    const previousCursor =
+      pointerRoot.style?.cursor ?? document.body.style.cursor ?? "";
+    if (pointerRoot.style) pointerRoot.style.cursor = "crosshair";
+    else document.body.style.cursor = "crosshair";
+
+    return new Promise((resolve) => {
+      let settled = false;
+      let pickerApp = null;
+
+      const cleanup = () => {
+        pointerRoot.removeEventListener?.("pointerdown", onPointerDown, true);
+        canvas.stage?.off?.("pointerdown", onStagePointerDown);
+        document.removeEventListener("keydown", onKeyDown, true);
+        if (pointerRoot.style) pointerRoot.style.cursor = previousCursor;
+        else document.body.style.cursor = previousCursor;
+        if (MDTRoll._cancelTargetPick === cancelQuiet) MDTRoll._cancelTargetPick = null;
+        if (pickerApp) {
+          const app = pickerApp;
+          pickerApp = null;
+          app.close({ animate: false }).catch(() => {});
+        }
+      };
+
+      const finish = (token) => {
+        if (settled) return;
+        settled = true;
+        cleanup();
+        resolve(token);
+      };
+
+      const cancelQuiet = () => finish(null);
+
+      const cancel = () => {
+        ui.notifications?.info(game.i18n.localize("MDT.roll.selectTargetCancelled"));
+        finish(null);
+      };
+
+      const onKeyDown = (event) => {
+        if (event.key === "Escape") {
+          event.preventDefault();
+          cancel();
+        }
+      };
+
+      const tryPickToken = (clientX, clientY, event) => {
+        if (event?.target?.closest?.(".mdt-select-target-app")) return false;
+
+        const token = MDTRoll._findTokenAtClientPoint(clientX, clientY);
+        if (!token) return false;
+
+        const targetActorId = token.actor?.id ?? null;
+        if (excludeActorId && targetActorId && targetActorId === excludeActorId) {
+          ui.notifications?.warn(game.i18n.localize("MDT.roll.selectTargetOther"));
+          event?.preventDefault?.();
+          event?.stopPropagation?.();
+          return true;
+        }
+
+        event?.preventDefault?.();
+        event?.stopPropagation?.();
+        finish(token);
+        return true;
+      };
+
+      const onPointerDown = (event) => {
+        if (event.button !== 0) return;
+        tryPickToken(event.clientX, event.clientY, event);
+      };
+
+      const onStagePointerDown = (event) => {
+        const button = event.button ?? event.data?.button;
+        if (button != null && button !== 0) return;
+
+        const client =
+          event.client ??
+          (Number.isFinite(event.clientX)
+            ? { x: event.clientX, y: event.clientY }
+            : null);
+        if (!client) {
+          // Fallback: token sob o ponteiro do Foundry
+          const hovered = canvas.tokens.hover;
+          if (!hovered) return;
+          const targetActorId = hovered.actor?.id ?? null;
+          if (excludeActorId && targetActorId && targetActorId === excludeActorId) {
+            ui.notifications?.warn(game.i18n.localize("MDT.roll.selectTargetOther"));
+            return;
+          }
+          finish(hovered);
+          return;
+        }
+
+        tryPickToken(client.x, client.y, event);
+      };
+
+      if (typeof MDTRoll._cancelTargetPick === "function") MDTRoll._cancelTargetPick();
+      MDTRoll._cancelTargetPick = cancelQuiet;
+
+      pickerApp = new foundry.applications.api.DialogV2({
+        classes: ["mad-dragon-turbo", "mdt-select-target-app"],
+        window: {
+          title: game.i18n.localize("MDT.roll.target"),
+          contentClasses: ["mad-dragon-turbo", "mdt-select-target-content"],
+        },
+        position: { width: 320 },
+        content: `<p class="mdt-select-target-msg">${game.i18n.localize("MDT.roll.selectTargetPrompt")}</p>`,
+        modal: false,
+        buttons: [
+          {
+            action: "cancel",
+            label: game.i18n.localize("MDT.roll.selectTargetCancel"),
+            icon: "fa-solid fa-xmark",
+            callback: () => cancel(),
+          },
+        ],
+      });
+
+      pickerApp.addEventListener(
+        "close",
+        () => {
+          if (!settled) cancel();
+        },
+        { once: true },
+      );
+
+      pointerRoot.addEventListener("pointerdown", onPointerDown, true);
+      canvas.stage?.on?.("pointerdown", onStagePointerDown);
+      document.addEventListener("keydown", onKeyDown, true);
+      pickerApp.render({ force: true });
+    });
+  }
+
+  /** Elemento DOM do canvas (Foundry v13: app.canvas / app.view / #board). */
+  static _getCanvasPointerRoot() {
+    return (
+      canvas.app?.canvas ||
+      canvas.app?.view ||
+      document.getElementById("board") ||
+      document.querySelector("canvas#board") ||
+      document.querySelector("#board canvas") ||
+      null
+    );
+  }
+
+  /** Resolve o token sob o ponto do mouse (client coords). */
+  static _findTokenAtClientPoint(clientX, clientY) {
+    if (!canvas?.ready || !canvas.tokens) return null;
+
+    let x;
+    let y;
+    if (typeof canvas.canvasCoordinatesFromClient === "function") {
+      const coords = canvas.canvasCoordinatesFromClient({ x: clientX, y: clientY });
+      x = coords?.x;
+      y = coords?.y;
+    }
+
+    if (!Number.isFinite(x) || !Number.isFinite(y)) {
+      return canvas.tokens.hover || null;
+    }
+
+    const tokens = canvas.tokens.placeables.filter(
+      (t) => t.visible && t.renderable !== false && !t.document?.hidden,
+    );
+
+    for (let i = tokens.length - 1; i >= 0; i--) {
+      const token = tokens[i];
+      const bounds = token.bounds;
+      if (bounds?.contains?.(x, y)) return token;
+    }
+
+    return canvas.tokens.hover || null;
   }
 
   /** Move os botões do rodapé do DialogV2 para os fieldsets do formulário. */

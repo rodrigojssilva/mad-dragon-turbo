@@ -897,7 +897,7 @@ export class MadDragonActorSheet extends ActorSheet {
     const itemId = event.currentTarget.dataset.itemId;
     const item = this.actor.items.get(itemId);
     if (!item || item.type !== "spell") return;
-    await this._sendSpellDetailsToChat(item);
+    await this._sendSpellToChat(item, { isCast: false });
   }
 
   async _onSpellCast(event) {
@@ -914,50 +914,87 @@ export class MadDragonActorSheet extends ActorSheet {
       return;
     }
 
-    if (item.system.freeUse) {
-      await this._sendItemToChat(item);
-      return;
+    const freeUse = !!item.system.freeUse;
+    if (!freeUse) {
+      const maxUses = Math.max(0, Number(item.system.maxUses ?? 0));
+      const usedUses = Math.max(0, Number(item.system.usedUses ?? 0));
+      const remainingUses = Math.max(0, maxUses - usedUses);
+      if (remainingUses <= 0) {
+        ui.notifications?.warn(game.i18n.localize("MDT.spell.noUses"));
+        return;
+      }
     }
 
-    const maxUses = Math.max(0, Number(item.system.maxUses ?? 0));
-    const usedUses = Math.max(0, Number(item.system.usedUses ?? 0));
-    const remainingUses = Math.max(0, maxUses - usedUses);
+    const actor = this.actor;
+    await this.close();
 
-    if (remainingUses <= 0) {
-      ui.notifications?.warn(game.i18n.localize("MDT.spell.noUses"));
-      return;
+    const token = await MDTRoll.pickTargetToken();
+    if (!token) return;
+
+    const targetName = token.name || token.actor?.name || "";
+
+    // Consome o uso somente após o alvo ser escolhido
+    const freshItem = actor.items.get(itemId);
+    if (!freshItem || freshItem.type !== "spell") return;
+
+    if (!freeUse) {
+      const maxUses = Math.max(0, Number(freshItem.system.maxUses ?? 0));
+      const usedUses = Math.max(0, Number(freshItem.system.usedUses ?? 0));
+      const remainingUses = Math.max(0, maxUses - usedUses);
+      if (remainingUses <= 0) {
+        ui.notifications?.warn(game.i18n.localize("MDT.spell.noUses"));
+        return;
+      }
+      await freshItem.update({ "system.usedUses": usedUses + 1 });
     }
 
-    const nextUsedUses = usedUses + 1;
-    await item.update({ "system.usedUses": nextUsedUses });
-
-    await this._sendItemToChat(item);
+    await this._sendSpellToChat(freshItem, { targetName, actor, isCast: true });
   }
 
-  async _sendSpellDetailsToChat(item) {
-    const actorStyle = this.actor.system.style;
+  /**
+   * Card unificado de poder/magia no chat.
+   * isCast=true → uso da magia (com usos); isCast=false → envio de detalhes.
+   */
+  async _sendSpellToChat(item, { targetName = null, actor = null, isCast = false } = {}) {
+    const chatActor = actor || this.actor;
+    const maxUses = Math.max(0, Number(item.system.maxUses ?? 0));
+    const usedUses = Math.min(maxUses, Math.max(0, Number(item.system.usedUses ?? 0)));
+    const remainingUses = Math.max(0, maxUses - usedUses);
+    const isHighLevel = item.system.highLevel ?? item.system.level === "high";
+    const freeUse = !!item.system.freeUse;
+    const actorStyle = chatActor.system?.style;
     const styleLabel = actorStyle
       ? game.i18n.localize(`MDT.styles.${actorStyle}`)
       : "";
-    const isHighLevel = item.system.highLevel ?? item.system.level === "high";
-    const freeUse = !!item.system.freeUse;
 
     const content = await foundry.applications.handlebars.renderTemplate(
-      "systems/mad-dragon-turbo/templates/chat/spell-details-card.hbs",
+      "systems/mad-dragon-turbo/templates/chat/spell-card.hbs",
       {
         item,
         system: item.system,
-        actorName: this.actor.name,
+        actorName: chatActor.name,
         styleLabel,
+        targetName,
+        isCast,
         isHighLevel,
         freeUse,
-        showTags: isHighLevel || freeUse,
+        maxUses,
+        usedUses,
+        remainingUses,
+        showTags: !isCast && (isHighLevel || freeUse),
       },
     );
 
     await ChatMessage.create({
-      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      speaker: ChatMessage.getSpeaker({ actor: chatActor }),
       content,
+      flags: {
+        [MDTRoll.FLAG_SCOPE]: {
+          actorId: chatActor.id,
+          [MDTRoll.SPELL_USES_FLAG]:
+            isCast && !freeUse ? { remainingUses, maxUses } : null,
+        },
+      },
     });
   }
 
