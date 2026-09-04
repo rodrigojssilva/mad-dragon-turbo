@@ -1,0 +1,17 @@
+<div class="mdt-chat-card mdt-item-card mdt-consumable-card">
+  <header class="mdt-chat-card-header">
+    <h3 class="item-card-name">{{actorName}}</h3>
+    {{#if styleLabel}}
+      <p class="item-card-style">{{styleLabel}}</p>
+    {{/if}}
+  </header>
+
+  <h4 class="item-card-consumed">{{localize "MDT.consumable.consumed"}}: <strong>{{item.name}}</strong></h4>
+
+  {{#if system.description}}
+    <hr class="mdt-card-sep" />
+    <div class="item-card-desc">
+      {{{system.description}}}
+    </div>
+  {{/if}}
+</div>

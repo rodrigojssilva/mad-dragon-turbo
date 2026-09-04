@@ -47,7 +47,8 @@
     "Item": {
     "specialty": {},
     "spell": {},
-    "equipment": {}
+    "equipment": {},
+    "consumable": {}
     }
   },
   "packs": [],

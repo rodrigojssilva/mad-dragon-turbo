@@ -14,11 +14,13 @@
       "npc": "Ficha de NPC",
       "enemy": "Ficha de Inimigo",
       "tabCharacteristics": "• Características",
+      "tabInventory": "• Inventário",
       "tabDiary": "• Diário",
       "item": "Ficha de item"
     },
     "spells": "Poderes/Magias",
     "equipments": "Itens",
+    "consumables": "Consumível",
     "resources": "Recursos",
     "status": {
       "incapacitated": "Crítico",
@@ -108,6 +110,20 @@
       "quantityLabel": "Quantidade",
       "confirmStackTitle": "Item já existe",
       "confirmStack": "O item \"{name}\" já está na ficha (quantidade atual: {quantity}). Deseja continuar? A quantidade será aumentada em 1.",
+      "confirmStackYes": "Adicionar",
+      "confirmStackNo": "Cancelar",
+      "stacked": "Quantidade de \"{name}\" aumentada para {quantity}."
+    },
+    "consumable": {
+      "new": "Novo consumível",
+      "empty": "Nenhum consumível.",
+      "quantityLabel": "Quantidade",
+      "use": "Usar consumível",
+      "consumed": "Consumiu",
+      "emptyUsesShort": "Sem usos",
+      "noUses": "Esse consumível está sem usos disponíveis.",
+      "confirmStackTitle": "Consumível já existe",
+      "confirmStack": "O consumível \"{name}\" já está na ficha (quantidade atual: {quantity}). Deseja continuar? A quantidade será aumentada em 1.",
       "confirmStackYes": "Adicionar",
       "confirmStackNo": "Cancelar",
       "stacked": "Quantidade de \"{name}\" aumentada para {quantity}."
@@ -224,7 +240,8 @@
     "Item": {
       "specialty": "Especialidade",
       "spell": "Magia",
-      "equipment": "Equipamento"
+      "equipment": "Equipamento",
+      "consumable": "Consumível"
     }
   }
 }

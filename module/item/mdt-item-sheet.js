@@ -133,7 +133,7 @@ export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
       });
     }
 
-    if (this.item.type === "equipment") {
+    if (this.item.type === "equipment" || this.item.type === "consumable") {
       return this.item.update({
         name,
         system: {

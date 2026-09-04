@@ -75,13 +75,15 @@
   border-top: 1px solid #c6b89c;
 }
 
-.mdt-spell-card .item-card-style {
+.mdt-spell-card .item-card-style,
+.mdt-consumable-card .item-card-style {
   margin: 4px 0 0;
   font-size: 0.86em;
   color: #4b4234;
 }
 
-.mdt-spell-card .item-card-spell-name {
+.mdt-spell-card .item-card-spell-name,
+.mdt-consumable-card .item-card-consumed {
   margin: 0 0 8px;
   font-size: 0.98em;
   font-weight: 400;
@@ -89,12 +91,14 @@
 }
 
 .mdt-spell-card .item-card-spell-name strong,
+.mdt-consumable-card .item-card-consumed strong,
 .mdt-item-card .item-card-target strong {
   font-size: 1.05em;
   font-weight: 700;
 }
 
-.mdt-spell-card .item-card-desc {
+.mdt-spell-card .item-card-desc,
+.mdt-consumable-card .item-card-desc {
   margin: 0;
 }
 

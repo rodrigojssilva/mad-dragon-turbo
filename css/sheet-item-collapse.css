@@ -76,14 +76,18 @@
 }
 
 .mad-dragon-turbo .item-to-chat,
-.mad-dragon-turbo .spell-to-chat {
+.mad-dragon-turbo .spell-to-chat,
+.mad-dragon-turbo .consumable-use,
+.mad-dragon-turbo .spell-cast {
   cursor: pointer;
   color: #558;
   opacity: 0.7;
 }
 
 .mad-dragon-turbo .item-to-chat:hover,
-.mad-dragon-turbo .spell-to-chat:hover {
+.mad-dragon-turbo .spell-to-chat:hover,
+.mad-dragon-turbo .consumable-use:hover,
+.mad-dragon-turbo .spell-cast:hover {
   opacity: 1;
 }
 

@@ -10,6 +10,7 @@ import { SpellModel } from "./models/item/spell-model.js";
 import { MDTRoll } from "./helpers/roll.js";
 import { MDTCombat } from "./combat/combat.js";
 import { EquipmentModel } from "./models/item/equipment-model.js";
+import { ConsumableModel } from "./models/item/consumable-model.js";
 import { MdtItemSheet } from "./item/mdt-item-sheet.js";
 import { registerMdtPartials } from "./templates/register-partials.js";
 import { registerForcePackItemType } from "./compendium/force-pack-item-type.js";
@@ -28,6 +29,7 @@ Hooks.on("init", async function () {
     specialty: SpecialtyModel,
     spell: SpellModel,
     equipment: EquipmentModel,
+    consumable: ConsumableModel,
   });
 
   registerForcePackItemType();
@@ -49,6 +51,7 @@ Hooks.on("init", async function () {
     specialty: "TYPES.Item.specialty",
     spell: "TYPES.Item.spell",
     equipment: "TYPES.Item.equipment",
+    consumable: "TYPES.Item.consumable",
   };
 
   // Registra fichas
@@ -73,7 +76,7 @@ Hooks.on("init", async function () {
   );
 
   foundry.documents.collections.Items.registerSheet("mad-dragon-turbo", MdtItemSheet, {
-    types: ["specialty", "spell", "equipment"],
+    types: ["specialty", "spell", "equipment", "consumable"],
     makeDefault: true,
     label: "MDT.sheet.item",
   });

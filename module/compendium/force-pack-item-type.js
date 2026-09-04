@@ -1,5 +1,6 @@
 const PACK_FORCED_ITEM_TYPE = {
   "mdt-equipments": "equipment",
+  "mdt-consumables": "consumable",
   "mdt-spells": "spell",
   "mdt-specialties": "specialty",
 };

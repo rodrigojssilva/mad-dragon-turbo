@@ -789,6 +789,16 @@
   font-family: inherit;
 }
 
+/* INVENTÁRIO — mesma disposição em 2 colunas de Especialidades e Poderes/Magias */
+.mad-dragon-turbo .tab.inventory .sheet-columns {
+  align-items: stretch;
+}
+
+.mad-dragon-turbo .tab.inventory .col-left,
+.mad-dragon-turbo .tab.inventory .col-right {
+  min-width: 0;
+}
+
 /* DIARIO — colunas em stack vertical; altura dos blocos segue a viewport (sem flex na cadeia da ficha, que colapsava o conteúdo) */
 .mad-dragon-turbo .tab.diary {
   height: 100%;
@@ -892,7 +902,8 @@
   background: #fff;
 }
 
-.mad-dragon-turbo .item-row-spell.spell-no-uses {
+.mad-dragon-turbo .item-row-spell.spell-no-uses,
+.mad-dragon-turbo .item-row-consumable.consumable-no-uses {
   background: rgba(140, 30, 30, 0.06);
 }
 
@@ -917,6 +928,12 @@
   font-weight: 600;
 }
 
-.mad-dragon-turbo .spell-cast[data-no-uses="true"] {
+.mad-dragon-turbo .spell-cast[data-no-uses="true"],
+.mad-dragon-turbo .consumable-use[data-no-uses="true"] {
+  opacity: 0.45;
+}
+
+.mad-dragon-turbo .spell-cast[data-no-uses="true"]:hover,
+.mad-dragon-turbo .consumable-use[data-no-uses="true"]:hover {
   opacity: 0.45;
 }

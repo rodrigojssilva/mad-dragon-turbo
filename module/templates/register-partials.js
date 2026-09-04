@@ -10,7 +10,9 @@ export async function registerMdtPartials() {
       ["mdt/character-style-section", `${prefix}/character-style-section.hbs`],
       ["mdt/character-vitals-row", `${prefix}/character-vitals-row.hbs`],
       ["mdt/character-tab-characteristics", `${prefix}/character-tab-characteristics.hbs`],
+      ["mdt/character-tab-inventory", `${prefix}/character-tab-inventory.hbs`],
       ["mdt/character-equipment-list", `${prefix}/character-equipment-list.hbs`],
+      ["mdt/character-consumable-list", `${prefix}/character-consumable-list.hbs`],
       ["mdt/character-spells-list", `${prefix}/character-spells-list.hbs`],
       ["mdt/character-tab-diary", `${prefix}/character-tab-diary.hbs`],
     ];

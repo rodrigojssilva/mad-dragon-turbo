@@ -108,19 +108,27 @@ export class MadDragonActorSheet extends ActorSheet {
           noUses: !freeUse && remainingUses <= 0,
         };
       });
-    context.equipment = actor.items
-      .filter((i) => i.type === "equipment")
-      .map((equipment) => ({
-        id: equipment.id,
-        name: equipment.name,
-        type: equipment.type,
-        system: {
-          ...equipment.system,
-          quantity: Math.max(0, Number(equipment.system.quantity ?? 1)),
-        },
-      }));
+    context.equipment = this._mapQuantityItems(actor, "equipment");
+    context.consumables = this._mapQuantityItems(actor, "consumable").map((item) => ({
+      ...item,
+      noUses: item.system.quantity <= 0,
+    }));
 
     return context;
+  }
+
+  _mapQuantityItems(actor, type) {
+    return actor.items
+      .filter((i) => i.type === type)
+      .map((item) => ({
+        id: item.id,
+        name: item.name,
+        type: item.type,
+        system: {
+          ...item.system,
+          quantity: Math.max(0, Number(item.system.quantity ?? 1)),
+        },
+      }));
   }
 
   activateListeners(html) {
@@ -149,6 +157,11 @@ export class MadDragonActorSheet extends ActorSheet {
     // Adicionar equipamento
     el.querySelector(".add-equipment")?.addEventListener("click", () =>
       this._onAddItem("equipment"),
+    );
+
+    // Adicionar consumível
+    el.querySelector(".add-consumable")?.addEventListener("click", () =>
+      this._onAddItem("consumable"),
     );
 
     // Expandir/Contrair collapse
@@ -192,6 +205,11 @@ export class MadDragonActorSheet extends ActorSheet {
     // Usar magia
     el.querySelectorAll(".spell-cast").forEach((btn) => {
       btn.addEventListener("click", this._onSpellCast.bind(this));
+    });
+
+    // Usar consumível
+    el.querySelectorAll(".consumable-use").forEach((btn) => {
+      btn.addEventListener("click", this._onConsumableUse.bind(this));
     });
     el.querySelectorAll(".spell-free-use-input").forEach((input) => {
       input.addEventListener("change", (event) => {
@@ -763,7 +781,7 @@ export class MadDragonActorSheet extends ActorSheet {
       updateData["system.maxUses"] = newMaxUses;
       updateData["system.usedUses"] = newUsedUses;
     }
-    if (item.type === "equipment") {
+    if (item.type === "equipment" || item.type === "consumable") {
       updateData["system.quantity"] = newQuantity;
     }
 
@@ -951,6 +969,47 @@ export class MadDragonActorSheet extends ActorSheet {
     await this._sendSpellToChat(freshItem, { targetName, actor, isCast: true });
   }
 
+  async _onConsumableUse(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const itemId = event.currentTarget.dataset.itemId;
+    const item = this.actor.items.get(itemId);
+    if (!item || item.type !== "consumable") return;
+
+    await this._flushVitalInputsToActor();
+
+    const quantity = Math.max(0, Number(item.system.quantity ?? 0));
+    if (quantity <= 0) {
+      ui.notifications?.warn(game.i18n.localize("MDT.consumable.noUses"));
+      return;
+    }
+
+    await item.update({ "system.quantity": quantity - 1 });
+    await this._sendConsumableUseToChat(item);
+  }
+
+  async _sendConsumableUseToChat(item) {
+    const actorStyle = this.actor.system?.style;
+    const styleLabel = actorStyle
+      ? game.i18n.localize(`MDT.styles.${actorStyle}`)
+      : "";
+
+    const content = await foundry.applications.handlebars.renderTemplate(
+      "systems/mad-dragon-turbo/templates/chat/consumable-card.hbs",
+      {
+        item,
+        system: item.system,
+        actorName: this.actor.name,
+        styleLabel,
+      },
+    );
+
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content,
+    });
+  }
+
   /**
    * Card unificado de poder/magia no chat.
    * isCast=true → uso da magia (com usos); isCast=false → envio de detalhes.
@@ -1042,13 +1101,14 @@ export class MadDragonActorSheet extends ActorSheet {
       specialty: game.i18n.localize("MDT.specialty.new"),
       spell: game.i18n.localize("MDT.spell.new"),
       equipment: game.i18n.localize("MDT.equipment.new"),
+      consumable: game.i18n.localize("MDT.consumable.new"),
     };
     await Item.create({ name: names[type], type }, { parent: this.actor });
   }
 
   /**
    * Drop de item na ficha:
-   * - equipamento duplicado: confirma e soma +1 na quantidade
+   * - equipamento/consumível duplicado: confirma e soma +1 na quantidade
    * - especialidade/magia duplicada: bloqueia criação
    */
   async _onDropItemCreate(itemData, event) {
@@ -1074,27 +1134,28 @@ export class MadDragonActorSheet extends ActorSheet {
         continue;
       }
 
-      if (type !== "equipment") {
+      if (type !== "equipment" && type !== "consumable") {
         toCreate.push(data);
         continue;
       }
 
-      const existing = this._findExistingItem(data, "equipment");
+      const existing = this._findExistingItem(data, type);
       if (!existing) {
         toCreate.push(data);
         continue;
       }
 
+      const i18nPrefix = type === "consumable" ? "MDT.consumable" : "MDT.equipment";
       const currentQty = Math.max(0, Number(existing.system.quantity ?? 1));
       const confirmed = await foundry.applications.api.DialogV2.confirm({
-        window: { title: game.i18n.localize("MDT.equipment.confirmStackTitle") },
-        content: `<p>${game.i18n.format("MDT.equipment.confirmStack", {
+        window: { title: game.i18n.localize(`${i18nPrefix}.confirmStackTitle`) },
+        content: `<p>${game.i18n.format(`${i18nPrefix}.confirmStack`, {
           name: existing.name,
           quantity: currentQty,
         })}</p>`,
         modal: true,
-        yes: { label: game.i18n.localize("MDT.equipment.confirmStackYes") },
-        no: { label: game.i18n.localize("MDT.equipment.confirmStackNo") },
+        yes: { label: game.i18n.localize(`${i18nPrefix}.confirmStackYes`) },
+        no: { label: game.i18n.localize(`${i18nPrefix}.confirmStackNo`) },
       });
 
       if (!confirmed) continue;
@@ -1102,7 +1163,7 @@ export class MadDragonActorSheet extends ActorSheet {
       const nextQty = currentQty + 1;
       await existing.update({ "system.quantity": nextQty });
       ui.notifications?.info(
-        game.i18n.format("MDT.equipment.stacked", {
+        game.i18n.format(`${i18nPrefix}.stacked`, {
           name: existing.name,
           quantity: nextQty,
         }),
