@@ -3,6 +3,18 @@
         <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
         <div class="header-fields flexcol">
             <label class="item-sheet-label flexcol">
+                {{localize "MDT.equipment.kindLabel"}}
+                <select class="item-kind-input" name="system.kind" {{#if requiresKind}}required{{/if}}
+                    {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}}>
+                    <option value="" {{#unless system.kind}}selected{{/unless}}>{{localize "MDT.equipment.kindPlaceholder"}}</option>
+                    <option value="armor" {{#if (eq system.kind "armor")}}selected{{/if}}>{{localize "MDT.equipment.kinds.armor"}}</option>
+                    <option value="shield" {{#if (eq system.kind "shield")}}selected{{/if}}>{{localize "MDT.equipment.kinds.shield"}}</option>
+                    <option value="accessory" {{#if (eq system.kind "accessory")}}selected{{/if}}>{{localize "MDT.equipment.kinds.accessory"}}</option>
+                    <option value="melee" {{#if (eq system.kind "melee")}}selected{{/if}}>{{localize "MDT.equipment.kinds.melee"}}</option>
+                    <option value="firearm" {{#if (eq system.kind "firearm")}}selected{{/if}}>{{localize "MDT.equipment.kinds.firearm"}}</option>
+                </select>
+            </label>
+            <label class="item-sheet-label flexcol">
                 {{localize "MDT.item.nameLabel"}}
                 <input class="item-name-input" name="name" type="text" value="{{item.name}}"
                     placeholder="{{localize 'MDT.item.namePlaceholder'}}"
@@ -43,11 +55,31 @@
             </label>
 
             <div class="equipment-fields">
-                <label class="item-sheet-label flexcol">
-                    {{localize "MDT.equipment.quantityLabel"}}
-                    <input class="equipment-qty-input" type="number" name="system.quantity" min="0" value="{{system.quantity}}"
-                        {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}} />
-                </label>
+                <div class="equipment-inline-fields">
+                    <label class="spell-checkbox">
+                        <input class="equipment-free-use-input" name="system.freeUse" type="checkbox" {{#if system.freeUse}}checked{{/if}}
+                            {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{else}}{{#unless equipmentIsWeapon}}disabled{{/unless}}{{/unless}}{{/unless}} />
+                        {{localize "MDT.spell.freeUseCheckbox"}}
+                    </label>
+                    <label class="item-sheet-label equipment-inline-qty">
+                        <span class="equipment-inline-qty-label">{{localize "MDT.equipment.quantityLabel"}}</span>
+                        <input class="equipment-qty-input" type="number" name="system.quantity" min="0" value="{{system.quantity}}"
+                            {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}} />
+                    </label>
+                    <label class="spell-checkbox equipment-track-ammo-label">
+                        <input class="equipment-track-ammo-input" name="system.trackAmmo" type="checkbox" {{#if system.trackAmmo}}checked{{/if}}
+                            {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{else}}{{#unless equipmentIsWeapon}}disabled{{/unless}}{{/unless}}{{/unless}} />
+                        {{localize "MDT.equipment.trackAmmo"}}
+                    </label>
+                    <label class="item-sheet-label equipment-inline-qty">
+                        <span class="equipment-inline-qty-label">{{localize "MDT.equipment.ammoLabel"}}</span>
+                        <input class="equipment-ammo-input" type="number" name="system.ammo" min="0" value="{{system.ammo}}"
+                            {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{else}}{{#unless equipmentIsWeapon}}disabled{{/unless}}{{/unless}}{{/unless}} />
+                    </label>
+                </div>
+                {{#if equipmentFreeUseActive}}
+                <p class="spell-free-use-note">{{localize "MDT.spell.freeUseEnabled"}}</p>
+                {{/if}}
             </div>
         </div>
     </section>

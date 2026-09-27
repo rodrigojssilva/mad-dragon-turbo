@@ -15,8 +15,20 @@ import { MdtItemSheet } from "./item/mdt-item-sheet.js";
 import { registerMdtPartials } from "./templates/register-partials.js";
 import { registerForcePackItemType } from "./compendium/force-pack-item-type.js";
 
+async function reloadMdtTranslations() {
+  try {
+    const bucket = game.i18n?.translations?.MDT;
+    if (!bucket || typeof bucket !== "object") return;
+    bucket.equipments = "EQUIPAMENTOS";
+  } catch (error) {
+    console.error("MDT | Falha ao ajustar o título de equipamentos:", error);
+  }
+}
+
 Hooks.on("init", async function () {
   console.log("MDT | Inicializando Mad Dragon Turbo...");
+
+  await reloadMdtTranslations();
 
   // Registra os DataModels — substitui o template.json
   Object.assign(CONFIG.Actor.dataModels, {
@@ -87,6 +99,18 @@ Hooks.on("init", async function () {
   registerHandlebarsHelpers();
 
   MDTRoll.registerChatHooks();
+});
+
+Hooks.on("preCreateItem", (doc) => {
+  if (doc.type !== "equipment" && doc.type !== "consumable") return;
+  const kind = doc.system?.kind ?? "";
+  if (kind) return;
+  if (doc.getFlag("mad-dragon-turbo", "requiresKind")) return;
+  doc.updateSource({
+    flags: {
+      "mad-dragon-turbo": { requiresKind: true },
+    },
+  });
 });
 
 Hooks.on("ready", function () {

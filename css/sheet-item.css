@@ -92,8 +92,16 @@
 .mad-dragon-turbo.sheet.item .item-sheet-label .item-name-input,
 .mad-dragon-turbo.sheet.item .item-sheet-label .item-desc-input,
 .mad-dragon-turbo.sheet.item .item-sheet-label .equipment-qty-input,
+.mad-dragon-turbo.sheet.item .item-sheet-label .equipment-ammo-input,
+.mad-dragon-turbo.sheet.item .item-sheet-label .item-kind-input,
 .mad-dragon-turbo.sheet.item .item-sheet-label .spell-used-uses-input,
 .mad-dragon-turbo.sheet.item .item-sheet-label .spell-max-uses-input {
+  font-weight: normal;
+}
+
+.mad-dragon-turbo.sheet.item .item-sheet-label .item-kind-input {
+  width: 100%;
+  box-sizing: border-box;
   font-weight: normal;
 }
 

@@ -1,5 +1,5 @@
 const { TypeDataModel } = foundry.abstract;
-const { HTMLField, NumberField } = foundry.data.fields;
+const { HTMLField, NumberField, StringField } = foundry.data.fields;
 
 export class ConsumableModel extends TypeDataModel {
   static defineSchema() {
@@ -10,6 +10,11 @@ export class ConsumableModel extends TypeDataModel {
         integer: true,
         min: 0,
         initial: 1,
+      }),
+      kind: new StringField({
+        required: false,
+        blank: true,
+        initial: "",
       }),
     };
   }

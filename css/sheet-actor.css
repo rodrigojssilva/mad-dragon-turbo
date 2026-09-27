@@ -789,13 +789,16 @@
   font-family: inherit;
 }
 
-/* INVENTÁRIO — mesma disposição em 2 colunas de Especialidades e Poderes/Magias */
+/* INVENTÁRIO — Equipamentos e Consumível em duas linhas, cada uma na largura da aba */
 .mad-dragon-turbo .tab.inventory .sheet-columns {
+  flex-direction: column;
   align-items: stretch;
 }
 
 .mad-dragon-turbo .tab.inventory .col-left,
 .mad-dragon-turbo .tab.inventory .col-right {
+  flex: 0 0 auto;
+  width: 100%;
   min-width: 0;
 }
 
@@ -886,7 +889,7 @@
   margin-bottom: 5px;
 }
 
-.mad-dragon-turbo .equipment-fields label {
+.mad-dragon-turbo .equipment-fields label:not(.spell-checkbox) {
   font-size: 0.8em;
   font-weight: bold;
   display: flex;
@@ -894,16 +897,92 @@
   gap: 4px;
 }
 
-.mad-dragon-turbo .equipment-qty-input {
+.mad-dragon-turbo .equipment-fields .spell-checkbox {
+  flex-direction: row;
+  font-size: 0.85em;
+}
+
+.mad-dragon-turbo .equipment-inline-fields {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: center;
+  column-gap: 8px;
+  row-gap: 8px;
+  width: 100%;
+  margin-top: 6px;
+}
+
+.mad-dragon-turbo .equipment-inline-fields .spell-checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0;
+  gap: 6px;
+  font-size: 0.85em;
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+.mad-dragon-turbo .equipment-fields label.equipment-inline-qty {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0;
+  gap: 6px;
+  min-width: 0;
+  max-width: 100%;
+  font-size: 0.85em;
+  white-space: normal;
+  overflow: hidden;
+}
+
+.mad-dragon-turbo .equipment-inline-fields .equipment-inline-qty-label {
+  flex: 0 0 7.6em;
+  white-space: nowrap;
+}
+
+.mad-dragon-turbo .equipment-inline-fields .equipment-qty-input,
+.mad-dragon-turbo .equipment-inline-fields .equipment-ammo-input {
+  flex: 1 1 0;
+  width: 0;
+  max-width: 100%;
+  min-width: 0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 3px 6px;
+  font-size: 0.9em;
+  background: #fff;
+  box-sizing: border-box;
+  font-weight: normal;
+}
+
+.mad-dragon-turbo .equipment-fields select,
+.mad-dragon-turbo .equipment-qty-input,
+.mad-dragon-turbo .equipment-ammo-input {
   width: 100%;
   border: 1px solid #bdbdbd;
   border-radius: 3px;
   padding: 2px 4px;
   background: #fff;
+  font-weight: normal;
+}
+
+.mad-dragon-turbo .equipment-fields .spell-checkbox-row {
+  margin-top: 6px;
+}
+
+.mad-dragon-turbo .equipment-ammo-badge {
+  margin-left: 6px;
+  font-size: 0.74em;
+  font-weight: 700;
+  color: #3d4a62;
 }
 
 .mad-dragon-turbo .item-row-spell.spell-no-uses,
-.mad-dragon-turbo .item-row-consumable.consumable-no-uses {
+.mad-dragon-turbo .item-row-consumable.consumable-no-uses,
+.mad-dragon-turbo .item-row-equipment.equipment-no-uses {
   background: rgba(140, 30, 30, 0.06);
 }
 
@@ -929,11 +1008,13 @@
 }
 
 .mad-dragon-turbo .spell-cast[data-no-uses="true"],
-.mad-dragon-turbo .consumable-use[data-no-uses="true"] {
+.mad-dragon-turbo .consumable-use[data-no-uses="true"],
+.mad-dragon-turbo .equipment-use[data-no-uses="true"] {
   opacity: 0.45;
 }
 
 .mad-dragon-turbo .spell-cast[data-no-uses="true"]:hover,
-.mad-dragon-turbo .consumable-use[data-no-uses="true"]:hover {
+.mad-dragon-turbo .consumable-use[data-no-uses="true"]:hover,
+.mad-dragon-turbo .equipment-use[data-no-uses="true"]:hover {
   opacity: 0.45;
 }

@@ -1,3 +1,5 @@
+import { isEquipmentWeapon } from "../models/item/equipment-model.js";
+
 export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
   constructor(...args) {
     super(...args);
@@ -36,11 +38,27 @@ export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
       context.spellFreeUseActive = !!systemPlain.freeUse;
     }
 
+    if (item.type === "equipment" || item.type === "consumable") {
+      const kind = systemPlain.kind ?? "";
+      const requiresKind = !!item.getFlag("mad-dragon-turbo", "requiresKind");
+      context.requiresKind = requiresKind;
+      if (requiresKind && !kind && !this._kindPrompted) {
+        this._kindPrompted = true;
+        this._itemEditing = true;
+        context.itemEditing = true;
+      }
+      if (item.type === "equipment") {
+        context.equipmentIsWeapon = isEquipmentWeapon(kind);
+        context.equipmentFreeUseActive = !!systemPlain.freeUse && context.equipmentIsWeapon;
+      }
+    }
+
     return context;
   }
 
   async close(options = {}) {
     this._itemEditing = false;
+    this._kindPrompted = false;
     return super.close(options);
   }
 
@@ -134,13 +152,31 @@ export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
     }
 
     if (this.item.type === "equipment" || this.item.type === "consumable") {
-      return this.item.update({
-        name,
-        system: {
-          description,
-          quantity: Math.max(0, Number(sysIn.quantity ?? 1)),
-        },
-      });
+      const kind = (sysIn.kind ?? "").toString();
+      const requiresKind = !!this.item.getFlag("mad-dragon-turbo", "requiresKind");
+      if (requiresKind && !kind) {
+        const key = this.item.type === "consumable"
+          ? "MDT.consumable.kindRequired"
+          : "MDT.equipment.kindRequired";
+        ui.notifications?.warn(game.i18n.localize(key));
+        return false;
+      }
+
+      const quantity = Math.max(0, Number(sysIn.quantity ?? 1));
+      const system = {
+        description,
+        quantity,
+        kind,
+      };
+      if (this.item.type === "equipment") {
+        system.trackAmmo = !!sysIn.trackAmmo;
+        system.ammo = Math.max(0, Number(sysIn.ammo ?? 0));
+        system.freeUse = !!sysIn.freeUse;
+      }
+
+      const update = { name, system };
+      if (requiresKind && kind) update["flags.mad-dragon-turbo.-=requiresKind"] = null;
+      return this.item.update(update);
     }
 
     if (this.item.type === "spell") {
@@ -184,7 +220,8 @@ export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
     const form = this._getSheetForm();
     if (!form) return;
 
-    await this._persistFromForm(form);
+    const saved = await this._persistFromForm(form);
+    if (saved === false) return;
     this._itemEditing = false;
     this.render();
   }
@@ -224,6 +261,21 @@ export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
       };
       freeUse?.addEventListener("change", sync);
       sync();
+    }
+
+    if (this._itemEditing && this.item.type === "equipment") {
+      const kindEl = form?.querySelector('[name="system.kind"]');
+      const trackAmmoEl = form?.querySelector(".equipment-track-ammo-input");
+      const ammoEl = form?.querySelector(".equipment-ammo-input");
+      const freeUseEl = form?.querySelector(".equipment-free-use-input");
+      const syncWeapon = () => {
+        const isWeapon = kindEl?.value === "melee" || kindEl?.value === "firearm";
+        if (trackAmmoEl) trackAmmoEl.disabled = !isWeapon;
+        if (ammoEl) ammoEl.disabled = !isWeapon;
+        if (freeUseEl) freeUseEl.disabled = !isWeapon;
+      };
+      kindEl?.addEventListener("change", syncWeapon);
+      syncWeapon();
     }
   }
 

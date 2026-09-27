@@ -1,5 +1,36 @@
 const { TypeDataModel } = foundry.abstract;
-const { HTMLField, NumberField } = foundry.data.fields;
+const { HTMLField, NumberField, StringField, BooleanField } = foundry.data.fields;
+
+export const EQUIPMENT_WEAPON_KINDS = ["melee", "firearm"];
+
+export function isEquipmentWeapon(kind) {
+  return EQUIPMENT_WEAPON_KINDS.includes(kind ?? "");
+}
+
+/**
+ * Estado de uso de um equipamento.
+ * Uso livre ignora estoque. Fora de arma, o botão permanece desabilitado.
+ */
+export function equipmentUseState(system) {
+  const kind = system?.kind ?? "";
+  const isWeapon = isEquipmentWeapon(kind);
+  const freeUse = !!system?.freeUse;
+  const trackAmmo = !!system?.trackAmmo;
+  const quantity = Math.max(0, Number(system?.quantity ?? 0));
+  const ammo = Math.max(0, Number(system?.ammo ?? 0));
+  const noUses = isWeapon && !freeUse && (trackAmmo ? ammo <= 0 : quantity <= 0);
+  return {
+    kind,
+    isWeapon,
+    freeUse,
+    trackAmmo,
+    quantity,
+    ammo,
+    noUses,
+    canUse: isWeapon && !noUses,
+    showAmmo: isWeapon && trackAmmo,
+  };
+}
 
 export class EquipmentModel extends TypeDataModel {
   static defineSchema() {
@@ -10,6 +41,25 @@ export class EquipmentModel extends TypeDataModel {
         integer: true,
         min: 0,
         initial: 1,
+      }),
+      kind: new StringField({
+        required: false,
+        blank: true,
+        initial: "",
+      }),
+      trackAmmo: new BooleanField({
+        required: true,
+        initial: false,
+      }),
+      ammo: new NumberField({
+        required: true,
+        integer: true,
+        min: 0,
+        initial: 0,
+      }),
+      freeUse: new BooleanField({
+        required: true,
+        initial: false,
       }),
     };
   }

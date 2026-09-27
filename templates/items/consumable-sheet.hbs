@@ -3,6 +3,17 @@
         <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
         <div class="header-fields flexcol">
             <label class="item-sheet-label flexcol">
+                {{localize "MDT.consumable.kindLabel"}}
+                <select class="item-kind-input" name="system.kind" {{#if requiresKind}}required{{/if}}
+                    {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}}>
+                    <option value="" {{#unless system.kind}}selected{{/unless}}>{{localize "MDT.consumable.kindPlaceholder"}}</option>
+                    <option value="key" {{#if (eq system.kind "key")}}selected{{/if}}>{{localize "MDT.consumable.kinds.key"}}</option>
+                    <option value="potion" {{#if (eq system.kind "potion")}}selected{{/if}}>{{localize "MDT.consumable.kinds.potion"}}</option>
+                    <option value="money" {{#if (eq system.kind "money")}}selected{{/if}}>{{localize "MDT.consumable.kinds.money"}}</option>
+                    <option value="misc" {{#if (eq system.kind "misc")}}selected{{/if}}>{{localize "MDT.consumable.kinds.misc"}}</option>
+                </select>
+            </label>
+            <label class="item-sheet-label flexcol">
                 {{localize "MDT.item.nameLabel"}}
                 <input class="item-name-input" name="name" type="text" value="{{item.name}}"
                     placeholder="{{localize 'MDT.item.namePlaceholder'}}"

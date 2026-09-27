@@ -76,14 +76,16 @@
 }
 
 .mdt-spell-card .item-card-style,
-.mdt-consumable-card .item-card-style {
+.mdt-consumable-card .item-card-style,
+.mdt-equipment-card .item-card-style {
   margin: 4px 0 0;
   font-size: 0.86em;
   color: #4b4234;
 }
 
 .mdt-spell-card .item-card-spell-name,
-.mdt-consumable-card .item-card-consumed {
+.mdt-consumable-card .item-card-consumed,
+.mdt-equipment-card .item-card-consumed {
   margin: 0 0 8px;
   font-size: 0.98em;
   font-weight: 400;
@@ -92,13 +94,21 @@
 
 .mdt-spell-card .item-card-spell-name strong,
 .mdt-consumable-card .item-card-consumed strong,
+.mdt-equipment-card .item-card-consumed strong,
 .mdt-item-card .item-card-target strong {
   font-size: 1.05em;
   font-weight: 700;
 }
 
+.mdt-equipment-card .item-card-stock {
+  margin: 0 0 8px;
+  font-size: 0.9em;
+  color: #271e12;
+}
+
 .mdt-spell-card .item-card-desc,
-.mdt-consumable-card .item-card-desc {
+.mdt-consumable-card .item-card-desc,
+.mdt-equipment-card .item-card-desc {
   margin: 0;
 }
 
@@ -146,6 +156,10 @@
 
 .mdt-item-card .mdt-spell-uses-private.mdt-spell-uses-visible {
   display: inline-flex !important;
+}
+
+.mdt-equipment-card p.item-card-stock.mdt-spell-uses-private.mdt-spell-uses-visible {
+  display: block !important;
 }
 
 .mdt-roll .mdt-roll-title {

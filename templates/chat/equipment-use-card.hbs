@@ -1,0 +1,25 @@
+<div class="mdt-chat-card mdt-item-card mdt-equipment-card">
+  <header class="mdt-chat-card-header">
+    <h3 class="item-card-name">{{actorName}}</h3>
+    {{#if styleLabel}}
+      <p class="item-card-style">{{styleLabel}}</p>
+    {{/if}}
+  </header>
+
+  <h4 class="item-card-consumed">{{localize "MDT.equipment.used"}}: <strong>{{item.name}}</strong></h4>
+
+  {{#if freeUse}}
+    <p class="item-card-stock">{{localize "MDT.spell.freeUseEnabled"}}</p>
+  {{else if trackAmmo}}
+    <p class="item-card-stock mdt-spell-uses-private">{{localize "MDT.equipment.ammoRemaining"}}: <strong>{{ammo}}</strong></p>
+  {{else}}
+    <p class="item-card-stock">{{localize "MDT.equipment.quantityRemaining"}}: <strong>{{quantity}}</strong></p>
+  {{/if}}
+
+  {{#if system.description}}
+    <hr class="mdt-card-sep" />
+    <div class="item-card-desc">
+      {{{system.description}}}
+    </div>
+  {{/if}}
+</div>

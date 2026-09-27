@@ -32,6 +32,16 @@
 
             <div class="item-description hidden">
                 <label>
+                    {{localize "MDT.consumable.kindLabel"}}
+                    <select class="item-kind-input" disabled {{#if this.requiresKind}}required{{/if}}>
+                        <option value="" {{#unless this.system.kind}}selected{{/unless}}>{{localize "MDT.consumable.kindPlaceholder"}}</option>
+                        <option value="key" {{#if (eq this.system.kind "key")}}selected{{/if}}>{{localize "MDT.consumable.kinds.key"}}</option>
+                        <option value="potion" {{#if (eq this.system.kind "potion")}}selected{{/if}}>{{localize "MDT.consumable.kinds.potion"}}</option>
+                        <option value="money" {{#if (eq this.system.kind "money")}}selected{{/if}}>{{localize "MDT.consumable.kinds.money"}}</option>
+                        <option value="misc" {{#if (eq this.system.kind "misc")}}selected{{/if}}>{{localize "MDT.consumable.kinds.misc"}}</option>
+                    </select>
+                </label>
+                <label>
                     {{localize "MDT.item.nameLabel"}}
                     <input class="item-name-input" type="text" disabled value="{{this.name}}"
                         placeholder="{{localize 'MDT.item.namePlaceholder'}}" />

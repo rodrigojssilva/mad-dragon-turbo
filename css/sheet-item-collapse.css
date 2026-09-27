@@ -36,7 +36,8 @@
   display: none;
 }
 
-.mad-dragon-turbo .item-name-input {
+.mad-dragon-turbo .item-name-input,
+.mad-dragon-turbo .item-description .item-kind-input {
   width: 100%;
   border: 1px solid #ccc;
   border-radius: 3px;
@@ -45,6 +46,7 @@
   background: #fff;
   box-sizing: border-box;
   margin-bottom: 3px;
+  font-weight: normal;
 }
 
 .mad-dragon-turbo .item-desc-input {
@@ -78,6 +80,7 @@
 .mad-dragon-turbo .item-to-chat,
 .mad-dragon-turbo .spell-to-chat,
 .mad-dragon-turbo .consumable-use,
+.mad-dragon-turbo .equipment-use,
 .mad-dragon-turbo .spell-cast {
   cursor: pointer;
   color: #558;
@@ -87,8 +90,14 @@
 .mad-dragon-turbo .item-to-chat:hover,
 .mad-dragon-turbo .spell-to-chat:hover,
 .mad-dragon-turbo .consumable-use:hover,
+.mad-dragon-turbo .equipment-use:hover,
 .mad-dragon-turbo .spell-cast:hover {
   opacity: 1;
+}
+
+.mad-dragon-turbo .equipment-use[data-no-uses="true"],
+.mad-dragon-turbo .equipment-use[data-no-uses="true"]:hover {
+  opacity: 0.45;
 }
 
 /* EDITAR ITEM */

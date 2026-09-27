@@ -19,7 +19,7 @@
       "item": "Ficha de item"
     },
     "spells": "Poderes/Magias",
-    "equipments": "Itens",
+    "equipments": "EQUIPAMENTOS",
     "consumables": "Consumível",
     "resources": "Recursos",
     "status": {
@@ -105,11 +105,31 @@
       "usedUsesLockedItem": "Controlado na ficha do personagem ao usar a magia."
     },
     "equipment": {
-      "new": "Novo item",
-      "empty": "Nenhum item.",
+      "new": "Novo equipamento",
+      "empty": "Nenhum equipamento.",
+      "kindLabel": "Tipo",
+      "kindPlaceholder": "Selecione o tipo",
+      "kindRequired": "Selecione o tipo do equipamento antes de salvar.",
+      "kinds": {
+        "armor": "Armadura",
+        "shield": "Escudo",
+        "accessory": "Acessório",
+        "melee": "Arma branca",
+        "firearm": "Arma de fogo"
+      },
       "quantityLabel": "Quantidade",
-      "confirmStackTitle": "Item já existe",
-      "confirmStack": "O item \"{name}\" já está na ficha (quantidade atual: {quantity}). Deseja continuar? A quantidade será aumentada em 1.",
+      "trackAmmo": "Controlar munição",
+      "ammoLabel": "Qtde. Munição",
+      "ammoShort": "Mun.",
+      "use": "Usar equipamento",
+      "used": "Usou",
+      "ammoRemaining": "Munição restante",
+      "quantityRemaining": "Quantidade restante",
+      "emptyUsesShort": "Sem usos",
+      "noUses": "Esse equipamento está sem quantidade disponível.",
+      "noAmmo": "Esse equipamento está sem munição disponível.",
+      "confirmStackTitle": "Equipamento já existe",
+      "confirmStack": "O equipamento \"{name}\" já está na ficha (quantidade atual: {quantity}). Deseja continuar? A quantidade será aumentada em 1.",
       "confirmStackYes": "Adicionar",
       "confirmStackNo": "Cancelar",
       "stacked": "Quantidade de \"{name}\" aumentada para {quantity}."
@@ -118,6 +138,15 @@
       "new": "Novo consumível",
       "empty": "Nenhum consumível.",
       "quantityLabel": "Quantidade",
+      "kindLabel": "Tipo",
+      "kindPlaceholder": "Selecione o tipo",
+      "kindRequired": "Selecione o tipo do consumível antes de salvar.",
+      "kinds": {
+        "key": "Chave",
+        "potion": "Poção",
+        "money": "Dinheiro",
+        "misc": "Diversos"
+      },
       "use": "Usar consumível",
       "consumed": "Consumiu",
       "emptyUsesShort": "Sem usos",
