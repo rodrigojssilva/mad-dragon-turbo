@@ -1,5 +1,5 @@
 const { TypeDataModel } = foundry.abstract;
-const { HTMLField, NumberField, StringField } = foundry.data.fields;
+const { BooleanField, HTMLField, NumberField, StringField } = foundry.data.fields;
 
 export class ConsumableModel extends TypeDataModel {
   static defineSchema() {
@@ -15,6 +15,10 @@ export class ConsumableModel extends TypeDataModel {
         required: false,
         blank: true,
         initial: "",
+      }),
+      freeUse: new BooleanField({
+        required: true,
+        initial: false,
       }),
     };
   }

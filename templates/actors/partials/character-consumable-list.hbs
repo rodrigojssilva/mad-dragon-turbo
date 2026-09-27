@@ -56,11 +56,19 @@
                 </label>
 
                 <div class="equipment-fields">
-                    <label>
-                        {{localize "MDT.consumable.quantityLabel"}}
-                        <input class="equipment-qty-input" type="number" min="0" disabled value="{{this.system.quantity}}" />
-                    </label>
-                    {{#if this.noUses}}
+                    <div class="equipment-inline-fields">
+                        <label class="spell-checkbox">
+                            <input class="consumable-free-use-input" type="checkbox" disabled {{#if this.system.freeUse}}checked{{/if}} />
+                            {{localize "MDT.spell.freeUseCheckbox"}}
+                        </label>
+                        <label class="equipment-inline-qty">
+                            <span class="equipment-inline-qty-label">{{localize "MDT.consumable.quantityLabel"}}</span>
+                            <input class="equipment-qty-input" type="number" min="0" disabled value="{{this.system.quantity}}" />
+                        </label>
+                    </div>
+                    {{#if this.freeUseActive}}
+                    <p class="spell-free-use-note">{{localize "MDT.spell.freeUseEnabled"}}</p>
+                    {{else if this.noUses}}
                     <p class="spell-empty-note">{{localize "MDT.consumable.noUses"}}</p>
                     {{/if}}
                 </div>

@@ -54,6 +54,9 @@ export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
         context.equipmentIsWeapon = isEquipmentWeapon(kind);
         context.equipmentFreeUseActive = !!systemPlain.freeUse && context.equipmentIsWeapon;
       }
+      if (item.type === "consumable") {
+        context.consumableFreeUseActive = !!systemPlain.freeUse;
+      }
     }
 
     return context;
@@ -174,6 +177,9 @@ export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
       if (this.item.type === "equipment") {
         system.trackAmmo = !!sysIn.trackAmmo;
         system.ammo = Math.max(0, Number(sysIn.ammo ?? 0));
+        system.freeUse = !!sysIn.freeUse;
+      }
+      if (this.item.type === "consumable") {
         system.freeUse = !!sysIn.freeUse;
       }
 

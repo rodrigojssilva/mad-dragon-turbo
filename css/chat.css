@@ -104,7 +104,8 @@
   margin: 2px 0 8px;
 }
 
-.mdt-equipment-card .item-card-stock {
+.mdt-equipment-card .item-card-stock,
+.mdt-consumable-card .item-card-stock {
   margin: 0 0 8px;
   font-size: 0.9em;
   color: #271e12;
@@ -162,7 +163,8 @@
   display: inline-flex !important;
 }
 
-.mdt-equipment-card p.item-card-stock.mdt-spell-uses-private.mdt-spell-uses-visible {
+.mdt-equipment-card p.item-card-stock.mdt-spell-uses-private.mdt-spell-uses-visible,
+.mdt-consumable-card p.item-card-stock.mdt-spell-uses-private.mdt-spell-uses-visible {
   display: block !important;
 }
 

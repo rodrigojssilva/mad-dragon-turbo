@@ -59,11 +59,21 @@
             </label>
 
             <div class="equipment-fields">
-                <label class="item-sheet-label flexcol">
-                    {{localize "MDT.consumable.quantityLabel"}}
-                    <input class="equipment-qty-input" type="number" name="system.quantity" min="0" value="{{system.quantity}}"
-                        {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}} />
-                </label>
+                <div class="equipment-inline-fields">
+                    <label class="spell-checkbox">
+                        <input class="consumable-free-use-input" name="system.freeUse" type="checkbox" {{#if system.freeUse}}checked{{/if}}
+                            {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}} />
+                        {{localize "MDT.spell.freeUseCheckbox"}}
+                    </label>
+                    <label class="item-sheet-label equipment-inline-qty">
+                        <span class="equipment-inline-qty-label">{{localize "MDT.consumable.quantityLabel"}}</span>
+                        <input class="equipment-qty-input" type="number" name="system.quantity" min="0" value="{{system.quantity}}"
+                            {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}} />
+                    </label>
+                </div>
+                {{#if consumableFreeUseActive}}
+                <p class="spell-free-use-note">{{localize "MDT.spell.freeUseEnabled"}}</p>
+                {{/if}}
             </div>
         </div>
     </section>

@@ -136,13 +136,18 @@ export class MadDragonActorSheet extends ActorSheet {
     });
     context.consumables = this._mapQuantityItems(actor, "consumable").map((item) => {
       const kind = item.system.kind ?? "";
+      const freeUse = !!item.system.freeUse;
+      const quantity = Math.max(0, Number(item.system.quantity ?? 0));
       return {
         ...item,
         system: {
           ...item.system,
           kind,
+          freeUse,
+          quantity,
         },
-        noUses: item.system.quantity <= 0,
+        freeUseActive: freeUse,
+        noUses: !freeUse && quantity <= 0,
         requiresKind: this._itemRequiresKind(actor, item.id),
         kindIcon: itemKindIconClass(kind),
         kindLabel: itemKindLabel("consumable", kind),
@@ -762,6 +767,7 @@ export class MadDragonActorSheet extends ActorSheet {
     const trackAmmoInput = row.querySelector(".equipment-track-ammo-input");
     const ammoInput = row.querySelector(".equipment-ammo-input");
     const freeUseInput = row.querySelector(".equipment-free-use-input");
+    const consumableFreeUseInput = row.querySelector(".consumable-free-use-input");
     const btnStart = row.querySelector(".item-edit-start");
     const btnSave = row.querySelector(".item-edit-save");
     const btnCancel = row.querySelector(".item-edit-cancel");
@@ -775,6 +781,9 @@ export class MadDragonActorSheet extends ActorSheet {
     if (trackAmmoInput) trackAmmoInput.dataset.originalChecked = trackAmmoInput.checked ? "true" : "false";
     if (ammoInput) ammoInput.dataset.originalValue = ammoInput.value ?? "0";
     if (freeUseInput) freeUseInput.dataset.originalChecked = freeUseInput.checked ? "true" : "false";
+    if (consumableFreeUseInput) {
+      consumableFreeUseInput.dataset.originalChecked = consumableFreeUseInput.checked ? "true" : "false";
+    }
 
     // Habilita inputs e mostra botões de salvar/cancelar
     nameInput.disabled = false;
@@ -785,6 +794,7 @@ export class MadDragonActorSheet extends ActorSheet {
     if (spellUsedUsesInput) spellUsedUsesInput.disabled = false;
     if (equipmentQtyInput) equipmentQtyInput.disabled = false;
     if (kindInput) kindInput.disabled = false;
+    if (consumableFreeUseInput) consumableFreeUseInput.disabled = false;
     this._syncSpellUsesInputs(row);
     this._syncEquipmentWeaponInputs(row);
     btnStart.classList.add("hidden");
@@ -821,6 +831,7 @@ export class MadDragonActorSheet extends ActorSheet {
     const trackAmmoInput = row.querySelector(".equipment-track-ammo-input");
     const ammoInput = row.querySelector(".equipment-ammo-input");
     const freeUseInput = row.querySelector(".equipment-free-use-input");
+    const consumableFreeUseInput = row.querySelector(".consumable-free-use-input");
 
     const btnStart = row.querySelector(".item-edit-start");
     const btnSave = row.querySelector(".item-edit-save");
@@ -864,6 +875,9 @@ export class MadDragonActorSheet extends ActorSheet {
       if (kindInput) updateData["system.kind"] = newKind;
       if (requiresKind && newKind) updateData["flags.mad-dragon-turbo.-=requiresKind"] = null;
     }
+    if (item.type === "consumable") {
+      updateData["system.freeUse"] = !!consumableFreeUseInput?.checked;
+    }
     if (item.type === "equipment") {
       updateData["system.trackAmmo"] = !!trackAmmoInput?.checked;
       updateData["system.ammo"] = Math.max(0, Number(ammoInput?.value ?? item.system.ammo ?? 0));
@@ -880,6 +894,7 @@ export class MadDragonActorSheet extends ActorSheet {
     if (spellUsedUsesInput) spellUsedUsesInput.disabled = true;
     if (equipmentQtyInput) equipmentQtyInput.disabled = true;
     if (kindInput) kindInput.disabled = true;
+    if (consumableFreeUseInput) consumableFreeUseInput.disabled = true;
     this._syncEquipmentWeaponInputs(row);
 
     btnStart.classList.remove("hidden");
@@ -905,6 +920,7 @@ export class MadDragonActorSheet extends ActorSheet {
     const trackAmmoInput = row.querySelector(".equipment-track-ammo-input");
     const ammoInput = row.querySelector(".equipment-ammo-input");
     const freeUseInput = row.querySelector(".equipment-free-use-input");
+    const consumableFreeUseInput = row.querySelector(".consumable-free-use-input");
     const btnStart = row.querySelector(".item-edit-start");
     const btnSave = row.querySelector(".item-edit-save");
     const btnCancel = row.querySelector(".item-edit-cancel");
@@ -927,6 +943,9 @@ export class MadDragonActorSheet extends ActorSheet {
     if (freeUseInput && freeUseInput.dataset.originalChecked != null) {
       freeUseInput.checked = freeUseInput.dataset.originalChecked === "true";
     }
+    if (consumableFreeUseInput && consumableFreeUseInput.dataset.originalChecked != null) {
+      consumableFreeUseInput.checked = consumableFreeUseInput.dataset.originalChecked === "true";
+    }
 
     // Desabilita inputs
     nameInput.disabled = true;
@@ -937,6 +956,7 @@ export class MadDragonActorSheet extends ActorSheet {
     if (spellUsedUsesInput) spellUsedUsesInput.disabled = true;
     if (equipmentQtyInput) equipmentQtyInput.disabled = true;
     if (kindInput) kindInput.disabled = true;
+    if (consumableFreeUseInput) consumableFreeUseInput.disabled = true;
     this._syncEquipmentWeaponInputs(row);
 
     // Oculta botões de salvar/cancelar
@@ -1079,14 +1099,19 @@ export class MadDragonActorSheet extends ActorSheet {
 
     await this._flushVitalInputsToActor();
 
+    const freeUse = !!item.system.freeUse;
     const quantity = Math.max(0, Number(item.system.quantity ?? 0));
-    if (quantity <= 0) {
+    if (!freeUse && quantity <= 0) {
       ui.notifications?.warn(game.i18n.localize("MDT.consumable.noUses"));
       return;
     }
 
-    await item.update({ "system.quantity": quantity - 1 });
-    await this._sendConsumableUseToChat(item);
+    if (!freeUse) {
+      await item.update({ "system.quantity": quantity - 1 });
+    }
+
+    const fresh = this.actor.items.get(itemId) ?? item;
+    await this._sendConsumableUseToChat(fresh, freeUse);
   }
 
   async _onEquipmentUse(event) {
@@ -1187,7 +1212,7 @@ export class MadDragonActorSheet extends ActorSheet {
     });
   }
 
-  async _sendConsumableUseToChat(item) {
+  async _sendConsumableUseToChat(item, freeUse = false) {
     const actorStyle = this.actor.system?.style;
     const styleLabel = actorStyle
       ? game.i18n.localize(`MDT.styles.${actorStyle}`)
@@ -1200,12 +1225,18 @@ export class MadDragonActorSheet extends ActorSheet {
         system: item.system,
         actorName: this.actor.name,
         styleLabel,
+        freeUse,
       },
     );
 
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content,
+      flags: {
+        [MDTRoll.FLAG_SCOPE]: {
+          actorId: this.actor.id,
+        },
+      },
     });
   }
 
