@@ -8,6 +8,9 @@
 
   <h4 class="item-card-consumed">{{localize "MDT.equipment.used"}}: <strong>{{item.name}}</strong></h4>
 
+  <p class="item-card-target">{{localize "MDT.roll.target"}}: <strong>{{targetName}}</strong></p>
+  <p class="item-card-target item-card-damage">{{localize "MDT.equipment.damage"}}: <strong>{{damage}}</strong></p>
+
   {{#if freeUse}}
     <p class="item-card-stock">{{localize "MDT.spell.freeUseEnabled"}}</p>
   {{else if trackAmmo}}

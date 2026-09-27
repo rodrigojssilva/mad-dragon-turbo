@@ -323,7 +323,10 @@ export class MDTRoll {
    * Aguarda clique em um token. Mostra diálogo com instrução + Cancelar.
    * Usa coordenadas do canvas (funciona para GM e jogadores).
    */
-  static async pickTargetToken({ excludeActorId = null } = {}) {
+  static async pickTargetToken({
+    excludeActorId = null,
+    promptKey = "MDT.roll.selectTargetPrompt",
+  } = {}) {
     if (!canvas?.ready || !canvas.tokens) {
       ui.notifications?.warn(game.i18n.localize("MDT.roll.selectTargetNoCanvas"));
       return null;
@@ -439,7 +442,7 @@ export class MDTRoll {
           contentClasses: ["mad-dragon-turbo", "mdt-select-target-content"],
         },
         position: { width: 320 },
-        content: `<p class="mdt-select-target-msg">${game.i18n.localize("MDT.roll.selectTargetPrompt")}</p>`,
+        content: `<p class="mdt-select-target-msg">${game.i18n.localize(promptKey)}</p>`,
         modal: false,
         buttons: [
           {

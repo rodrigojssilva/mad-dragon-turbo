@@ -123,6 +123,8 @@
       "ammoShort": "Mun.",
       "use": "Usar equipamento",
       "used": "Usou",
+      "damage": "Dano",
+      "selectTargetPrompt": "Clique em um token para selecionar como alvo do ataque",
       "ammoRemaining": "Munição restante",
       "quantityRemaining": "Quantidade restante",
       "emptyUsesShort": "Sem usos",

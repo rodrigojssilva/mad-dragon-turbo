@@ -51,6 +51,14 @@
 
 ---
 
+- [x] Atualização do layout do inventário para ser por linha ao invés de coluna
+- [x] Tipos de equipamento e consumível adicionados
+- [x] Controle de munição para tipos de equipamento de armas
+- [x] Opção de "Uso livre" para equipamentos
+- [x] Opção para selecionar alvo do ataque de equipamentos + dano por estilo no chat
+
+---
+
 - [ ] Nos poderes/magias adicionar opção "Pronto"
 - [ ] Nos poderes/magias adicionar opção "Reação"
 - [ ] Exibir no uso da habilitade se foi utilizado como Ação ou Reção
@@ -58,6 +66,3 @@
 - [ ] Tentar adicionar controle no turno de batalha para pular os inimigos derrotados (acredito que já está funcionando)
 - [ ] Tentar adicionar opção para exibir turno igual o plugin usado pelo Ricky
 - [ ] Adicionar no ataque inimigo para que a rolagem de defesa seja ativada a partir do chat
-- [ ] Os itens tem que ter um botão pra usar, que nem as magias , e um contador no mesmo estilo do dito acima.
-- [ ] Criar mais duas estâncias de itens "armas" e "proteções" sendo equipamentos divididos em "armas", "proteções" e "itens"
-- [ ] Quando clicar no item arma, ele pede um alvo, quando vc clica no alvo ele pede a rolagem (1,2 ou 3 dados), depois na mensagem ele diz o nome.dl.personagem, que armas ele está atacando, se acertou e quanto dano vai causar com ela.

@@ -1,5 +1,5 @@
 import { CHARACTER_STYLE_STATS } from "../models/actor/character-model.js";
-import { equipmentUseState } from "../models/item/equipment-model.js";
+import { equipmentUseState, equipmentWeaponDamage } from "../models/item/equipment-model.js";
 import { MDTRoll } from "../helpers/roll.js";
 
 export class MadDragonActorSheet extends ActorSheet {
@@ -1099,20 +1099,52 @@ export class MadDragonActorSheet extends ActorSheet {
       return;
     }
 
-    if (!state.freeUse) {
-      if (state.trackAmmo) {
-        await item.update({ "system.ammo": state.ammo - 1 });
+    if (!MDTRoll.actorHasValidStyle(this.actor)) {
+      ui.notifications?.warn(game.i18n.localize("MDT.styles.required"));
+      return;
+    }
+
+    const actor = this.actor;
+    await this.close();
+
+    const token = await MDTRoll.pickTargetToken({
+      promptKey: "MDT.equipment.selectTargetPrompt",
+    });
+    if (!token) return;
+
+    const targetName = token.name || token.actor?.name || "";
+    const fresh = actor.items.get(itemId);
+    if (!fresh || fresh.type !== "equipment") return;
+
+    const freshState = equipmentUseState(fresh.system);
+    if (!freshState.isWeapon) return;
+    if (freshState.noUses) {
+      const key = freshState.trackAmmo ? "MDT.equipment.noAmmo" : "MDT.equipment.noUses";
+      ui.notifications?.warn(game.i18n.localize(key));
+      return;
+    }
+
+    if (!freshState.freeUse) {
+      if (freshState.trackAmmo) {
+        await fresh.update({ "system.ammo": freshState.ammo - 1 });
       } else {
-        await item.update({ "system.quantity": state.quantity - 1 });
+        await fresh.update({ "system.quantity": freshState.quantity - 1 });
       }
     }
 
-    const fresh = this.actor.items.get(itemId) ?? item;
-    await this._sendEquipmentUseToChat(fresh, state.freeUse);
+    const updated = actor.items.get(itemId) ?? fresh;
+    const damage = equipmentWeaponDamage(actor.system?.style, updated.system?.kind);
+    await this._sendEquipmentUseToChat(updated, {
+      freeUse: freshState.freeUse,
+      targetName,
+      damage,
+      actor,
+    });
   }
 
-  async _sendEquipmentUseToChat(item, freeUse) {
-    const actorStyle = this.actor.system?.style;
+  async _sendEquipmentUseToChat(item, { freeUse = false, targetName = "", damage = null, actor = null } = {}) {
+    const chatActor = actor || this.actor;
+    const actorStyle = chatActor.system?.style;
     const styleLabel = actorStyle
       ? game.i18n.localize(`MDT.styles.${actorStyle}`)
       : "";
@@ -1125,8 +1157,10 @@ export class MadDragonActorSheet extends ActorSheet {
       {
         item,
         system: item.system,
-        actorName: this.actor.name,
+        actorName: chatActor.name,
         styleLabel,
+        targetName,
+        damage,
         freeUse,
         trackAmmo,
         quantity,
@@ -1135,11 +1169,11 @@ export class MadDragonActorSheet extends ActorSheet {
     );
 
     await ChatMessage.create({
-      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      speaker: ChatMessage.getSpeaker({ actor: chatActor }),
       content,
       flags: {
         [MDTRoll.FLAG_SCOPE]: {
-          actorId: this.actor.id,
+          actorId: chatActor.id,
         },
       },
     });

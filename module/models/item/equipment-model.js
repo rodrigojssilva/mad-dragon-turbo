@@ -8,6 +8,17 @@ export function isEquipmentWeapon(kind) {
 }
 
 /**
+ * Dano da arma pelo estilo.
+ * Arma branca: Porradeiro 2, Malandrão e Genial 1.
+ * Arma de fogo: 2 para todos os estilos.
+ */
+export function equipmentWeaponDamage(style, kind) {
+  if (kind === "firearm") return 2;
+  if (kind === "melee") return style === "brawler" ? 2 : 1;
+  return null;
+}
+
+/**
  * Estado de uso de um equipamento.
  * Uso livre ignora estoque. Fora de arma, o botão permanece desabilitado.
  */
