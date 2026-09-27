@@ -56,6 +56,8 @@
 - [x] Controle de munição para tipos de equipamento de armas
 - [x] Opção de "Uso livre" para equipamentos
 - [x] Opção para selecionar alvo do ataque de equipamentos + dano por estilo no chat
+- [x] Adicionado ícone do equipamento e do consumível na listagem dos itens
+- [x] Correção do layout do cadastro de itens do tipo equipamento e consumível
 
 ---
 

@@ -66,7 +66,7 @@
                             {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{else}}{{#unless equipmentIsWeapon}}disabled{{/unless}}{{/unless}}{{/unless}} />
                         {{localize "MDT.spell.freeUseCheckbox"}}
                     </label>
-                    <label class="item-sheet-label equipment-inline-qty">
+                    <label class="equipment-inline-qty">
                         <span class="equipment-inline-qty-label">{{localize "MDT.equipment.quantityLabel"}}</span>
                         <input class="equipment-qty-input" type="number" name="system.quantity" min="0" value="{{system.quantity}}"
                             {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}} />
@@ -76,7 +76,7 @@
                             {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{else}}{{#unless equipmentIsWeapon}}disabled{{/unless}}{{/unless}}{{/unless}} />
                         {{localize "MDT.equipment.trackAmmo"}}
                     </label>
-                    <label class="item-sheet-label equipment-inline-qty">
+                    <label class="equipment-inline-qty">
                         <span class="equipment-inline-qty-label">{{localize "MDT.equipment.ammoLabel"}}</span>
                         <input class="equipment-ammo-input" type="number" name="system.ammo" min="0" value="{{system.ammo}}"
                             {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{else}}{{#unless equipmentIsWeapon}}disabled{{/unless}}{{/unless}}{{/unless}} />

@@ -26,6 +26,11 @@
   align-items: stretch;
 }
 
+/* Equipamento e consumível têm o seletor de tipo; a linha do cabeçalho não pode cortar a etiqueta */
+.mad-dragon-turbo.sheet.item .sheet-header.item-sheet-header:has(.item-kind-input) {
+  max-height: 130px;
+}
+
 .mad-dragon-turbo.sheet.item .item-sheet-header .profile-img {
   height: 100%;
   width: auto;
@@ -129,6 +134,67 @@
 
 .mad-dragon-turbo.sheet.item .item-sheet-body .equipment-fields {
   margin-top: 4px;
+}
+
+/* Mesma grade da ficha do personagem: checkbox à esquerda, rótulo + valor à direita */
+.mad-dragon-turbo.sheet.item .equipment-inline-fields {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: center;
+  column-gap: 8px;
+  row-gap: 8px;
+  width: 100%;
+  margin-top: 6px;
+}
+
+.mad-dragon-turbo.sheet.item .equipment-inline-fields .spell-checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0;
+  gap: 6px;
+  width: auto;
+  font-size: 0.85em;
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+.mad-dragon-turbo.sheet.item .equipment-inline-fields label.equipment-inline-qty {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0;
+  gap: 6px;
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+  font-size: 0.85em;
+  font-weight: bold;
+  color: #333;
+  white-space: normal;
+  overflow: hidden;
+}
+
+.mad-dragon-turbo.sheet.item .equipment-inline-fields .equipment-inline-qty-label {
+  flex: 0 0 7.6em;
+  white-space: nowrap;
+}
+
+.mad-dragon-turbo.sheet.item .equipment-inline-fields .equipment-qty-input,
+.mad-dragon-turbo.sheet.item .equipment-inline-fields .equipment-ammo-input {
+  flex: 1 1 0;
+  width: 0;
+  max-width: 100%;
+  min-width: 0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 3px 6px;
+  font-size: 0.9em;
+  font-weight: normal;
+  background: #fff;
+  box-sizing: border-box;
 }
 
 .mad-dragon-turbo.sheet.item .item-type-pill {
