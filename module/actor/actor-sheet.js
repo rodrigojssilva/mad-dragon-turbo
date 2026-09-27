@@ -1,5 +1,6 @@
 import { CHARACTER_STYLE_STATS } from "../models/actor/character-model.js";
 import { equipmentUseState, equipmentWeaponDamage } from "../models/item/equipment-model.js";
+import { itemKindIconClass, itemKindLabel } from "../helpers/item-kind-icon.js";
 import { MDTRoll } from "../helpers/roll.js";
 
 export class MadDragonActorSheet extends ActorSheet {
@@ -129,17 +130,24 @@ export class MadDragonActorSheet extends ActorSheet {
         canUse: state.canUse,
         showAmmo: state.showAmmo,
         requiresKind: this._itemRequiresKind(actor, item.id),
+        kindIcon: itemKindIconClass(state.kind),
+        kindLabel: itemKindLabel("equipment", state.kind),
       };
     });
-    context.consumables = this._mapQuantityItems(actor, "consumable").map((item) => ({
-      ...item,
-      system: {
-        ...item.system,
-        kind: item.system.kind ?? "",
-      },
-      noUses: item.system.quantity <= 0,
-      requiresKind: this._itemRequiresKind(actor, item.id),
-    }));
+    context.consumables = this._mapQuantityItems(actor, "consumable").map((item) => {
+      const kind = item.system.kind ?? "";
+      return {
+        ...item,
+        system: {
+          ...item.system,
+          kind,
+        },
+        noUses: item.system.quantity <= 0,
+        requiresKind: this._itemRequiresKind(actor, item.id),
+        kindIcon: itemKindIconClass(kind),
+        kindLabel: itemKindLabel("consumable", kind),
+      };
+    });
 
     return context;
   }

@@ -105,6 +105,20 @@
   font-weight: normal;
 }
 
+.mad-dragon-turbo.sheet.item .item-name-with-kind {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+}
+
+.mad-dragon-turbo.sheet.item .item-name-with-kind .item-name-input {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+}
+
 .mad-dragon-turbo.sheet.item .item-sheet-header .item-name-input {
   font-size: 20px;
 }

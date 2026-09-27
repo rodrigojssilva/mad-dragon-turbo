@@ -16,9 +16,14 @@
             </label>
             <label class="item-sheet-label flexcol">
                 {{localize "MDT.item.nameLabel"}}
-                <input class="item-name-input" name="name" type="text" value="{{item.name}}"
-                    placeholder="{{localize 'MDT.item.namePlaceholder'}}"
-                    {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}} />
+                <span class="item-name-with-kind">
+                    <span class="item-kind-badge" title="{{kindLabel}}">
+                        <i class="fas {{kindIcon}}" aria-hidden="true"></i>
+                    </span>
+                    <input class="item-name-input" name="name" type="text" value="{{item.name}}"
+                        placeholder="{{localize 'MDT.item.namePlaceholder'}}"
+                        {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}} />
+                </span>
             </label>
             <div class="item-sheet-pill-row">
                 <div class="item-type-pill">{{localize "TYPES.Item.equipment"}}</div>

@@ -1,4 +1,5 @@
 import { isEquipmentWeapon } from "../models/item/equipment-model.js";
+import { itemKindIconClass, itemKindLabel } from "../helpers/item-kind-icon.js";
 
 export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
   constructor(...args) {
@@ -47,6 +48,8 @@ export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
         this._itemEditing = true;
         context.itemEditing = true;
       }
+      context.kindIcon = itemKindIconClass(kind);
+      context.kindLabel = itemKindLabel(item.type, kind);
       if (item.type === "equipment") {
         context.equipmentIsWeapon = isEquipmentWeapon(kind);
         context.equipmentFreeUseActive = !!systemPlain.freeUse && context.equipmentIsWeapon;

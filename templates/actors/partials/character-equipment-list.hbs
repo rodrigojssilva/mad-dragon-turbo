@@ -10,6 +10,9 @@
             <div class="item-summary">
                 <span class="item-name item-toggle">
                     <i class="fas fa-chevron-right item-chevron"></i>
+                    <span class="item-kind-badge" title="{{this.kindLabel}}">
+                        <i class="fas {{this.kindIcon}}" aria-hidden="true"></i>
+                    </span>
                     {{this.name}} (x{{this.system.quantity}})
                     {{#if this.showAmmo}}
                     <span class="equipment-ammo-badge">{{localize "MDT.equipment.ammoShort"}} {{this.system.ammo}}</span>
