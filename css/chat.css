@@ -27,6 +27,40 @@
   border-bottom: 1px solid #c6b89c;
 }
 
+.mdt-equipment-card .mdt-chat-card-header,
+.mdt-consumable-card .mdt-chat-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mdt-equipment-card .mdt-chat-card-heading,
+.mdt-consumable-card .mdt-chat-card-heading {
+  min-width: 0;
+}
+
+.mdt-equipment-card .item-kind-badge,
+.mdt-consumable-card .item-kind-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  box-sizing: border-box;
+  border: 1px solid #b8aa8f;
+  border-radius: 4px;
+  background: #f7f3ea;
+  color: #3d362c;
+  line-height: 1;
+}
+
+.mdt-equipment-card .item-kind-badge > i,
+.mdt-consumable-card .item-kind-badge > i {
+  font-size: 16px;
+  line-height: 1;
+}
+
 .mdt-pill {
   display: inline-flex;
   align-items: center;
@@ -67,6 +101,12 @@
   margin: 0;
   font-size: 0.86em;
   color: #4b4234;
+}
+
+.mdt-spell-card .item-card-duration {
+  margin: 8px 0 0;
+  font-size: 0.9em;
+  color: #271e12;
 }
 
 .mdt-item-card .mdt-card-sep {

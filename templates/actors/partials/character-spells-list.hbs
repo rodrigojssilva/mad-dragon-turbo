@@ -6,7 +6,7 @@
     </div>
     <ul class="items-list">
         {{#each spells}}
-        <li class="item-row item-row-spell {{#if this.noUses}}spell-no-uses{{/if}}" data-item-id="{{this.id}}">
+        <li class="item-row item-row-spell{{#if this.noUses}} spell-no-uses{{/if}}{{#unless this.ready}} spell-not-ready{{/unless}}" data-item-id="{{this.id}}">
             <div class="item-summary">
                 <span class="item-name item-toggle">
                     <i class="fas fa-chevron-right item-chevron"></i>
@@ -14,10 +14,12 @@
                     {{#if this.noUses}}
                     <span class="spell-empty-badge">{{localize "MDT.spell.emptyUsesShort"}}</span>
                     {{/if}}
+                    <span class="spell-ready-badge {{#if this.ready}}is-ready{{else}}is-not-ready{{/if}}">{{localize "MDT.spell.readyBadge"}}</span>
                 </span>
                 <div class="item-controls">
                     <a class="spell-cast" data-item-id="{{this.id}}"
                         data-no-uses="{{#if this.noUses}}true{{else}}false{{/if}}"
+                        data-not-ready="{{#if this.ready}}false{{else}}true{{/if}}"
                         title="{{localize 'MDT.spell.cast'}}">
                         <i class="fas fa-dice-d6"></i>
                     </a>
@@ -40,6 +42,11 @@
                     {{localize "MDT.item.descLabel"}}
                     <textarea class="item-desc-input" disabled placeholder="{{localize 'MDT.item.descPlaceholder'}}"
                         rows="3">{{this.system.description}}</textarea>
+                </label>
+                <label>
+                    {{localize "MDT.spell.durationLabel"}}
+                    <input class="item-name-input spell-duration-input" type="text" disabled
+                        value="{{this.system.duration}}" />
                 </label>
 
                 <div class="spell-fields">
@@ -68,6 +75,10 @@
                                 value="{{this.system.maxUses}}" />
                         </label>
                     </div>
+                    <label class="spell-checkbox spell-ready-checkbox">
+                        <input class="spell-ready-input" type="checkbox" disabled {{#if this.system.ready}}checked{{/if}} />
+                        {{localize "MDT.spell.readyCheckbox"}}
+                    </label>
                     {{#if this.system.freeUse}}
                     <p class="spell-free-use-note">{{localize "MDT.spell.freeUseEnabled"}}</p>
                     {{else if this.noUses}}

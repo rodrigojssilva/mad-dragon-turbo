@@ -191,6 +191,7 @@ export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
     if (this.item.type === "spell") {
       const highLevel = !!sysIn.highLevel;
       const freeUse = !!sysIn.freeUse;
+      const ready = !!sysIn.ready;
       let maxUses = 0;
       let usedUses = Math.max(0, Number(this.item.system.usedUses ?? 0));
 
@@ -202,13 +203,17 @@ export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
         usedUses = Math.min(maxUses, usedUses);
       }
 
+      const duration = (sysIn.duration ?? "").toString().trim();
+
       return this.item.update({
         name,
         system: {
           description,
+          duration,
           highLevel,
           level: highLevel ? "high" : "low",
           freeUse,
+          ready,
           maxUses,
           usedUses,
         },

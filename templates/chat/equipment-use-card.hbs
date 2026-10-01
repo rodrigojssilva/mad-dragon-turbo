@@ -1,9 +1,14 @@
 <div class="mdt-chat-card mdt-item-card mdt-equipment-card">
   <header class="mdt-chat-card-header">
-    <h3 class="item-card-name">{{actorName}}</h3>
-    {{#if styleLabel}}
-      <p class="item-card-style">{{styleLabel}}</p>
-    {{/if}}
+    <span class="item-kind-badge" title="{{kindLabel}}">
+      <i class="fas {{kindIcon}}" aria-hidden="true"></i>
+    </span>
+    <div class="mdt-chat-card-heading">
+      <h3 class="item-card-name">{{actorName}}</h3>
+      {{#if styleLabel}}
+        <p class="item-card-style">{{styleLabel}}</p>
+      {{/if}}
+    </div>
   </header>
 
   <h4 class="item-card-consumed">{{localize "MDT.equipment.used"}}: <strong>{{item.name}}</strong></h4>

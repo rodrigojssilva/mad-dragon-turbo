@@ -41,6 +41,12 @@
                     placeholder="{{localize 'MDT.item.descPlaceholder'}}"
                     {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}}>{{{system.description}}}</textarea>
             </label>
+            <label class="item-sheet-label flexcol">
+                {{localize "MDT.spell.durationLabel"}}
+                <input class="item-name-input spell-duration-input" name="system.duration" type="text"
+                    value="{{system.duration}}"
+                    {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}} />
+            </label>
 
             <div class="spell-fields item-sheet-spell-fields">
                 <div class="spell-checkbox-row">
@@ -68,6 +74,12 @@
                             {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}} />
                     </label>
                 </div>
+
+                <label class="spell-checkbox spell-ready-checkbox">
+                    <input name="system.ready" type="checkbox" {{#if system.ready}}checked{{/if}}
+                        {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}} />
+                    {{localize "MDT.spell.readyCheckbox"}}
+                </label>
 
                 {{#if spellFreeUseActive}}
                 <p class="spell-free-use-note">{{localize "MDT.spell.freeUseEnabled"}}</p>

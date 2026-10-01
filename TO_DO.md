@@ -62,10 +62,10 @@
 
 ---
 
-- [ ] Nos poderes/magias adicionar opção "Pronto"
-- [ ] Nos poderes/magias adicionar opção "Reação"
-- [ ] Exibir no uso da habilitade se foi utilizado como Ação ou Reção
-- [ ] Validar: Exibir por quanto tempo o poder/magia fica ativo?
-- [ ] Tentar adicionar controle no turno de batalha para pular os inimigos derrotados (acredito que já está funcionando)
-- [ ] Tentar adicionar opção para exibir turno igual o plugin usado pelo Ricky
-- [ ] Adicionar no ataque inimigo para que a rolagem de defesa seja ativada a partir do chat
+- [x] Trocar "Poção" por "Efeito"
+- [x] Aumentar tamanho da fonte do campo "Mun: xx" para igual ao restante da linha
+- [x] Adicionar quantidade a ser usada para consumível do tipo "Dinheiro"
+- [x] Na seleção do alvo adicionar opção "Sem alvo"
+- [x] Nos poderes/magias adicionar opção "Pronto"
+- [x] Exibir ícone do equipamento/consumível utilizado no chat
+- [x] Adicionar e exibir por quanto tempo o poder/magia fica ativo

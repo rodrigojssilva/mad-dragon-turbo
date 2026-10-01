@@ -23,6 +23,18 @@ body.game .app.window-app .window-content {
   line-height: 1.35;
 }
 
+.mad-dragon-turbo.mdt-money-amount-app .mdt-money-amount-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.mad-dragon-turbo.mdt-money-amount-app .mdt-money-amount-label input {
+  width: 100%;
+  font-weight: 500;
+}
+
 .mad-dragon-turbo.mdt-roll-dialog-app .window-content.mdt-roll-dialog-content {
   padding: 10px 12px;
 }

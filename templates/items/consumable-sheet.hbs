@@ -8,7 +8,7 @@
                     {{#unless editable}}disabled{{else}}{{#unless itemEditing}}disabled{{/unless}}{{/unless}}>
                     <option value="" {{#unless system.kind}}selected{{/unless}}>{{localize "MDT.consumable.kindPlaceholder"}}</option>
                     <option value="key" {{#if (eq system.kind "key")}}selected{{/if}}>{{localize "MDT.consumable.kinds.key"}}</option>
-                    <option value="potion" {{#if (eq system.kind "potion")}}selected{{/if}}>{{localize "MDT.consumable.kinds.potion"}}</option>
+                    <option value="effect" {{#if (eq system.kind "effect")}}selected{{/if}}>{{localize "MDT.consumable.kinds.effect"}}</option>
                     <option value="money" {{#if (eq system.kind "money")}}selected{{/if}}>{{localize "MDT.consumable.kinds.money"}}</option>
                     <option value="misc" {{#if (eq system.kind "misc")}}selected{{/if}}>{{localize "MDT.consumable.kinds.misc"}}</option>
                 </select>

@@ -57,6 +57,7 @@
 }
 
 .mad-dragon-turbo .item-name-input,
+.mad-dragon-turbo .item-description .spell-duration-input,
 .mad-dragon-turbo .item-description .item-kind-input {
   width: 100%;
   border: 1px solid #ccc;

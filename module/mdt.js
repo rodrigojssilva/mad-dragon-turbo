@@ -113,12 +113,64 @@ Hooks.on("preCreateItem", (doc) => {
   });
 });
 
+function isLegacyPotion(item) {
+  return item?.type === "consumable" && item.system?.kind === "potion";
+}
+
+function potionToEffectUpdates(items) {
+  return items.filter(isLegacyPotion).map((item) => ({
+    _id: item.id,
+    "system.kind": "effect",
+  }));
+}
+
+/** Consumíveis salvos como "potion" passam a usar a chave "effect". */
+async function migrateConsumableKindPotionToEffect() {
+  if (!game.user?.isGM) return;
+
+  try {
+    const worldUpdates = potionToEffectUpdates(game.items);
+    if (worldUpdates.length) await Item.updateDocuments(worldUpdates);
+
+    for (const actor of game.actors ?? []) {
+      const updates = potionToEffectUpdates(actor.items);
+      if (updates.length) await actor.updateEmbeddedDocuments("Item", updates);
+    }
+
+    for (const scene of game.scenes ?? []) {
+      for (const token of scene.tokens ?? []) {
+        if (token.actorLink || !token.actor) continue;
+        const updates = potionToEffectUpdates(token.actor.items);
+        if (updates.length) await token.actor.updateEmbeddedDocuments("Item", updates);
+      }
+    }
+
+    for (const pack of game.packs ?? []) {
+      if (pack.locked) continue;
+      if (pack.documentName === "Item") {
+        const docs = await pack.getDocuments();
+        const updates = potionToEffectUpdates(docs);
+        if (updates.length) await Item.updateDocuments(updates, { pack: pack.collection });
+      } else if (pack.documentName === "Actor") {
+        const actors = await pack.getDocuments();
+        for (const actor of actors) {
+          const updates = potionToEffectUpdates(actor.items);
+          if (updates.length) await actor.updateEmbeddedDocuments("Item", updates);
+        }
+      }
+    }
+  } catch (error) {
+    console.error("MDT | Falha ao migrar consumível potion para effect:", error);
+  }
+}
+
 Hooks.on("ready", function () {
   console.log("MDT | Mad Dragon Turbo pronto!");
 
   game.mdt = { MDTRoll }; // facilita testes no console
   // Mensagens já no log (F5/login) podem ter renderizado antes do usuário estar pronto
   MDTRoll.refreshSpellUsesVisibilityInChat();
+  migrateConsumableKindPotionToEffect();
 });
 
 Hooks.on("updateActor", async (actor, change) => {

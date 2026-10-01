@@ -320,39 +320,41 @@ export class MDTRoll {
   }
 
   /**
-   * Aguarda clique em um token. Mostra diálogo com instrução + Cancelar.
-   * Usa coordenadas do canvas (funciona para GM e jogadores).
+   * Aguarda clique em um token, "Sem alvo" ou cancelamento.
+   * Sem cena ativa, o diálogo segue só com Sem alvo e Cancelar.
+   * @returns {Promise<Token|null|{noTarget: true}>}
    */
   static async pickTargetToken({
     excludeActorId = null,
     promptKey = "MDT.roll.selectTargetPrompt",
   } = {}) {
-    if (!canvas?.ready || !canvas.tokens) {
-      ui.notifications?.warn(game.i18n.localize("MDT.roll.selectTargetNoCanvas"));
-      return null;
+    const pointerRoot = (canvas?.ready && canvas.tokens) ? MDTRoll._getCanvasPointerRoot() : null;
+    const listenCanvas = !!pointerRoot;
+
+    const previousCursor = listenCanvas
+      ? (pointerRoot.style?.cursor ?? document.body.style.cursor ?? "")
+      : "";
+    if (listenCanvas) {
+      if (pointerRoot.style) pointerRoot.style.cursor = "crosshair";
+      else document.body.style.cursor = "crosshair";
     }
 
-    const pointerRoot = MDTRoll._getCanvasPointerRoot();
-    if (!pointerRoot) {
-      ui.notifications?.warn(game.i18n.localize("MDT.roll.selectTargetNoCanvas"));
-      return null;
-    }
-
-    const previousCursor =
-      pointerRoot.style?.cursor ?? document.body.style.cursor ?? "";
-    if (pointerRoot.style) pointerRoot.style.cursor = "crosshair";
-    else document.body.style.cursor = "crosshair";
+    const prompt = listenCanvas
+      ? game.i18n.localize(promptKey)
+      : game.i18n.localize("MDT.roll.selectTargetNoCanvas");
 
     return new Promise((resolve) => {
       let settled = false;
       let pickerApp = null;
 
       const cleanup = () => {
-        pointerRoot.removeEventListener?.("pointerdown", onPointerDown, true);
-        canvas.stage?.off?.("pointerdown", onStagePointerDown);
+        if (listenCanvas) {
+          pointerRoot.removeEventListener?.("pointerdown", onPointerDown, true);
+          canvas.stage?.off?.("pointerdown", onStagePointerDown);
+          if (pointerRoot.style) pointerRoot.style.cursor = previousCursor;
+          else document.body.style.cursor = previousCursor;
+        }
         document.removeEventListener("keydown", onKeyDown, true);
-        if (pointerRoot.style) pointerRoot.style.cursor = previousCursor;
-        else document.body.style.cursor = previousCursor;
         if (MDTRoll._cancelTargetPick === cancelQuiet) MDTRoll._cancelTargetPick = null;
         if (pickerApp) {
           const app = pickerApp;
@@ -441,8 +443,8 @@ export class MDTRoll {
           title: game.i18n.localize("MDT.roll.target"),
           contentClasses: ["mad-dragon-turbo", "mdt-select-target-content"],
         },
-        position: { width: 320 },
-        content: `<p class="mdt-select-target-msg">${game.i18n.localize(promptKey)}</p>`,
+        position: { width: 360 },
+        content: `<p class="mdt-select-target-msg">${prompt}</p>`,
         modal: false,
         buttons: [
           {
@@ -450,6 +452,12 @@ export class MDTRoll {
             label: game.i18n.localize("MDT.roll.selectTargetCancel"),
             icon: "fa-solid fa-xmark",
             callback: () => cancel(),
+          },
+          {
+            action: "no-target",
+            label: game.i18n.localize("MDT.roll.noTarget"),
+            icon: "fa-solid fa-user-slash",
+            callback: () => finish({ noTarget: true }),
           },
         ],
       });
@@ -462,8 +470,10 @@ export class MDTRoll {
         { once: true },
       );
 
-      pointerRoot.addEventListener("pointerdown", onPointerDown, true);
-      canvas.stage?.on?.("pointerdown", onStagePointerDown);
+      if (listenCanvas) {
+        pointerRoot.addEventListener("pointerdown", onPointerDown, true);
+        canvas.stage?.on?.("pointerdown", onStagePointerDown);
+      }
       document.addEventListener("keydown", onKeyDown, true);
       pickerApp.render({ force: true });
     });

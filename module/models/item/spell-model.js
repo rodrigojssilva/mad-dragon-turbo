@@ -9,6 +9,11 @@ export class SpellModel extends TypeDataModel {
         blank: true,
         initial: "",
       }),
+      duration: new StringField({
+        required: false,
+        blank: true,
+        initial: "",
+      }),
       level: new StringField({
         required: true,
         initial: "low",
@@ -21,6 +26,10 @@ export class SpellModel extends TypeDataModel {
       freeUse: new BooleanField({
         required: true,
         initial: false,
+      }),
+      ready: new BooleanField({
+        required: true,
+        initial: true,
       }),
       maxUses: new NumberField({
         required: true,

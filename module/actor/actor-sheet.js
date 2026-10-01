@@ -93,6 +93,7 @@ export class MadDragonActorSheet extends ActorSheet {
       .filter((i) => i.type === "spell")
       .map((spell) => {
         const freeUse = !!spell.system.freeUse;
+        const ready = spell.system.ready !== false;
         const maxUses = Math.max(0, Number(spell.system.maxUses ?? 0));
         const usedUses = Math.min(maxUses, Math.max(0, Number(spell.system.usedUses ?? 0)));
         const remainingUses = Math.max(0, maxUses - usedUses);
@@ -103,10 +104,12 @@ export class MadDragonActorSheet extends ActorSheet {
           system: {
             ...spell.system,
             freeUse,
+            ready,
             maxUses,
             usedUses,
             remainingUses,
           },
+          ready,
           noUses: !freeUse && remainingUses <= 0,
         };
       });
@@ -758,8 +761,10 @@ export class MadDragonActorSheet extends ActorSheet {
 
     const nameInput = row.querySelector(".item-name-input");
     const descInput = row.querySelector(".item-desc-input");
+    const spellDurationInput = row.querySelector(".spell-duration-input");
     const spellHighLevelInput = row.querySelector(".spell-high-level-input");
     const spellFreeUseInput = row.querySelector(".spell-free-use-input");
+    const spellReadyInput = row.querySelector(".spell-ready-input");
     const spellMaxUsesInput = row.querySelector(".spell-max-uses-input");
     const spellUsedUsesInput = row.querySelector(".spell-used-uses-input");
     const equipmentQtyInput = row.querySelector(".equipment-qty-input");
@@ -777,6 +782,7 @@ export class MadDragonActorSheet extends ActorSheet {
     // Guarda estado original para permitir cancelamento
     nameInput.dataset.originalValue = nameInput.value ?? "";
     descInput.dataset.originalValue = descInput.value ?? "";
+    if (spellDurationInput) spellDurationInput.dataset.originalValue = spellDurationInput.value ?? "";
     if (kindInput) kindInput.dataset.originalValue = kindInput.value ?? "";
     if (trackAmmoInput) trackAmmoInput.dataset.originalChecked = trackAmmoInput.checked ? "true" : "false";
     if (ammoInput) ammoInput.dataset.originalValue = ammoInput.value ?? "0";
@@ -788,8 +794,10 @@ export class MadDragonActorSheet extends ActorSheet {
     // Habilita inputs e mostra botões de salvar/cancelar
     nameInput.disabled = false;
     descInput.disabled = false;
+    if (spellDurationInput) spellDurationInput.disabled = false;
     if (spellHighLevelInput) spellHighLevelInput.disabled = false;
     if (spellFreeUseInput) spellFreeUseInput.disabled = false;
+    if (spellReadyInput) spellReadyInput.disabled = false;
     if (spellMaxUsesInput) spellMaxUsesInput.disabled = false;
     if (spellUsedUsesInput) spellUsedUsesInput.disabled = false;
     if (equipmentQtyInput) equipmentQtyInput.disabled = false;
@@ -822,8 +830,10 @@ export class MadDragonActorSheet extends ActorSheet {
     // Atualiza item com novos valores
     const nameInput = row.querySelector(".item-name-input");
     const descInput = row.querySelector(".item-desc-input");
+    const spellDurationInput = row.querySelector(".spell-duration-input");
     const spellHighLevelInput = row.querySelector(".spell-high-level-input");
     const spellFreeUseInput = row.querySelector(".spell-free-use-input");
+    const spellReadyInput = row.querySelector(".spell-ready-input");
     const spellMaxUsesInput = row.querySelector(".spell-max-uses-input");
     const spellUsedUsesInput = row.querySelector(".spell-used-uses-input");
     const equipmentQtyInput = row.querySelector(".equipment-qty-input");
@@ -864,9 +874,11 @@ export class MadDragonActorSheet extends ActorSheet {
     };
 
     if (item.type === "spell") {
+      updateData["system.duration"] = (spellDurationInput?.value ?? item.system.duration ?? "").toString().trim();
       updateData["system.highLevel"] = newHighLevel;
       updateData["system.level"] = newHighLevel ? "high" : "low";
       updateData["system.freeUse"] = newFreeUse;
+      updateData["system.ready"] = spellReadyInput ? !!spellReadyInput.checked : item.system.ready !== false;
       updateData["system.maxUses"] = newMaxUses;
       updateData["system.usedUses"] = newUsedUses;
     }
@@ -888,8 +900,10 @@ export class MadDragonActorSheet extends ActorSheet {
 
     nameInput.disabled = true;
     descInput.disabled = true;
+    if (spellDurationInput) spellDurationInput.disabled = true;
     if (spellHighLevelInput) spellHighLevelInput.disabled = true;
     if (spellFreeUseInput) spellFreeUseInput.disabled = true;
+    if (spellReadyInput) spellReadyInput.disabled = true;
     if (spellMaxUsesInput) spellMaxUsesInput.disabled = true;
     if (spellUsedUsesInput) spellUsedUsesInput.disabled = true;
     if (equipmentQtyInput) equipmentQtyInput.disabled = true;
@@ -911,8 +925,10 @@ export class MadDragonActorSheet extends ActorSheet {
 
     const nameInput = row.querySelector(".item-name-input");
     const descInput = row.querySelector(".item-desc-input");
+    const spellDurationInput = row.querySelector(".spell-duration-input");
     const spellHighLevelInput = row.querySelector(".spell-high-level-input");
     const spellFreeUseInput = row.querySelector(".spell-free-use-input");
+    const spellReadyInput = row.querySelector(".spell-ready-input");
     const spellMaxUsesInput = row.querySelector(".spell-max-uses-input");
     const spellUsedUsesInput = row.querySelector(".spell-used-uses-input");
     const equipmentQtyInput = row.querySelector(".equipment-qty-input");
@@ -930,8 +946,12 @@ export class MadDragonActorSheet extends ActorSheet {
     // Restaura valores anteriores
     nameInput.value = nameInput.dataset.originalValue ?? nameInput.value;
     descInput.value = descInput.dataset.originalValue ?? descInput.value;
+    if (spellDurationInput && spellDurationInput.dataset.originalValue != null) {
+      spellDurationInput.value = spellDurationInput.dataset.originalValue;
+    }
     if (spellHighLevelInput) spellHighLevelInput.checked = !!spellHighLevelInput.defaultChecked;
     if (spellFreeUseInput) spellFreeUseInput.checked = !!spellFreeUseInput.defaultChecked;
+    if (spellReadyInput) spellReadyInput.checked = !!spellReadyInput.defaultChecked;
     if (spellMaxUsesInput) spellMaxUsesInput.value = spellMaxUsesInput.defaultValue ?? spellMaxUsesInput.value;
     if (spellUsedUsesInput) spellUsedUsesInput.value = spellUsedUsesInput.defaultValue ?? spellUsedUsesInput.value;
     if (equipmentQtyInput) equipmentQtyInput.value = equipmentQtyInput.defaultValue ?? equipmentQtyInput.value;
@@ -950,8 +970,10 @@ export class MadDragonActorSheet extends ActorSheet {
     // Desabilita inputs
     nameInput.disabled = true;
     descInput.disabled = true;
+    if (spellDurationInput) spellDurationInput.disabled = true;
     if (spellHighLevelInput) spellHighLevelInput.disabled = true;
     if (spellFreeUseInput) spellFreeUseInput.disabled = true;
+    if (spellReadyInput) spellReadyInput.disabled = true;
     if (spellMaxUsesInput) spellMaxUsesInput.disabled = true;
     if (spellUsedUsesInput) spellUsedUsesInput.disabled = true;
     if (equipmentQtyInput) equipmentQtyInput.disabled = true;
@@ -1053,6 +1075,11 @@ export class MadDragonActorSheet extends ActorSheet {
       return;
     }
 
+    if (item.system.ready === false) {
+      ui.notifications?.warn(game.i18n.localize("MDT.spell.notReady"));
+      return;
+    }
+
     const freeUse = !!item.system.freeUse;
     if (!freeUse) {
       const maxUses = Math.max(0, Number(item.system.maxUses ?? 0));
@@ -1067,14 +1094,19 @@ export class MadDragonActorSheet extends ActorSheet {
     const actor = this.actor;
     await this.close();
 
-    const token = await MDTRoll.pickTargetToken();
-    if (!token) return;
+    const picked = await MDTRoll.pickTargetToken();
+    if (!picked) return;
 
-    const targetName = token.name || token.actor?.name || "";
+    const targetName = this._targetNameFromPick(picked);
 
     // Consome o uso somente após o alvo ser escolhido
     const freshItem = actor.items.get(itemId);
     if (!freshItem || freshItem.type !== "spell") return;
+
+    if (freshItem.system.ready === false) {
+      ui.notifications?.warn(game.i18n.localize("MDT.spell.notReady"));
+      return;
+    }
 
     if (!freeUse) {
       const maxUses = Math.max(0, Number(freshItem.system.maxUses ?? 0));
@@ -1106,12 +1138,83 @@ export class MadDragonActorSheet extends ActorSheet {
       return;
     }
 
+    const isMoney = item.system.kind === "money";
+    let spent = 1;
+    if (isMoney) {
+      const amount = await this._promptMoneyAmount(freeUse ? null : quantity);
+      if (amount == null) return;
+      spent = amount;
+    }
+
     if (!freeUse) {
-      await item.update({ "system.quantity": quantity - 1 });
+      const currentItem = this.actor.items.get(itemId) ?? item;
+      const currentQty = Math.max(0, Number(currentItem.system.quantity ?? 0));
+      if (spent > currentQty) {
+        const key = isMoney ? "MDT.consumable.moneyAmountTooHigh" : "MDT.consumable.noUses";
+        ui.notifications?.warn(game.i18n.localize(key));
+        return;
+      }
+      await currentItem.update({ "system.quantity": currentQty - spent });
     }
 
     const fresh = this.actor.items.get(itemId) ?? item;
-    await this._sendConsumableUseToChat(fresh, freeUse);
+    await this._sendConsumableUseToChat(fresh, freeUse, isMoney ? spent : null);
+  }
+
+  /**
+   * Pergunta quanto dinheiro usar. max null não limita o teto (uso livre).
+   * @param {number|null} max
+   * @returns {Promise<number|null>}
+   */
+  async _promptMoneyAmount(max) {
+    const maxAttr = Number.isFinite(max) ? ` max="${max}"` : "";
+    const result = await foundry.applications.api.DialogV2.wait({
+      classes: ["mad-dragon-turbo", "mdt-money-amount-app"],
+      window: {
+        title: game.i18n.localize("MDT.consumable.moneyAmountTitle"),
+        contentClasses: ["mad-dragon-turbo", "mdt-money-amount-content"],
+      },
+      position: { width: 320 },
+      content: `
+        <label class="mdt-money-amount-label">
+          ${game.i18n.localize("MDT.consumable.moneyAmountLabel")}
+          <input type="number" name="amount" value="1" min="1" step="1"${maxAttr} />
+        </label>
+      `,
+      buttons: [
+        {
+          action: "use",
+          label: game.i18n.localize("MDT.consumable.moneyAmountConfirm"),
+          icon: "fa-solid fa-check",
+          default: true,
+          callback: (_event, button) => new foundry.applications.ux.FormDataExtended(button.form).object.amount,
+        },
+        {
+          action: "cancel",
+          label: game.i18n.localize("MDT.item.cancel"),
+          icon: "fa-solid fa-xmark",
+        },
+      ],
+      rejectClose: false,
+    });
+
+    if (result == null || result === "cancel") return null;
+
+    const amount = Number(result);
+    if (!Number.isInteger(amount) || amount < 1) {
+      ui.notifications?.warn(game.i18n.localize("MDT.consumable.moneyAmountInvalid"));
+      return null;
+    }
+    if (Number.isFinite(max) && amount > max) {
+      ui.notifications?.warn(game.i18n.localize("MDT.consumable.moneyAmountTooHigh"));
+      return null;
+    }
+    return amount;
+  }
+
+  _targetNameFromPick(picked) {
+    if (picked?.noTarget) return game.i18n.localize("MDT.roll.noTarget");
+    return picked?.name || picked?.actor?.name || "";
   }
 
   async _onEquipmentUse(event) {
@@ -1140,12 +1243,12 @@ export class MadDragonActorSheet extends ActorSheet {
     const actor = this.actor;
     await this.close();
 
-    const token = await MDTRoll.pickTargetToken({
+    const picked = await MDTRoll.pickTargetToken({
       promptKey: "MDT.equipment.selectTargetPrompt",
     });
-    if (!token) return;
+    if (!picked) return;
 
-    const targetName = token.name || token.actor?.name || "";
+    const targetName = this._targetNameFromPick(picked);
     const fresh = actor.items.get(itemId);
     if (!fresh || fresh.type !== "equipment") return;
 
@@ -1192,6 +1295,8 @@ export class MadDragonActorSheet extends ActorSheet {
         system: item.system,
         actorName: chatActor.name,
         styleLabel,
+        kindIcon: itemKindIconClass(item.system.kind),
+        kindLabel: itemKindLabel(item.type, item.system.kind),
         targetName,
         damage,
         freeUse,
@@ -1212,7 +1317,7 @@ export class MadDragonActorSheet extends ActorSheet {
     });
   }
 
-  async _sendConsumableUseToChat(item, freeUse = false) {
+  async _sendConsumableUseToChat(item, freeUse = false, spentAmount = null) {
     const actorStyle = this.actor.system?.style;
     const styleLabel = actorStyle
       ? game.i18n.localize(`MDT.styles.${actorStyle}`)
@@ -1225,7 +1330,10 @@ export class MadDragonActorSheet extends ActorSheet {
         system: item.system,
         actorName: this.actor.name,
         styleLabel,
+        kindIcon: itemKindIconClass(item.system.kind),
+        kindLabel: itemKindLabel(item.type, item.system.kind),
         freeUse,
+        spentAmount,
       },
     );
 
@@ -1255,6 +1363,8 @@ export class MadDragonActorSheet extends ActorSheet {
     const styleLabel = actorStyle
       ? game.i18n.localize(`MDT.styles.${actorStyle}`)
       : "";
+    const duration = (item.system.duration ?? "").toString().trim();
+    const durationText = duration || game.i18n.localize("MDT.spell.durationNotInformed");
 
     const content = await foundry.applications.handlebars.renderTemplate(
       "systems/mad-dragon-turbo/templates/chat/spell-card.hbs",
@@ -1270,6 +1380,7 @@ export class MadDragonActorSheet extends ActorSheet {
         maxUses,
         usedUses,
         remainingUses,
+        durationText,
         showTags: !isCast && (isHighLevel || freeUse),
       },
     );

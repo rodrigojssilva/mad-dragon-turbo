@@ -18,11 +18,14 @@
     <div class="item-card-desc">
       {{{system.description}}}
     </div>
-    {{#if isCast}}
-      <hr class="mdt-card-sep" />
-    {{else if showTags}}
-      <hr class="mdt-card-sep" />
-    {{/if}}
+  {{/if}}
+
+  <p class="item-card-duration">{{localize "MDT.spell.durationLabel"}}: <strong>{{durationText}}</strong></p>
+
+  {{#if isCast}}
+    <hr class="mdt-card-sep" />
+  {{else if showTags}}
+    <hr class="mdt-card-sep" />
   {{/if}}
 
   {{#if isCast}}

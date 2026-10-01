@@ -975,7 +975,7 @@
 
 .mad-dragon-turbo .equipment-ammo-badge {
   margin-left: 6px;
-  font-size: 0.74em;
+  font-size: 1em;
   font-weight: 700;
   color: #3d4a62;
 }
@@ -993,6 +993,31 @@
   color: #7e1f1f;
 }
 
+.mad-dragon-turbo .spell-ready-badge {
+  margin-left: 6px;
+  font-size: 0.74em;
+  font-weight: 700;
+}
+
+.mad-dragon-turbo .spell-ready-badge.is-ready {
+  color: #1d5a3c;
+}
+
+.mad-dragon-turbo .spell-ready-badge.is-not-ready {
+  color: #7e1f1f;
+}
+
+.mad-dragon-turbo .item-row-spell.spell-not-ready {
+  background: rgba(140, 30, 30, 0.06);
+}
+
+.mad-dragon-turbo .spell-ready-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
 .mad-dragon-turbo .spell-empty-note {
   margin: 6px 0 0;
   font-size: 0.8em;
@@ -1008,12 +1033,14 @@
 }
 
 .mad-dragon-turbo .spell-cast[data-no-uses="true"],
+.mad-dragon-turbo .spell-cast[data-not-ready="true"],
 .mad-dragon-turbo .consumable-use[data-no-uses="true"],
 .mad-dragon-turbo .equipment-use[data-no-uses="true"] {
   opacity: 0.45;
 }
 
 .mad-dragon-turbo .spell-cast[data-no-uses="true"]:hover,
+.mad-dragon-turbo .spell-cast[data-not-ready="true"]:hover,
 .mad-dragon-turbo .consumable-use[data-no-uses="true"]:hover,
 .mad-dragon-turbo .equipment-use[data-no-uses="true"]:hover {
   opacity: 0.45;

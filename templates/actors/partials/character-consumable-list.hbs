@@ -39,7 +39,7 @@
                     <select class="item-kind-input" disabled {{#if this.requiresKind}}required{{/if}}>
                         <option value="" {{#unless this.system.kind}}selected{{/unless}}>{{localize "MDT.consumable.kindPlaceholder"}}</option>
                         <option value="key" {{#if (eq this.system.kind "key")}}selected{{/if}}>{{localize "MDT.consumable.kinds.key"}}</option>
-                        <option value="potion" {{#if (eq this.system.kind "potion")}}selected{{/if}}>{{localize "MDT.consumable.kinds.potion"}}</option>
+                        <option value="effect" {{#if (eq this.system.kind "effect")}}selected{{/if}}>{{localize "MDT.consumable.kinds.effect"}}</option>
                         <option value="money" {{#if (eq this.system.kind "money")}}selected{{/if}}>{{localize "MDT.consumable.kinds.money"}}</option>
                         <option value="misc" {{#if (eq this.system.kind "misc")}}selected{{/if}}>{{localize "MDT.consumable.kinds.misc"}}</option>
                     </select>

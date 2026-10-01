@@ -3,9 +3,9 @@ const ITEM_KIND_ICONS = {
   shield: "fa-shield-halved",
   accessory: "fa-ring",
   melee: "fa-khanda",
-  firearm: "fa-gun",
+  firearm: "fa-bullseye",
   key: "fa-key",
-  potion: "fa-flask",
+  effect: "fa-flask",
   money: "fa-coins",
   misc: "fa-box",
 };
