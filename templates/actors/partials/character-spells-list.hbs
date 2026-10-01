@@ -10,11 +10,19 @@
             <div class="item-summary">
                 <span class="item-name item-toggle">
                     <i class="fas fa-chevron-right item-chevron"></i>
+                    {{#if this.ready}}
+                    <i class="fas fa-circle spell-ready-icon is-ready"
+                        title="{{localize 'MDT.spell.readyHint'}}"
+                        aria-label="{{localize 'MDT.spell.readyHint'}}"></i>
+                    {{else}}
+                    <i class="far fa-circle spell-ready-icon is-not-ready"
+                        title="{{localize 'MDT.spell.notReadyHint'}}"
+                        aria-label="{{localize 'MDT.spell.notReadyHint'}}"></i>
+                    {{/if}}
                     {{this.name}}
                     {{#if this.noUses}}
                     <span class="spell-empty-badge">{{localize "MDT.spell.emptyUsesShort"}}</span>
                     {{/if}}
-                    <span class="spell-ready-badge {{#if this.ready}}is-ready{{else}}is-not-ready{{/if}}">{{localize "MDT.spell.readyBadge"}}</span>
                 </span>
                 <div class="item-controls">
                     <a class="spell-cast" data-item-id="{{this.id}}"

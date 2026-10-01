@@ -1019,17 +1019,17 @@
   color: #7e1f1f;
 }
 
-.mad-dragon-turbo .spell-ready-badge {
-  margin-left: 6px;
-  font-size: 0.74em;
-  font-weight: 700;
+.mad-dragon-turbo .spell-ready-icon {
+  font-size: 0.65em;
+  line-height: 1;
+  flex: 0 0 auto;
 }
 
-.mad-dragon-turbo .spell-ready-badge.is-ready {
+.mad-dragon-turbo .spell-ready-icon.is-ready {
   color: #1d5a3c;
 }
 
-.mad-dragon-turbo .spell-ready-badge.is-not-ready {
+.mad-dragon-turbo .spell-ready-icon.is-not-ready {
   color: #8a8478;
 }
 
