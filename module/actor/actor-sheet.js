@@ -1463,8 +1463,8 @@ export class MadDragonActorSheet extends ActorSheet {
 
   /**
    * Drop de item na ficha:
-   * - equipamento/consumível duplicado: confirma e soma +1 na quantidade
-   * - especialidade/magia duplicada: bloqueia criação
+   * - item novo: cria
+   * - item já existente: Cancelar, Duplicar, Sobrescrever ou Atualizar quantidade
    */
   async _onDropItemCreate(itemData, event) {
     const items = Array.isArray(itemData) ? itemData : [itemData];
@@ -1472,24 +1472,7 @@ export class MadDragonActorSheet extends ActorSheet {
 
     for (const data of items) {
       const type = data?.type;
-
-      if (type === "specialty" || type === "spell") {
-        const existing = this._findExistingItem(data, type);
-        if (existing) {
-          const key =
-            type === "specialty"
-              ? "MDT.specialty.alreadyExists"
-              : "MDT.spell.alreadyExists";
-          ui.notifications?.warn(
-            game.i18n.format(key, { name: existing.name }),
-          );
-          continue;
-        }
-        toCreate.push(data);
-        continue;
-      }
-
-      if (type !== "equipment" && type !== "consumable") {
+      if (!type) {
         toCreate.push(data);
         continue;
       }
@@ -1500,33 +1483,126 @@ export class MadDragonActorSheet extends ActorSheet {
         continue;
       }
 
-      const i18nPrefix = type === "consumable" ? "MDT.consumable" : "MDT.equipment";
-      const currentQty = Math.max(0, Number(existing.system.quantity ?? 1));
-      const confirmed = await foundry.applications.api.DialogV2.confirm({
-        window: { title: game.i18n.localize(`${i18nPrefix}.confirmStackTitle`) },
-        content: `<p>${game.i18n.format(`${i18nPrefix}.confirmStack`, {
-          name: existing.name,
-          quantity: currentQty,
-        })}</p>`,
-        modal: true,
-        yes: { label: game.i18n.localize(`${i18nPrefix}.confirmStackYes`) },
-        no: { label: game.i18n.localize(`${i18nPrefix}.confirmStackNo`) },
-      });
-
-      if (!confirmed) continue;
-
-      const nextQty = currentQty + 1;
-      await existing.update({ "system.quantity": nextQty });
-      ui.notifications?.info(
-        game.i18n.format(`${i18nPrefix}.stacked`, {
-          name: existing.name,
-          quantity: nextQty,
-        }),
-      );
+      const action = await this._promptExistingItemDrop(existing);
+      if (action === "duplicate") {
+        const copy = foundry.utils.duplicate(data);
+        delete copy._id;
+        toCreate.push(copy);
+        continue;
+      }
+      if (action === "overwrite") {
+        await this._overwriteDroppedItem(existing, data);
+        continue;
+      }
+      if (action === "quantity" && this._itemTracksQuantity(type)) {
+        await this._incrementDroppedItemQuantity(existing);
+      }
     }
 
     if (!toCreate.length) return [];
     return super._onDropItemCreate(toCreate, event);
+  }
+
+  /** O tipo declara `system.quantity`. Munição (`system.ammo`) não conta. */
+  _itemTracksQuantity(type) {
+    const model = CONFIG.Item.dataModels?.[type];
+    const schema = model?.defineSchema?.();
+    return !!schema?.quantity;
+  }
+
+  async _promptExistingItemDrop(existing) {
+    const hasQuantity = this._itemTracksQuantity(existing.type);
+    const name = foundry.utils.escapeHTML?.(existing.name ?? "") ?? (existing.name ?? "");
+    const contentKey = hasQuantity
+      ? "MDT.item.dropExistsWithQuantity"
+      : "MDT.item.dropExists";
+    const content = game.i18n.format(contentKey, {
+      name,
+      quantity: Math.max(0, Number(existing.system.quantity ?? 0)),
+    });
+
+    const buttons = [
+      {
+        action: "cancel",
+        label: game.i18n.localize("MDT.item.dropCancel"),
+        icon: "fa-solid fa-xmark",
+        callback: () => "cancel",
+      },
+      {
+        action: "duplicate",
+        label: game.i18n.localize("MDT.item.dropDuplicate"),
+        icon: "fa-solid fa-copy",
+        callback: () => "duplicate",
+      },
+      {
+        action: "overwrite",
+        label: game.i18n.localize("MDT.item.dropOverwrite"),
+        icon: "fa-solid fa-rotate",
+        callback: () => "overwrite",
+      },
+    ];
+    if (hasQuantity) {
+      buttons.push({
+        action: "quantity",
+        label: game.i18n.localize("MDT.item.dropUpdateQuantity"),
+        icon: "fa-solid fa-plus",
+        callback: () => "quantity",
+      });
+    }
+
+    const result = await foundry.applications.api.DialogV2.wait({
+      classes: ["mad-dragon-turbo", "mdt-drop-exists-app"],
+      window: {
+        title: game.i18n.localize("MDT.item.dropExistsTitle"),
+        contentClasses: ["mad-dragon-turbo", "mdt-drop-exists-content"],
+      },
+      content: `<p class="mdt-drop-exists-msg">${content}</p>`,
+      buttons,
+      modal: true,
+      rejectClose: false,
+    });
+
+    if (result == null || result === "cancel" || result === "close") return "cancel";
+    return result;
+  }
+
+  async _overwriteDroppedItem(existing, itemData) {
+    const source = foundry.utils.duplicate(itemData);
+    const effects = Array.isArray(source.effects) ? source.effects : null;
+    const update = {
+      name: source.name,
+      system: source.system ?? {},
+    };
+    if (source.img) update.img = source.img;
+    if (source.flags) update.flags = source.flags;
+    await existing.update(update);
+
+    if (effects) {
+      const oldIds = existing.effects?.map((effect) => effect.id).filter(Boolean) ?? [];
+      if (oldIds.length) await existing.deleteEmbeddedDocuments("ActiveEffect", oldIds);
+      const copies = effects.map((effect) => {
+        const copy = foundry.utils.duplicate(effect);
+        delete copy._id;
+        return copy;
+      });
+      if (copies.length) await existing.createEmbeddedDocuments("ActiveEffect", copies);
+    }
+
+    ui.notifications?.info(
+      game.i18n.format("MDT.item.dropOverwritten", { name: source.name ?? existing.name }),
+    );
+  }
+
+  async _incrementDroppedItemQuantity(existing) {
+    const currentQty = Math.max(0, Number(existing.system.quantity ?? 0));
+    const nextQty = currentQty + 1;
+    await existing.update({ "system.quantity": nextQty });
+    ui.notifications?.info(
+      game.i18n.format("MDT.item.dropQuantityUpdated", {
+        name: existing.name,
+        quantity: nextQty,
+      }),
+    );
   }
 
   _findExistingItem(itemData, type) {

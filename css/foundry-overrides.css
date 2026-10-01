@@ -35,6 +35,26 @@ body.game .app.window-app .window-content {
   font-weight: 500;
 }
 
+.mad-dragon-turbo.mdt-drop-exists-app {
+  width: auto;
+  min-width: 420px;
+  max-width: 560px;
+}
+
+.mad-dragon-turbo.mdt-drop-exists-app .window-content.mdt-drop-exists-content {
+  padding: 10px 12px;
+}
+
+.mad-dragon-turbo.mdt-drop-exists-app .mdt-drop-exists-msg {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.mad-dragon-turbo.mdt-drop-exists-app .form-footer {
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 .mad-dragon-turbo.mdt-roll-dialog-app .window-content.mdt-roll-dialog-content {
   padding: 10px 12px;
 }

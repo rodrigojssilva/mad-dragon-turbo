@@ -69,3 +69,12 @@
 - [x] Nos poderes/magias adicionar opção "Pronto"
 - [x] Exibir ícone do equipamento/consumível utilizado no chat
 - [x] Adicionar e exibir por quanto tempo o poder/magia fica ativo
+
+---
+
+- [x] Nova aba para "Poderes/Magias"
+- [x] Trocar badge "Pronto" por ícone
+
+---
+
+- [x] Arrastar item para ficha questiona Duplicar, Sobrescrever, Atualizar quantidade ou Cancelar
