@@ -789,6 +789,32 @@
   font-family: inherit;
 }
 
+/* CARACTERÍSTICAS — Especialidades e Poderes/Magias em duas linhas, cada uma na largura da aba */
+.mad-dragon-turbo .tab.characteristics .sheet-columns {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.mad-dragon-turbo .tab.characteristics .col-left,
+.mad-dragon-turbo .tab.characteristics .col-right {
+  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
+}
+
+/* PODERES/MAGIAS — lista na largura da aba */
+.mad-dragon-turbo .tab.spells .sheet-columns {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.mad-dragon-turbo .tab.spells .col-left,
+.mad-dragon-turbo .tab.spells .col-right {
+  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
+}
+
 /* INVENTÁRIO — Equipamentos e Consumível em duas linhas, cada uma na largura da aba */
 .mad-dragon-turbo .tab.inventory .sheet-columns {
   flex-direction: column;
@@ -1004,7 +1030,7 @@
 }
 
 .mad-dragon-turbo .spell-ready-badge.is-not-ready {
-  color: #7e1f1f;
+  color: #8a8478;
 }
 
 .mad-dragon-turbo .item-row-spell.spell-not-ready {
