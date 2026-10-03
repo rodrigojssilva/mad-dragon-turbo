@@ -78,3 +78,8 @@
 ---
 
 - [x] Arrastar item para ficha questiona Duplicar, Sobrescrever, Atualizar quantidade ou Cancelar
+
+---
+
+- [ ] BUG: Default Sheet vazio na ficha do personagem
+- [ ] Ao atacar, com poder/magia ou um equipamento manter a ficha do personagem aberta

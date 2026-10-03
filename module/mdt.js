@@ -15,20 +15,8 @@ import { MdtItemSheet } from "./item/mdt-item-sheet.js";
 import { registerMdtPartials } from "./templates/register-partials.js";
 import { registerForcePackItemType } from "./compendium/force-pack-item-type.js";
 
-async function reloadMdtTranslations() {
-  try {
-    const bucket = game.i18n?.translations?.MDT;
-    if (!bucket || typeof bucket !== "object") return;
-    bucket.equipments = "EQUIPAMENTOS";
-  } catch (error) {
-    console.error("MDT | Falha ao ajustar o título de equipamentos:", error);
-  }
-}
-
 Hooks.on("init", async function () {
   console.log("MDT | Inicializando Mad Dragon Turbo...");
-
-  await reloadMdtTranslations();
 
   // Registra os DataModels — substitui o template.json
   Object.assign(CONFIG.Actor.dataModels, {
@@ -44,29 +32,8 @@ Hooks.on("init", async function () {
     consumable: ConsumableModel,
   });
 
-  registerForcePackItemType();
-
-  await registerMdtPartials();
-  registerHandlebarsHelpers();
-
-  // Registra classes de documento
-  CONFIG.Actor.documentClass = MadDragonActor;
-
-  // Labels dos tipos
-  CONFIG.Actor.typeLabels = {
-    character: "TYPES.Actor.character",
-    npc: "TYPES.Actor.npc",
-    enemy: "TYPES.Actor.enemy",
-  };
-
-  CONFIG.Item.typeLabels = {
-    specialty: "TYPES.Item.specialty",
-    spell: "TYPES.Item.spell",
-    equipment: "TYPES.Item.equipment",
-    consumable: "TYPES.Item.consumable",
-  };
-
   // Registra fichas
+  console.log("MDT | Registrando fichas...");
   foundry.documents.collections.Actors.unregisterSheet(
     "core",
     foundry.applications.sheets.ActorSheet,
@@ -94,10 +61,39 @@ Hooks.on("init", async function () {
   });
 
   // Registra o sistema de combate customizado
+  console.log("MDT | Registrando o sistema de combate customizado...");
   CONFIG.Combat.documentClass = MDTCombat;
 
-  registerHandlebarsHelpers();
+  
+  // Registra classes de documento
+  console.log("MDT | Registrando classes de documento...");
+  CONFIG.Actor.documentClass = MadDragonActor;
 
+  // Labels dos tipos
+  console.log("MDT | Registrando labels dos tipos...");
+  CONFIG.Actor.typeLabels = {
+    character: "TYPES.Actor.character",
+    npc: "TYPES.Actor.npc",
+    enemy: "TYPES.Actor.enemy",
+  };
+
+  CONFIG.Item.typeLabels = {
+    specialty: "TYPES.Item.specialty",
+    spell: "TYPES.Item.spell",
+    equipment: "TYPES.Item.equipment",
+    consumable: "TYPES.Item.consumable",
+  };
+
+  console.log("MDT | Registrando `ForcePackItemType`...");
+  registerForcePackItemType();
+
+  console.log("MDT | Registrando `MdtPartials`...");
+  await registerMdtPartials();  
+  
+  console.log("MDT | Registrando `HandlebarsHelpers`...");
+  registerHandlebarsHelpers();
+  
+  console.log("MDT | Registrando `ChatHooks`...");
   MDTRoll.registerChatHooks();
 });
 
