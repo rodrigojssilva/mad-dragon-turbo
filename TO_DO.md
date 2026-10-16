@@ -81,5 +81,8 @@
 
 ---
 
-- [ ] BUG: Default Sheet vazio na ficha do personagem
-- [ ] Ao atacar, com poder/magia ou um equipamento manter a ficha do personagem aberta
+- [x] BUG: Default Sheet vazio na ficha do personagem
+
+---
+
+- [x] Ao atacar, com poder/magia ou um equipamento manter a ficha do personagem aberta

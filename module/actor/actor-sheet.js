@@ -1092,9 +1092,7 @@ export class MadDragonActorSheet extends ActorSheet {
     }
 
     const actor = this.actor;
-    await this.close();
-
-    const picked = await MDTRoll.pickTargetToken();
+    const picked = await this._pickTargetWithSheetMinimized();
     if (!picked) return;
 
     const targetName = this._targetNameFromPick(picked);
@@ -1217,6 +1215,40 @@ export class MadDragonActorSheet extends ActorSheet {
     return picked?.name || picked?.actor?.name || "";
   }
 
+  /**
+   * Recolhe a ficha para o clique no token e a restaura depois da decisão.
+   * Se a barra for fechada nesse intervalo, reabre a mesma ficha.
+   * @param {object} [pickOptions]
+   * @returns {Promise<Token|null|{noTarget: true}>}
+   */
+  async _pickTargetWithSheetMinimized(pickOptions) {
+    const actorId = this.actor?.id;
+    await this.minimize();
+    try {
+      return await MDTRoll.pickTargetToken(pickOptions);
+    } finally {
+      try {
+        await this._restoreSheetAfterTargetPick(actorId);
+      } catch (err) {
+        console.error("MDT | Falha ao restaurar a ficha após escolher o alvo", err);
+      }
+    }
+  }
+
+  /**
+   * @param {string|undefined} actorId
+   */
+  async _restoreSheetAfterTargetPick(actorId) {
+    if (this.rendered && this._minimized) {
+      await this.maximize();
+      return;
+    }
+    if (this.rendered) return;
+
+    const sheet = game.actors.get(actorId)?.sheet ?? this.actor?.sheet ?? this;
+    if (sheet && !sheet.rendered) await sheet.render(true);
+  }
+
   async _onEquipmentUse(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -1241,9 +1273,7 @@ export class MadDragonActorSheet extends ActorSheet {
     }
 
     const actor = this.actor;
-    await this.close();
-
-    const picked = await MDTRoll.pickTargetToken({
+    const picked = await this._pickTargetWithSheetMinimized({
       promptKey: "MDT.equipment.selectTargetPrompt",
     });
     if (!picked) return;
