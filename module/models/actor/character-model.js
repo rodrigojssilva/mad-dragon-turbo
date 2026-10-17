@@ -47,16 +47,9 @@ export class CharacterModel extends TypeDataModel {
   }
 
   prepareDerivedData() {
-    this._applyStyleStats();
-  }
-
-  _applyStyleStats() {
-    const stats = CHARACTER_STYLE_STATS[this.style];
-    if (!stats) return;
-
-    this.health.max = stats.healthMax;
-    this.sanity.max = stats.sanityMax;
-    this.health.value = Math.min(this.health.value, stats.healthMax);
-    this.sanity.value = Math.min(this.sanity.value, stats.sanityMax);
+    const healthMax = Math.max(0, Number(this.health?.max ?? 0));
+    const sanityMax = Math.max(0, Number(this.sanity?.max ?? 0));
+    this.health.value = Math.min(Math.max(0, Number(this.health?.value ?? 0)), healthMax);
+    this.sanity.value = Math.min(Math.max(0, Number(this.sanity?.value ?? 0)), sanityMax);
   }
 }

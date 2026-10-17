@@ -68,7 +68,9 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     context.system = systemData;
     context.sheetTitle = game.i18n.localize(`MDT.sheet.${actor.type}`);
     context.vitalsMaxEditable =
-      actor.type === "npc" || actor.type === "enemy";
+      actor.type === "npc" ||
+      actor.type === "enemy" ||
+      (actor.type === "character" && Boolean(game.user?.isGM));
     context.healthIconPath = this._getResourceIconPath(
       systemData.health?.value,
       systemData.health?.max,

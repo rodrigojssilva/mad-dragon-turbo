@@ -1,9 +1,24 @@
 /* Mad Dragon Turbo — ajustes ao shell do Foundry (janelas / conteúdo) */
 
-/* Vence o padrão: body.game .app.window-app .window-content { background: url(../ui/parchment.jpg) } */
-body.game .app.window-app .window-content,
+/* Só as janelas deste sistema. O seletor genérico de .window-app apagava o fundo
+   das configurações do Foundry e deixava texto escuro em cima do tema escuro. */
+body.game .mad-dragon-turbo.window-app .window-content,
 body.game .application.mad-dragon-turbo .window-content {
   background: transparent !important;
+  color: #1a1a1a;
+  color-scheme: light;
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #3d362c;
+  --color-text-header: #1a1a1a;
+  --color-text-emphatic: #1a1a1a;
+  --color-text-inactive: #6b6458;
+  --color-text-dark-primary: #1a1a1a;
+  --color-text-dark-secondary: #3d362c;
+  --color-text-dark-header: #1a1a1a;
+  --color-text-light-primary: #1a1a1a;
+  --color-text-light-secondary: #3d362c;
+  --color-text-light-header: #1a1a1a;
+  --color-text-light-heading: #1a1a1a;
 }
 
 /* Ordem de turno continua pela iniciativa; só oculta o valor numérico no tracker */

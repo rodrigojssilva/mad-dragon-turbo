@@ -41,6 +41,8 @@
 }
 
 .application.mad-dragon-turbo.actor .sheet-body {
+  display: flex;
+  flex-direction: column;
   flex: 1 1 auto;
   min-height: 0;
   overflow-x: hidden;
@@ -249,7 +251,8 @@
   flex-direction: column;
   align-items: stretch;
   gap: 6px;
-  width: 90px;
+  width: auto;
+  min-width: 90px;
   flex-shrink: 0;
 }
 
@@ -270,9 +273,9 @@
   color: #f5f0e8;
   border: none;
   border-radius: 4px;
-  padding: 4px 10px;
+  padding: 4px 8px;
   cursor: pointer;
-  font-size: 1.2em;
+  font-size: 0.85em;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -288,12 +291,11 @@
   color: #1a1a1a;
   border: 1px solid #ccbfa6;
   border-radius: 4px;
-  padding: 4px 10px;
+  padding: 4px 8px;
   cursor: pointer;
-  font-size: 1.2em;
+  font-size: 0.85em;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 6px;
   white-space: nowrap;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
@@ -310,18 +312,29 @@
 
 .mad-dragon-turbo .header-actions {
   display: flex;
-  gap: 6px;
+  flex-direction: column;
+  gap: 4px;
   width: 100%;
   align-self: stretch;
 }
 
 .mad-dragon-turbo .header-actions .header-icon-btn {
-  flex: 1 1 0;
-  min-width: 0;
-  width: auto;
-  height: 30px;
-  padding: 0;
-  justify-content: center;
+  flex: 0 0 auto;
+  width: 100%;
+  min-height: 28px;
+  height: auto;
+  padding: 4px 8px;
+  justify-content: space-between;
+}
+
+.mad-dragon-turbo .header-actions .header-action-label {
+  line-height: 1;
+  text-align: right;
+}
+
+.mad-dragon-turbo .header-actions .header-icon-btn i {
+  font-size: 1.5em;
+  line-height: 1;
 }
 
 .mad-dragon-turbo .resource-value-row {
@@ -370,6 +383,7 @@
   margin: 0 0 6px;
   border-bottom: 1px solid #333;
   padding-bottom: 4px;
+  color: #1a1a1a;
 }
 
 .mad-dragon-turbo .header-field {
@@ -490,6 +504,7 @@
   border-bottom: 1px solid #333;
   margin: 0 0 4px;
   padding-bottom: 2px;
+  color: #1a1a1a;
 }
 
 .mad-dragon-turbo .section-header {
@@ -538,6 +553,7 @@
   text-transform: uppercase;
   display: block;
   margin-bottom: 2px;
+  color: #1a1a1a;
 }
 
 .mad-dragon-turbo .resource-icon {
@@ -559,13 +575,23 @@
 
 .mad-dragon-turbo .mdt-style-card .section-header {
   margin-bottom: 6px;
-  justify-content: flex-start;
+  justify-content: space-between;
 }
 
 .mad-dragon-turbo .mdt-style-card .section-header h3 {
   text-align: left;
-  width: 100%;
+  width: auto;
   margin: 0;
+}
+
+.mad-dragon-turbo .mdt-style-card .style-section-hint {
+  margin: 0;
+  font-size: 0.72em;
+  font-weight: normal;
+  font-style: italic;
+  text-align: right;
+  text-transform: uppercase;
+  color: #3d362c;
 }
 
 .mad-dragon-turbo .mdt-style-card .style-option-group {
@@ -622,6 +648,7 @@
   white-space: normal;
   cursor: pointer;
   font-weight: 700;
+  color: #1a1a1a;
 }
 
 .mad-dragon-turbo .mdt-style-card .style-option-icon-btn {
@@ -705,6 +732,7 @@
   font-weight: bold;
   text-transform: uppercase;
   line-height: 1.2;
+  color: #1a1a1a;
 }
 
 .mad-dragon-turbo .mdt-vitals-card .resource-col-values .resource-value-row {
@@ -989,26 +1017,39 @@
   min-width: 0;
 }
 
-/* DIARIO — colunas em stack vertical; altura dos blocos segue a viewport (sem flex na cadeia da ficha, que colapsava o conteúdo) */
-.mad-dragon-turbo .tab.diary {
-  height: 100%;
+/* DIARIO — preenche a aba; o resize pode deixar o campo maior e a aba rola.
+   flex-basis: auto para o height do arraste valer. flex-shrink: 0 para não voltar. */
+.application.mad-dragon-turbo.actor .sheet-body > .tab.diary.active {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  width: 100%;
 }
 
 .mad-dragon-turbo .tab.diary .sheet-columns {
-  height: 100%;
+  flex: 1 0 auto;
   align-items: stretch;
+  width: 100%;
 }
 
 .mad-dragon-turbo .tab.diary .col-left,
 .mad-dragon-turbo .tab.diary .col-right {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .mad-dragon-turbo .tab.diary .diary-block {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 1 0 auto;
+  width: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+.mad-dragon-turbo .tab.diary .diary-block .section-header {
+  flex: 0 0 auto;
 }
 
 .mad-dragon-turbo .tab.diary .diary-block .item-edit-toolbar {
@@ -1016,8 +1057,14 @@
 }
 
 .mad-dragon-turbo .tab.diary .diary-textarea {
-  flex: 1;
-  min-height: clamp(10rem, 42vh, 28rem);
+  flex: 1 1 auto;
+  align-self: stretch;
+  width: 100%;
+  min-height: 0;
+  height: auto;
+  max-width: 100%;
+  margin: 0;
+  overflow: auto;
   resize: vertical;
   box-sizing: border-box;
 }

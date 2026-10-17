@@ -73,6 +73,7 @@
       "brawlerDefenseInfo": "Porradeiro: +1 Dado - Por ser Resistente.",
       "tricksterDefenseInfo": "Malandrão: +1 Dado - Por ser Esguio.",
       "geniusDefenseInfo": "Genial: Não recebe dados extras para defesa.",
+      "clickIconsHint": "clique nos ícones para mais informações",
       "styleInfoToggle": "Informações do estilo",
       "styleInfoClose": "Fechar",
       "learnMore": "Saiba mais"
@@ -182,7 +183,7 @@
       "dropQuantityUpdated": "Quantidade de \"{name}\" aumentada para {quantity}."
     },
     "roll": {
-      "titleBtn": "Rolagem",
+      "titleBtn": "Rolagens",
       "invalidDifficulty": "Dificuldade inválida.",
       "title": "Tipos de rolagem",
       "rollButton": "Rolar",

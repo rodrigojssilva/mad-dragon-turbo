@@ -90,3 +90,25 @@
 ---
 
 - [x] Correção do contraste do modal de rolagem de dados
+
+---
+
+- [x] Migrar fichas de personagem, NPC, inimigo e item para Application V2
+- [x] Trocar o gancho do chat para renderChatMessageHTML e o autor da mensagem para author
+- [x] Manifesto 2.0.0: Foundry mínimo 13, verificado 14 e máximo 16
+- [x] Gravar history-version.md com a mudança de versão e as regras atuais
+- [x] Aba Características selecionada ao abrir a ficha e depois de salvar
+- [x] Contraste do texto dos campos da ficha no tema claro e no escuro
+- [x] Ficha com largura 600 e altura 820, sem cortar o nome do estilo
+- [x] Maximizar a ficha depois de escolher o alvo
+- [x] Radios e checkboxes no padrão do modal de rolagem, na ficha e nos itens
+- [x] Checks desabilitados em cinza na ficha e nos itens
+- [x] Layout da ficha de item: imagem, alinhamento e espaçamento
+- [x] Scroll vertical da ficha quando o conteúdo passa da altura
+- [x] Botões Rolagens e Descanso empilhados, ícone à esquerda e texto à direita
+- [x] Texto "clique nos ícones para mais informações" à direita do título Estilo, em itálico
+- [x] Mestre pode alterar o máximo de vida e sanidade na ficha de personagem
+- [x] Aba Diário: Notas e Recursos preenchem o card e podem ser aumentados sem vazar a borda
+
+---
+
