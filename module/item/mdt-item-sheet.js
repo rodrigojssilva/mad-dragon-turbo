@@ -1,29 +1,51 @@
 import { isEquipmentWeapon } from "../models/item/equipment-model.js";
 import { itemKindIconClass, itemKindLabel } from "../helpers/item-kind-icon.js";
 
-export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
-  constructor(...args) {
-    super(...args);
+const { HandlebarsApplicationMixin } = foundry.applications.api;
+const { ItemSheetV2 } = foundry.applications.sheets;
+
+export class MdtItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
+  constructor(arg0 = {}, arg1 = {}) {
+    const isDocument = arg0?.documentName === "Item";
+    super(isDocument ? { ...arg1, document: arg0 } : arg0);
     /** @type {boolean} */
     this._itemEditing = false;
   }
 
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ["mad-dragon-turbo", "sheet", "item"],
+  static DEFAULT_OPTIONS = {
+    classes: ["mad-dragon-turbo", "sheet", "item"],
+    tag: "div",
+    position: {
       width: 520,
+    },
+    window: {
       resizable: true,
+    },
+    form: {
       submitOnChange: false,
-      submitOnClose: false,
-    });
+      closeOnSubmit: false,
+    },
+  };
+
+  static PARTS = {
+    sheet: {
+      template: "systems/mad-dragon-turbo/templates/items/specialty-sheet.hbs",
+    },
+  };
+
+  _configureRenderParts(options) {
+    const parts = super._configureRenderParts(options);
+    const type = this.item?.type;
+    if (parts.sheet && type) {
+      parts.sheet.template = `systems/mad-dragon-turbo/templates/items/${type}-sheet.hbs`;
+    }
+    return parts;
   }
 
-  get template() {
-    return `systems/mad-dragon-turbo/templates/items/${this.item.type}-sheet.hbs`;
-  }
-
-  async getData(options) {
-    const context = await super.getData(options);
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    context.item = this.item;
+    context.editable = this.isEditable;
     const item = this.item;
     const sys = item.system;
     const systemPlain = !sys
@@ -73,7 +95,7 @@ export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
    */
   _getSheetForm() {
     const el = this.element;
-    const root = el?.jquery ? el[0] : el;
+    const root = el instanceof HTMLElement ? el : el?.[0];
     return root?.querySelector?.("form.sheet-form") ?? null;
   }
 
@@ -246,11 +268,12 @@ export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
     this.render();
   }
 
-  activateListeners(html) {
-    super.activateListeners(html);
-    const el = html[0];
+  async _onRender(context, options) {
+    await super._onRender(context, options);
+    const el = this.element instanceof HTMLElement ? this.element : this.element?.[0];
     if (!el) return;
 
+    this._bindPortraitEditor(el);
     this._normalizeTextareasInRoot(el);
 
     const form = el.querySelector("form.sheet-form");
@@ -291,6 +314,25 @@ export class MdtItemSheet extends foundry.appv1.sheets.ItemSheet {
       kindEl?.addEventListener("change", syncWeapon);
       syncWeapon();
     }
+  }
+
+  _bindPortraitEditor(root) {
+    const img = root.querySelector('img.profile-img[data-edit="img"]');
+    if (!img || img.dataset.mdtImgBound === "1") return;
+    img.dataset.mdtImgBound = "1";
+    img.addEventListener("click", (event) => {
+      if (!this.isEditable) return;
+      event.preventDefault();
+      const FilePickerImpl =
+        foundry.applications.apps.FilePicker?.implementation ??
+        foundry.applications.apps.FilePicker;
+      const picker = new FilePickerImpl({
+        type: "image",
+        current: this.item.img,
+        callback: (path) => this.item.update({ img: path }),
+      });
+      return picker.browse();
+    });
   }
 
   _normalizeTextareasInRoot(root) {

@@ -49,10 +49,13 @@ Hooks.on("init", async function () {
     },
   );
 
-  foundry.documents.collections.Items.unregisterSheet(
-    "core",
-    foundry.appv1.sheets.ItemSheet,
-  );
+  const coreItemSheets = [
+    foundry.appv1?.sheets?.ItemSheet,
+    foundry.applications.sheets.ItemSheet,
+  ].filter(Boolean);
+  for (const coreSheet of coreItemSheets) {
+    foundry.documents.collections.Items.unregisterSheet("core", coreSheet);
+  }
 
   foundry.documents.collections.Items.registerSheet("mad-dragon-turbo", MdtItemSheet, {
     types: ["specialty", "spell", "equipment", "consumable"],

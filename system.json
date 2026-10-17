@@ -2,11 +2,11 @@
   "id": "mad-dragon-turbo",
   "title": "Mad Dragon Turbo",
   "description": "Sistema RPG de folheto Mad Dragon Turbo para Foundry VTT.",
-  "version": "1.8.3",
+  "version": "2.0.0",
   "compatibility": {
     "minimum": "13",
-    "verified": "13",
-    "maximum": "13"
+    "verified": "14",
+    "maximum": "16"
   },
   "authors": [
     {

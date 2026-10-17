@@ -1,7 +1,8 @@
 /* Mad Dragon Turbo — ajustes ao shell do Foundry (janelas / conteúdo) */
 
 /* Vence o padrão: body.game .app.window-app .window-content { background: url(../ui/parchment.jpg) } */
-body.game .app.window-app .window-content {
+body.game .app.window-app .window-content,
+body.game .application.mad-dragon-turbo .window-content {
   background: transparent !important;
 }
 

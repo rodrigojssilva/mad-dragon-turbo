@@ -3,36 +3,64 @@ import { equipmentUseState, equipmentWeaponDamage } from "../models/item/equipme
 import { itemKindIconClass, itemKindLabel } from "../helpers/item-kind-icon.js";
 import { MDTRoll } from "../helpers/roll.js";
 
-export class MadDragonActorSheet extends ActorSheet {
-  constructor(object, options) {
-    super(object, options);
+const { HandlebarsApplicationMixin } = foundry.applications.api;
+const { ActorSheetV2 } = foundry.applications.sheets;
+
+export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
+  constructor(arg0 = {}, arg1 = {}) {
+    const isDocument = arg0?.documentName === "Actor";
+    super(isDocument ? { ...arg1, document: arg0 } : arg0);
     this._expandedItems = new Set();
     this._vitalsActorUpdateHookRegistered = false;
     this._onActorUpdateForVitals = this._onActorUpdateForVitals.bind(this);
   }
 
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ["mad-dragon-turbo", "sheet", "actor"],
-      width: 570,
-      height: 800,
+  static DEFAULT_OPTIONS = {
+    classes: ["mad-dragon-turbo", "sheet", "actor"],
+    tag: "div",
+    position: {
+      width: 600,
+      height: 820,
+    },
+    window: {
+      resizable: true,
+    },
+    form: {
+      submitOnChange: false,
+      closeOnSubmit: false,
+    },
+  };
+
+  static PARTS = {
+    sheet: {
+      template: "systems/mad-dragon-turbo/templates/actors/character-sheet.hbs",
+      scrollable: [".sheet-body"],
+    },
+  };
+
+  static TABS = {
+    primary: {
       tabs: [
-        {
-          navSelector: "nav.sheet-tabs",
-          contentSelector: "section.sheet-body",
-          initial: "characteristics"
-        }
+        { id: "characteristics" },
+        { id: "spells" },
+        { id: "inventory" },
+        { id: "diary" },
       ],
-      submitOnChange: false
-    });
+      initial: "characteristics",
+    },
+  };
+
+  /** Janela V2 entrega HTMLElement. A V1 entregava jQuery. */
+  _sheetRoot() {
+    const el = this.element;
+    if (!el) return null;
+    if (el instanceof HTMLElement) return el;
+    if (el?.[0] instanceof HTMLElement) return el[0];
+    return null;
   }
 
-  get template() {
-    return "systems/mad-dragon-turbo/templates/actors/character-sheet.hbs";
-  }
-
-  async getData() {
-    const context = await super.getData();
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
     const actor = this.actor;
     const systemData = actor.system;
 
@@ -178,16 +206,29 @@ export class MadDragonActorSheet extends ActorSheet {
       }));
   }
 
-  activateListeners(html) {
-    super.activateListeners(html);
+  async _onFirstRender(context, options) {
+    await super._onFirstRender(context, options);
+    const width = this.position?.width ?? 0;
+    const height = this.position?.height ?? 0;
+    if (width < 600 || height < 820) {
+      this.setPosition({
+        width: Math.max(width, 600),
+        height: Math.max(height, 820),
+      });
+    }
+  }
 
-    // html é jQuery — convertemos para HTMLElement com [0]
-    const el = html[0];
+  async _onRender(context, options) {
+    await super._onRender(context, options);
+
+    const el = this._sheetRoot()?.querySelector("form") ?? this._sheetRoot();
     if (!el) return;
 
+    this._bindPortraitEditor(el);
     this._normalizeTextareasInRoot(el);
 
     this._registerVitalsResourceUiSync(el);
+    this._syncPrimaryTab();
 
     if (!this.isEditable) return;
 
@@ -326,6 +367,39 @@ export class MadDragonActorSheet extends ActorSheet {
     this._capturePendingEditFromCreate();
     this._restoreExpandedItems(el);
     this._openPendingItemEdit(el);
+    this._syncPrimaryTab();
+  }
+
+  /**
+   * A janela V2 troca o HTML a cada render e tira a classe `active`.
+   * Sem ela, o CSS esconde todas as abas.
+   */
+  _syncPrimaryTab() {
+    const group = "primary";
+    const fallback = this.constructor.TABS?.primary?.initial ?? "characteristics";
+    const tab = this.tabGroups?.[group] || fallback;
+    const root = this._sheetRoot();
+    if (!root?.querySelectorAll) return;
+
+    if (typeof this.changeTab === "function") {
+      try {
+        this.changeTab(tab, group, { force: true });
+      } catch (error) {
+        console.error("MDT | Falha ao ativar a aba da ficha:", error);
+      }
+    }
+
+    const navActive = root.querySelector(`.tabs [data-group="${group}"].active`);
+    const bodyActive = root.querySelector(`.sheet-body > .tab[data-group="${group}"].active`);
+    if (navActive?.dataset.tab === tab && bodyActive?.dataset.tab === tab) return;
+
+    root.querySelectorAll(`.tabs [data-group="${group}"]`).forEach((el) => {
+      el.classList.toggle("active", el.dataset.tab === tab);
+    });
+    root.querySelectorAll(`.sheet-body > .tab[data-group="${group}"]`).forEach((el) => {
+      el.classList.toggle("active", el.dataset.tab === tab);
+    });
+    if (this.tabGroups) this.tabGroups[group] = tab;
   }
 
   _normalizeTextareasInRoot(root) {
@@ -406,7 +480,7 @@ export class MadDragonActorSheet extends ActorSheet {
    */
   async _flushVitalInputsToActor() {
     if (!this.isEditable) return;
-    const root = this.element?.[0];
+    const root = this._sheetRoot();
     if (!root) return;
 
     const hInput = root.querySelector('input[name="system.health.value"]');
@@ -452,7 +526,7 @@ export class MadDragonActorSheet extends ActorSheet {
   _updateVitalsResourceDisplayFromInput(inputEl) {
     const name = inputEl.name;
     const sys = this.actor.system;
-    const root = this.element?.[0];
+    const root = this._sheetRoot();
     const readMaxFromDom = (resource) => {
       const maxIn = root?.querySelector(
         `input[name="system.${resource}.max"]`,
@@ -503,7 +577,7 @@ export class MadDragonActorSheet extends ActorSheet {
   }
 
   _applyVitalsResourceUi(resourceType, value, max) {
-    const root = this.element?.[0];
+    const root = this._sheetRoot();
     if (!root) return;
     const img = root.querySelector(
       `img.resource-icon[data-resource="${resourceType}"]`,
@@ -1022,7 +1096,7 @@ export class MadDragonActorSheet extends ActorSheet {
     event.preventDefault();
     event.stopPropagation();
     await this._flushVitalInputsToActor();
-    const root = this.element?.[0];
+    const root = this._sheetRoot();
     const input = root?.querySelector(".concept-input");
     const conceptText = (input?.value ?? this.actor.system.concept ?? "").trim();
     if (!conceptText) {
@@ -1238,8 +1312,15 @@ export class MadDragonActorSheet extends ActorSheet {
   /**
    * @param {string|undefined} actorId
    */
+  _isSheetMinimized() {
+    if (this._minimized || this.minimized) return true;
+    const el = this.element;
+    const root = el instanceof HTMLElement ? el : el?.[0];
+    return !!root?.classList?.contains("minimized");
+  }
+
   async _restoreSheetAfterTargetPick(actorId) {
-    if (this.rendered && this._minimized) {
+    if (this.rendered && this._isSheetMinimized()) {
       await this.maximize();
       return;
     }
@@ -1485,52 +1566,81 @@ export class MadDragonActorSheet extends ActorSheet {
 
     this._pendingEditItemId = item.id;
     this._expandedItems.add(item.id);
-    const el = this.element?.[0];
+    const el = this._sheetRoot();
     if (!el) return;
     this._restoreExpandedItems(el);
     this._openPendingItemEdit(el);
   }
 
   /**
+   * Clique no retrato abre o seletor de imagem no campo `img`.
+   * A janela V1 fazia isso sozinha via `data-edit`.
+   */
+  _bindPortraitEditor(root) {
+    const img = root.querySelector('img.profile-img[data-edit="img"]');
+    if (!img || img.dataset.mdtImgBound === "1") return;
+    img.dataset.mdtImgBound = "1";
+    img.addEventListener("click", (event) => {
+      if (!this.isEditable) return;
+      event.preventDefault();
+      const current = this.actor.img;
+      const FilePickerImpl =
+        foundry.applications.apps.FilePicker?.implementation ??
+        foundry.applications.apps.FilePicker;
+      const picker = new FilePickerImpl({
+        type: "image",
+        current,
+        callback: (path) => this.actor.update({ img: path }),
+      });
+      return picker.browse();
+    });
+  }
+
+  /**
    * Drop de item na ficha:
+   * - item deste ator: ordena
    * - item novo: cria
    * - item já existente: Cancelar, Duplicar, Sobrescrever ou Atualizar quantidade
    */
-  async _onDropItemCreate(itemData, event) {
-    const items = Array.isArray(itemData) ? itemData : [itemData];
-    const toCreate = [];
+  async _onDropItem(event, item) {
+    if (!this.isEditable || !item) return null;
+    if (item.parent === this.actor) return super._onDropItem(event, item);
 
-    for (const data of items) {
-      const type = data?.type;
-      if (!type) {
-        toCreate.push(data);
-        continue;
-      }
+    const data = this._cleanDroppedItemData(item.toObject());
+    const type = data?.type;
+    if (!type) return null;
 
-      const existing = this._findExistingItem(data, type);
-      if (!existing) {
-        toCreate.push(data);
-        continue;
-      }
+    const existing = this._findExistingItem(data, type);
+    if (!existing) return this._createDroppedItem(data);
 
-      const action = await this._promptExistingItemDrop(existing);
-      if (action === "duplicate") {
-        const copy = foundry.utils.duplicate(data);
-        delete copy._id;
-        toCreate.push(copy);
-        continue;
-      }
-      if (action === "overwrite") {
-        await this._overwriteDroppedItem(existing, data);
-        continue;
-      }
-      if (action === "quantity" && this._itemTracksQuantity(type)) {
-        await this._incrementDroppedItemQuantity(existing);
-      }
+    const action = await this._promptExistingItemDrop(existing);
+    if (action === "duplicate") return this._createDroppedItem(data);
+    if (action === "overwrite") {
+      await this._overwriteDroppedItem(existing, data);
+      return existing;
     }
+    if (action === "quantity" && this._itemTracksQuantity(type)) {
+      await this._incrementDroppedItemQuantity(existing);
+      return existing;
+    }
+    return null;
+  }
 
-    if (!toCreate.length) return [];
-    return super._onDropItemCreate(toCreate, event);
+  _cleanDroppedItemData(data) {
+    const copy = foundry.utils.deepClone(data);
+    delete copy._id;
+    delete copy.folder;
+    delete copy.ownership;
+    delete copy.sort;
+    if (Array.isArray(copy.effects)) {
+      for (const effect of copy.effects) delete effect._id;
+    }
+    return copy;
+  }
+
+  async _createDroppedItem(data) {
+    const created = await this.actor.createEmbeddedDocuments("Item", [data]);
+    return created?.[0] ?? null;
   }
 
   /** O tipo declara `system.quantity`. Munição (`system.ammo`) não conta. */
@@ -1597,7 +1707,7 @@ export class MadDragonActorSheet extends ActorSheet {
   }
 
   async _overwriteDroppedItem(existing, itemData) {
-    const source = foundry.utils.duplicate(itemData);
+    const source = foundry.utils.deepClone(itemData);
     const effects = Array.isArray(source.effects) ? source.effects : null;
     const update = {
       name: source.name,
@@ -1611,7 +1721,7 @@ export class MadDragonActorSheet extends ActorSheet {
       const oldIds = existing.effects?.map((effect) => effect.id).filter(Boolean) ?? [];
       if (oldIds.length) await existing.deleteEmbeddedDocuments("ActiveEffect", oldIds);
       const copies = effects.map((effect) => {
-        const copy = foundry.utils.duplicate(effect);
+        const copy = foundry.utils.deepClone(effect);
         delete copy._id;
         return copy;
       });
@@ -1746,7 +1856,7 @@ export class MadDragonActorSheet extends ActorSheet {
 
   _onConceptEditStart(event) {
     event.preventDefault();
-    const root = this.element?.[0];
+    const root = this._sheetRoot();
     if (!root) return;
     const nameInput = root.querySelector("#mdt-header-name");
     const conceptInput = root.querySelector(".concept-input");
@@ -1767,7 +1877,7 @@ export class MadDragonActorSheet extends ActorSheet {
 
   async _onConceptEditSave(event) {
     event.preventDefault();
-    const root = this.element?.[0];
+    const root = this._sheetRoot();
     if (!root) return;
     const nameInput = root.querySelector("#mdt-header-name");
     const conceptInput = root.querySelector(".concept-input");
@@ -1792,7 +1902,7 @@ export class MadDragonActorSheet extends ActorSheet {
 
   _onConceptEditCancel(event) {
     event.preventDefault();
-    const root = this.element?.[0];
+    const root = this._sheetRoot();
     if (!root) return;
     const nameInput = root.querySelector("#mdt-header-name");
     const conceptInput = root.querySelector(".concept-input");

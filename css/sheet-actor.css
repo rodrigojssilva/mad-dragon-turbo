@@ -10,6 +10,167 @@
   padding: 5px;
 }
 
+/* A janela tem altura fixa. O cabeçalho fica parado e o corpo rola. */
+.application.mad-dragon-turbo.actor .window-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.application.mad-dragon-turbo.actor .window-content > * {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.application.mad-dragon-turbo.actor form.mad-dragon-turbo {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.application.mad-dragon-turbo.actor .sheet-header,
+.application.mad-dragon-turbo.actor nav.sheet-tabs {
+  flex-shrink: 0;
+}
+
+.application.mad-dragon-turbo.actor .sheet-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.mad-dragon-turbo .sheet-body > .tab {
+  display: none;
+}
+
+.mad-dragon-turbo .sheet-body > .tab.active {
+  display: block;
+}
+
+/* A janela V2 herda texto claro do tema. Os campos da ficha são claros. */
+.application.mad-dragon-turbo .window-content input:not([type="radio"]):not([type="checkbox"]),
+.application.mad-dragon-turbo .window-content textarea,
+.application.mad-dragon-turbo .window-content select {
+  color: #1a1a1a;
+  -webkit-text-fill-color: #1a1a1a;
+  color-scheme: light;
+}
+
+.application.mad-dragon-turbo .window-content input:not([type="radio"]):not([type="checkbox"]):disabled,
+.application.mad-dragon-turbo .window-content textarea:disabled,
+.application.mad-dragon-turbo .window-content select:disabled {
+  color: #1a1a1a;
+  -webkit-text-fill-color: #1a1a1a;
+  opacity: 1;
+}
+
+.application.mad-dragon-turbo .window-content input::placeholder,
+.application.mad-dragon-turbo .window-content textarea::placeholder {
+  color: #6b6458;
+  -webkit-text-fill-color: #6b6458;
+  opacity: 1;
+}
+
+/* Radios e checkboxes: o mesmo desenho do modal de rolagem, na ficha e nos itens. */
+.application.mad-dragon-turbo.actor input[type="radio"],
+.application.mad-dragon-turbo.actor input[type="checkbox"],
+.application.mad-dragon-turbo.item input[type="radio"],
+.application.mad-dragon-turbo.item input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  margin: 0;
+  border: 2px solid #5a4a3a;
+  background: #fff;
+  box-shadow: none;
+  opacity: 1;
+  filter: none;
+  accent-color: #5a4a3a;
+  color-scheme: light;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.application.mad-dragon-turbo.actor input[type="radio"],
+.application.mad-dragon-turbo.item input[type="radio"] {
+  border-radius: 50%;
+}
+
+.application.mad-dragon-turbo.actor input[type="checkbox"],
+.application.mad-dragon-turbo.item input[type="checkbox"] {
+  border-radius: 3px;
+}
+
+.application.mad-dragon-turbo.actor input[type="radio"]::before,
+.application.mad-dragon-turbo.actor input[type="radio"]::after,
+.application.mad-dragon-turbo.actor input[type="checkbox"]::before,
+.application.mad-dragon-turbo.actor input[type="checkbox"]::after,
+.application.mad-dragon-turbo.item input[type="radio"]::before,
+.application.mad-dragon-turbo.item input[type="radio"]::after,
+.application.mad-dragon-turbo.item input[type="checkbox"]::before,
+.application.mad-dragon-turbo.item input[type="checkbox"]::after {
+  content: none;
+}
+
+.application.mad-dragon-turbo.actor input[type="radio"]:checked,
+.application.mad-dragon-turbo.item input[type="radio"]:checked {
+  background: radial-gradient(circle, #5a4a3a 0 45%, #fff 48% 100%);
+}
+
+.application.mad-dragon-turbo.actor input[type="checkbox"]:checked,
+.application.mad-dragon-turbo.item input[type="checkbox"]:checked {
+  background-color: #5a4a3a;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' d='M3.5 8.5l3 3 6-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px 12px;
+}
+
+.application.mad-dragon-turbo.actor input[type="radio"]:disabled,
+.application.mad-dragon-turbo.actor input[type="checkbox"]:disabled,
+.application.mad-dragon-turbo.item input[type="radio"]:disabled,
+.application.mad-dragon-turbo.item input[type="checkbox"]:disabled {
+  border-color: #a39e96;
+  background: #e6e2db;
+  cursor: default;
+  opacity: 1;
+  filter: none;
+}
+
+.application.mad-dragon-turbo.actor input[type="radio"]:checked:disabled,
+.application.mad-dragon-turbo.item input[type="radio"]:checked:disabled {
+  background: radial-gradient(circle, #8a8478 0 45%, #e6e2db 48% 100%);
+}
+
+.application.mad-dragon-turbo.actor input[type="checkbox"]:checked:disabled,
+.application.mad-dragon-turbo.item input[type="checkbox"]:checked:disabled {
+  background-color: #8a8478;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' d='M3.5 8.5l3 3 6-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px 12px;
+}
+
+.application.mad-dragon-turbo.actor input[type="radio"]:focus-visible,
+.application.mad-dragon-turbo.actor input[type="checkbox"]:focus-visible,
+.application.mad-dragon-turbo.item input[type="radio"]:focus-visible,
+.application.mad-dragon-turbo.item input[type="checkbox"]:focus-visible {
+  outline: 2px solid #5a4a3a;
+  outline-offset: 2px;
+}
+
 /* Abas — mesmo padrão visual dos cards (.mdt-top-card) */
 .mad-dragon-turbo nav.sheet-tabs {
   display: flex;
@@ -456,9 +617,9 @@
   min-width: 0;
   line-height: 1.25;
   text-align: left;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow: visible;
+  text-overflow: unset;
+  white-space: normal;
   cursor: pointer;
   font-weight: 700;
 }

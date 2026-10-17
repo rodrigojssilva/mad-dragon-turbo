@@ -4,38 +4,61 @@
   min-height: 280px;
 }
 
-.mad-dragon-turbo.sheet.item .window-content {
+.application.mad-dragon-turbo.item .window-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.application.mad-dragon-turbo.item .window-content > * {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.application.mad-dragon-turbo.item .sheet-header {
+  margin-bottom: 0;
+}
+
+.application.mad-dragon-turbo.item .sheet-body {
   padding: 0;
 }
 
 .mad-dragon-turbo.sheet.item form.sheet-form {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   height: 100%;
+  min-height: 0;
+  overflow: hidden;
   padding: 8px;
-  gap: 8px;
+  gap: 10px;
   box-sizing: border-box;
 }
 
 .mad-dragon-turbo.sheet.item .sheet-header.item-sheet-header {
-  max-height: 125px;
   flex-shrink: 0;
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
-  align-items: stretch;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
 }
 
-/* Equipamento e consumível têm o seletor de tipo; a linha do cabeçalho não pode cortar a etiqueta */
-.mad-dragon-turbo.sheet.item .sheet-header.item-sheet-header:has(.item-kind-input) {
-  max-height: 130px;
-}
-
-.mad-dragon-turbo.sheet.item .item-sheet-header .profile-img {
-  height: 100%;
-  width: auto;
-  max-width: min(220px, 45%);
-  object-fit: contain;
+.application.mad-dragon-turbo.item .item-sheet-header .profile-img {
+  flex: 0 0 112px;
+  width: 112px !important;
+  height: 112px !important;
+  min-width: 112px;
+  max-width: 112px !important;
+  max-height: 112px !important;
+  object-fit: contain !important;
+  object-position: center;
   align-self: center;
 }
 
@@ -213,9 +236,10 @@
 }
 
 .mad-dragon-turbo.sheet.item .item-sheet-body {
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .mad-dragon-turbo.sheet.item .item-sheet-body input,

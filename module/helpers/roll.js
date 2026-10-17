@@ -39,9 +39,8 @@ export class MDTRoll {
       MDTRoll.applySpellUsesVisibility(message, html);
     };
 
-    // Foundry v13: renderChatMessageHTML (HTMLElement). v12 legado: renderChatMessage.
+    // Foundry 13+: HTMLElement. O hook renderChatMessage (jQuery) sai na versão 15.
     Hooks.on("renderChatMessageHTML", apply);
-    Hooks.on("renderChatMessage", apply);
   }
 
   /** Reaplica visibilidade nas mensagens já renderizadas (ex.: após F5). */
@@ -120,7 +119,11 @@ export class MDTRoll {
 
   static userCanTriggerReroll(message, actor) {
     if (game.user?.isGM) return true;
-    if (message.user?.id === game.user?.id) return true;
+    const authorId =
+      message.author?.id ??
+      message._source?.author ??
+      message._source?.user;
+    if (authorId && authorId === game.user?.id) return true;
     if (actor?.isOwner) return true;
     return false;
   }
@@ -584,7 +587,7 @@ export class MDTRoll {
     );
 
     const messageData = {
-      user: game.user.id,
+      author: game.user.id,
       speaker: ChatMessage.getSpeaker({ actor }),
       content,
       rolls: [roll],
@@ -799,7 +802,7 @@ export class MDTRoll {
     );
 
     const messageData = {
-      user: game.user.id,
+      author: game.user.id,
       speaker: ChatMessage.getSpeaker({ actor }),
       content,
       rolls,

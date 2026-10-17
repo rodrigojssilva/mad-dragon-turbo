@@ -45,9 +45,12 @@ export class MDTCombat extends Combat {
 // Adiciona botão de iniciativa no Combat Tracker
 // visível apenas para o GM
 // -----------------------------------------------
-Hooks.on("renderCombatTracker", (app, html, data) => {
+Hooks.on("renderCombatTracker", (app, html) => {
   if (!game.user.isGM) return;
   if (!game.combat) return;
+
+  const root = html instanceof HTMLElement ? html : html?.[0];
+  if (!root?.querySelector) return;
 
   const button = document.createElement("button");
   button.type = "button";
@@ -66,7 +69,7 @@ Hooks.on("renderCombatTracker", (app, html, data) => {
   });
 
   // Insere o botão no topo do tracker
-  const header = html.querySelector(".combat-tracker-header") 
-               ?? html.querySelector("header");
+  const header = root.querySelector(".combat-tracker-header")
+               ?? root.querySelector("header");
   if (header) header.appendChild(button);
 });
