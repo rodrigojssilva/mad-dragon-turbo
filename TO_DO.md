@@ -86,3 +86,7 @@
 ---
 
 - [x] Ao atacar, com poder/magia ou um equipamento manter a ficha do personagem aberta
+
+---
+
+- [x] Correção do contraste do modal de rolagem de dados

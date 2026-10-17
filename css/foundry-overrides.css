@@ -10,10 +10,20 @@ body.game .app.window-app .window-content {
   display: none !important;
 }
 
-/* Diálogo de rolagem: tipos de rolagem em seções */
+/* Diálogo de rolagem: paleta fixa, independente do tema claro/escuro do cliente */
 .mad-dragon-turbo.mdt-roll-dialog-app {
   width: 310px;
   min-width: 310px;
+  color-scheme: light;
+  --checkbox-background-color: #fff;
+  --checkbox-checked-color: #5a4a3a;
+  --checkbox-border-color: #5a4a3a;
+  --button-background-color: #f4efe4;
+  --button-text-color: #3d362c;
+  --button-border-color: #8a7b66;
+  --color-text-primary: #3d362c;
+  --color-border: #8a7b66;
+  --input-background-color: #fff;
 }
 
 .mad-dragon-turbo.mdt-select-target-app .mdt-select-target-msg {
@@ -81,7 +91,7 @@ body.game .app.window-app .window-content {
 }
 
 .mdt-roll-dialog-form fieldset.mdt-roll-section {
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid #b5a78f;
   border-radius: 6px;
   padding: 8px 10px 10px;
   margin: 0;
@@ -139,14 +149,55 @@ body.game .app.window-app .window-content {
   user-select: none;
 }
 
-.mdt-roll-dialog-form .mdt-difficulty-opt input[type="radio"] {
+.mad-dragon-turbo.mdt-roll-dialog-app input[type="radio"],
+.mad-dragon-turbo.mdt-roll-dialog-app input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
   flex-shrink: 0;
+  width: 16px;
+  height: 16px;
   margin: 0;
-  accent-color: #5a4a3a;
-  color-scheme: light;
+  border: 2px solid #5a4a3a;
+  background: #fff;
+  box-shadow: none;
   opacity: 1;
   filter: none;
+  accent-color: #5a4a3a;
+  color-scheme: light;
   cursor: pointer;
+}
+
+.mad-dragon-turbo.mdt-roll-dialog-app input[type="radio"] {
+  border-radius: 50%;
+}
+
+.mad-dragon-turbo.mdt-roll-dialog-app input[type="checkbox"] {
+  border-radius: 3px;
+}
+
+.mad-dragon-turbo.mdt-roll-dialog-app input[type="radio"]::before,
+.mad-dragon-turbo.mdt-roll-dialog-app input[type="radio"]::after,
+.mad-dragon-turbo.mdt-roll-dialog-app input[type="checkbox"]::before,
+.mad-dragon-turbo.mdt-roll-dialog-app input[type="checkbox"]::after {
+  content: none;
+}
+
+.mad-dragon-turbo.mdt-roll-dialog-app input[type="radio"]:checked {
+  background: radial-gradient(circle, #5a4a3a 0 45%, #fff 48% 100%);
+}
+
+.mad-dragon-turbo.mdt-roll-dialog-app input[type="checkbox"]:checked {
+  background-color: #5a4a3a;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' d='M3.5 8.5l3 3 6-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px 12px;
+}
+
+.mad-dragon-turbo.mdt-roll-dialog-app input[type="radio"]:focus-visible,
+.mad-dragon-turbo.mdt-roll-dialog-app input[type="checkbox"]:focus-visible {
+  outline: 2px solid #5a4a3a;
+  outline-offset: 2px;
 }
 
 .mdt-roll-dialog-form .mdt-difficulty-hidden-label {
@@ -170,13 +221,20 @@ body.game .app.window-app .window-content {
 
 .mad-dragon-turbo .mdt-roll-dialog-form .mdt-action-buttons button {
   color: #3d362c;
-  background: rgba(255, 255, 255, 0.35);
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #f4efe4;
+  border: 1px solid #8a7b66;
   border-radius: 4px;
+  box-shadow: none;
+  text-shadow: none;
 }
 
-.mad-dragon-turbo .mdt-roll-dialog-form .mdt-action-buttons button:hover {
-  background: rgba(255, 255, 255, 0.5);
+.mad-dragon-turbo .mdt-roll-dialog-form .mdt-action-buttons button i {
+  color: #5a4a3a;
+}
+
+.mad-dragon-turbo .mdt-roll-dialog-form .mdt-action-buttons button:hover,
+.mad-dragon-turbo .mdt-roll-dialog-form .mdt-action-buttons button:focus-visible {
+  background: #e7dcc8;
   color: #3d362c;
 }
 
@@ -199,16 +257,7 @@ body.game .app.window-app .window-content {
 
 .mdt-roll-dialog-form .mdt-only-gm-label input[type="checkbox"] {
   flex: 0 0 auto;
-  width: 14px;
-  height: 14px;
-  margin: 0;
   align-self: center;
-  accent-color: #5a4a3a;
-  color-scheme: light;
-  opacity: 1;
-  filter: none;
-  background-color: #fff;
-  cursor: pointer;
 }
 
 .mdt-roll-dialog-form .mdt-only-gm-label .mdt-only-gm-text {
