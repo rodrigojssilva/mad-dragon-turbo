@@ -19,6 +19,12 @@
                         title="{{localize 'MDT.spell.notReadyHint'}}"
                         aria-label="{{localize 'MDT.spell.notReadyHint'}}"></i>
                     {{/if}}
+                    {{#if this.system.freeUse}}
+                    <span class="equipment-ammo-badge" title="{{localize 'MDT.spell.freeUseEnabled'}}">| ∞ |</span>
+                    {{else}}
+                    <span class="equipment-ammo-badge"
+                        title="{{localize 'MDT.spell.usedUsesLabel'}} / {{localize 'MDT.spell.maxUsesLabel'}}">| {{this.system.usedUses}}/{{this.system.maxUses}} |</span>
+                    {{/if}}
                     {{this.name}}
                     {{#if this.noUses}}
                     <span class="spell-empty-badge">{{localize "MDT.spell.emptyUsesShort"}}</span>
