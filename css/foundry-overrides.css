@@ -5,6 +5,8 @@
 body.game .mad-dragon-turbo.window-app .window-content,
 body.game .application.mad-dragon-turbo .window-content {
   background: transparent !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   color: #1a1a1a;
   color-scheme: light;
   --color-text-primary: #1a1a1a;
