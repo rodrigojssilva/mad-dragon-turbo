@@ -120,4 +120,8 @@
 
 ---
 
-- [ ] Atualizar layout para seguir o tema do foundry
+- [x] Atualizar layout para seguir o tema do foundry (claro/escuro)
+- [x] Invertendo badge | usos/máximo | para exibir usos restantes
+- [x] Exibir badge | usos/máximo | vermelho ao zerar usos
+- [x] **Adicionando imagem nos itens da ficha e exibindo no chat**
+- [x] **FIX: Não está exibindo a opção marcada na rolagem**
