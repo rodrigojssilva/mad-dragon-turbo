@@ -1,5 +1,14 @@
 <div class="mdt-chat-card mdt-item-card">
-  <header class="mdt-chat-card-header">
+  <header class="mdt-chat-card-header{{#if hasCustomImg}} has-kind-mark{{else if showKindMark}} has-kind-mark{{/if}}">
+    {{#if hasCustomImg}}
+    <span class="item-kind-badge" title="{{kindLabel}}">
+      <img class="item-kind-img" src="{{img}}" alt="" />
+    </span>
+    {{else if showKindMark}}
+    <span class="item-kind-badge" title="{{kindLabel}}">
+      <i class="fas {{kindIcon}}" aria-hidden="true"></i>
+    </span>
+    {{/if}}
     <h3 class="item-card-name">{{item.name}}</h3>
   </header>
   {{#if system.description}}

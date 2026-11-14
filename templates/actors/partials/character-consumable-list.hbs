@@ -11,7 +11,11 @@
                 <span class="item-name item-toggle">
                     <i class="fas fa-chevron-right item-chevron"></i>
                     <span class="item-kind-badge" title="{{this.kindLabel}}">
+                        {{#if this.hasCustomImg}}
+                        <img class="item-kind-img" src="{{this.img}}" alt="" />
+                        {{else}}
                         <i class="fas {{this.kindIcon}}" aria-hidden="true"></i>
+                        {{/if}}
                     </span>
                     {{this.name}} (x{{this.system.quantity}})
                     {{#if this.noUses}}
@@ -34,21 +38,27 @@
             </div>
 
             <div class="item-description hidden">
-                <label>
-                    {{localize "MDT.consumable.kindLabel"}}
-                    <select class="item-kind-input" disabled {{#if this.requiresKind}}required{{/if}}>
-                        <option value="" {{#unless this.system.kind}}selected{{/unless}}>{{localize "MDT.consumable.kindPlaceholder"}}</option>
-                        <option value="key" {{#if (eq this.system.kind "key")}}selected{{/if}}>{{localize "MDT.consumable.kinds.key"}}</option>
-                        <option value="effect" {{#if (eq this.system.kind "effect")}}selected{{/if}}>{{localize "MDT.consumable.kinds.effect"}}</option>
-                        <option value="money" {{#if (eq this.system.kind "money")}}selected{{/if}}>{{localize "MDT.consumable.kinds.money"}}</option>
-                        <option value="misc" {{#if (eq this.system.kind "misc")}}selected{{/if}}>{{localize "MDT.consumable.kinds.misc"}}</option>
-                    </select>
-                </label>
-                <label>
-                    {{localize "MDT.item.nameLabel"}}
-                    <input class="item-name-input" type="text" disabled value="{{this.name}}"
-                        placeholder="{{localize 'MDT.item.namePlaceholder'}}" />
-                </label>
+                <div class="item-inline-header">
+                    <img class="item-profile-img" src="{{this.img}}" data-edit="item-img" data-item-id="{{this.id}}"
+                        title="{{this.name}}" alt="" />
+                    <div class="item-inline-fields">
+                        <label>
+                            {{localize "MDT.consumable.kindLabel"}}
+                            <select class="item-kind-input" disabled {{#if this.requiresKind}}required{{/if}}>
+                                <option value="" {{#unless this.system.kind}}selected{{/unless}}>{{localize "MDT.consumable.kindPlaceholder"}}</option>
+                                <option value="key" {{#if (eq this.system.kind "key")}}selected{{/if}}>{{localize "MDT.consumable.kinds.key"}}</option>
+                                <option value="effect" {{#if (eq this.system.kind "effect")}}selected{{/if}}>{{localize "MDT.consumable.kinds.effect"}}</option>
+                                <option value="money" {{#if (eq this.system.kind "money")}}selected{{/if}}>{{localize "MDT.consumable.kinds.money"}}</option>
+                                <option value="misc" {{#if (eq this.system.kind "misc")}}selected{{/if}}>{{localize "MDT.consumable.kinds.misc"}}</option>
+                            </select>
+                        </label>
+                        <label>
+                            {{localize "MDT.item.nameLabel"}}
+                            <input class="item-name-input" type="text" disabled value="{{this.name}}"
+                                placeholder="{{localize 'MDT.item.namePlaceholder'}}" />
+                        </label>
+                    </div>
+                </div>
                 <label>
                     {{localize "MDT.item.descLabel"}}
                     <textarea class="item-desc-input" disabled placeholder="{{localize 'MDT.item.descPlaceholder'}}"

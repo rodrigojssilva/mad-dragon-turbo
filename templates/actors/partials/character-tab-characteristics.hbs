@@ -32,11 +32,17 @@
 
                     {{!-- Collapse --}}
                     <div class="item-description hidden">
-                        <label>
-                            {{localize "MDT.item.nameLabel"}}
-                            <input class="item-name-input" type="text" disabled value="{{this.name}}"
-                                placeholder="{{localize 'MDT.item.namePlaceholder'}}" />
-                        </label>
+                        <div class="item-inline-header">
+                            <img class="item-profile-img" src="{{this.img}}" data-edit="item-img" data-item-id="{{this.id}}"
+                                title="{{this.name}}" alt="" />
+                            <div class="item-inline-fields">
+                                <label>
+                                    {{localize "MDT.item.nameLabel"}}
+                                    <input class="item-name-input" type="text" disabled value="{{this.name}}"
+                                        placeholder="{{localize 'MDT.item.namePlaceholder'}}" />
+                                </label>
+                            </div>
+                        </div>
                         <label>
                             {{localize "MDT.item.descLabel"}}
                             <textarea class="item-desc-input" disabled

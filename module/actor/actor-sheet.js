@@ -3,6 +3,19 @@ import { equipmentUseState, equipmentWeaponDamage } from "../models/item/equipme
 import { itemKindIconClass, itemKindLabel } from "../helpers/item-kind-icon.js";
 import { MDTRoll } from "../helpers/roll.js";
 
+const DEFAULT_ITEM_IMAGES = new Set([
+  "icons/svg/item-bag.svg",
+  "icons/svg/mystery-man.svg",
+]);
+
+/** Foto escolhida pelo usuário. O ícone padrão do Foundry não conta. */
+function itemHasCustomImage(img) {
+  const path = (img ?? "").toString().split("?")[0].replace(/\\/g, "/");
+  if (!path || DEFAULT_ITEM_IMAGES.has(path)) return false;
+  const docDefault = CONFIG.Item?.documentClass?.DEFAULT_ICON;
+  return !docDefault || path !== docDefault;
+}
+
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
 
@@ -130,6 +143,7 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
         return {
           id: spell.id,
           name: spell.name,
+          img: spell.img,
           type: spell.type,
           system: {
             ...spell.system,
@@ -165,6 +179,7 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
         requiresKind: this._itemRequiresKind(actor, item.id),
         kindIcon: itemKindIconClass(state.kind),
         kindLabel: itemKindLabel("equipment", state.kind),
+        hasCustomImg: itemHasCustomImage(item.img),
       };
     });
     context.consumables = this._mapQuantityItems(actor, "consumable").map((item) => {
@@ -184,6 +199,7 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
         requiresKind: this._itemRequiresKind(actor, item.id),
         kindIcon: itemKindIconClass(kind),
         kindLabel: itemKindLabel("consumable", kind),
+        hasCustomImg: itemHasCustomImage(item.img),
       };
     });
 
@@ -200,6 +216,7 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       .map((item) => ({
         id: item.id,
         name: item.name,
+        img: item.img,
         type: item.type,
         system: {
           ...item.system,
@@ -227,6 +244,7 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     if (!el) return;
 
     this._bindPortraitEditor(el);
+    this._bindItemImageEditors(el);
     this._normalizeTextareasInRoot(el);
 
     this._registerVitalsResourceUiSync(el);
@@ -1410,6 +1428,8 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
         styleLabel,
         kindIcon: itemKindIconClass(item.system.kind),
         kindLabel: itemKindLabel(item.type, item.system.kind),
+        img: item.img,
+        hasCustomImg: itemHasCustomImage(item.img),
         targetName,
         damage,
         freeUse,
@@ -1445,6 +1465,8 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
         styleLabel,
         kindIcon: itemKindIconClass(item.system.kind),
         kindLabel: itemKindLabel(item.type, item.system.kind),
+        img: item.img,
+        hasCustomImg: itemHasCustomImage(item.img),
         freeUse,
         spentAmount,
       },
@@ -1518,6 +1540,7 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     const isHighLevel = item.system.highLevel ?? item.system.level === "high";
     const freeUse = !!item.system.freeUse;
 
+    const showKindMark = item.type === "equipment" || item.type === "consumable";
     const content = await foundry.applications.handlebars.renderTemplate(
       "systems/mad-dragon-turbo/templates/chat/item-card.hbs",
       {
@@ -1530,6 +1553,11 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
         maxUses,
         usedUses,
         remainingUses,
+        showKindMark,
+        img: item.img,
+        hasCustomImg: itemHasCustomImage(item.img),
+        kindIcon: showKindMark ? itemKindIconClass(item.system.kind) : "",
+        kindLabel: showKindMark ? itemKindLabel(item.type, item.system.kind) : item.name,
       },
     );
 
@@ -1599,6 +1627,35 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
   }
 
   /**
+   * Clique na foto do item abre o seletor só com a linha em edição.
+   */
+  _bindItemImageEditors(root) {
+    root.querySelectorAll('img.item-profile-img[data-edit="item-img"]').forEach((img) => {
+      if (img.dataset.mdtImgBound === "1") return;
+      img.dataset.mdtImgBound = "1";
+      img.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        if (!this.isEditable) return;
+        const row = img.closest(".item-row");
+        const saveBtn = row?.querySelector(".item-edit-save");
+        if (!saveBtn || saveBtn.classList.contains("hidden")) return;
+        const item = this.actor.items.get(img.dataset.itemId);
+        if (!item) return;
+        const FilePickerImpl =
+          foundry.applications.apps.FilePicker?.implementation ??
+          foundry.applications.apps.FilePicker;
+        const picker = new FilePickerImpl({
+          type: "image",
+          current: item.img,
+          callback: (path) => item.update({ img: path }),
+        });
+        return picker.browse();
+      });
+    });
+  }
+
+  /**
    * Drop de item na ficha:
    * - item deste ator: ordena
    * - item novo: cria
@@ -1609,6 +1666,7 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     if (item.parent === this.actor) return super._onDropItem(event, item);
 
     const data = this._cleanDroppedItemData(item.toObject());
+    if (item.img) data.img = item.img;
     const type = data?.type;
     if (!type) return null;
 
