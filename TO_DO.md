@@ -116,3 +116,4 @@
 - [x] Em poderes/magias exibir quantidade de usos gastos e totais na frente do nome.
 - [x] Adicionar confirmação de uso do Descanso
 - [x] Manter formatação do texto ao enviar para o chat
+- [x] FIX: Logo borrada na ficha do personagem
