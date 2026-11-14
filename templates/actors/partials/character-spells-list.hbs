@@ -23,7 +23,7 @@
                     <span class="equipment-ammo-badge" title="{{localize 'MDT.spell.freeUseEnabled'}}">| ∞ |</span>
                     {{else}}
                     <span class="equipment-ammo-badge"
-                        title="{{localize 'MDT.spell.usedUsesLabel'}} / {{localize 'MDT.spell.maxUsesLabel'}}">| {{this.system.usedUses}}/{{this.system.maxUses}} |</span>
+                        title="{{localize 'MDT.spell.remainingUsesLabel'}} / {{localize 'MDT.spell.maxUsesLabel'}}">| {{this.system.remainingUses}}/{{this.system.maxUses}} |</span>
                     {{/if}}
                     {{this.name}}
                     {{#if this.noUses}}

@@ -104,6 +104,7 @@
       "freeUseEnabled": "Uso livre ativo: usos infinitos.",
       "maxUsesLabel": "Usos totais",
       "usedUsesLabel": "Usos gastos",
+      "remainingUsesLabel": "Usos restantes",
       "readyCheckbox": "Pronto",
       "readyHint": "Poder/Magia está pronto para uso",
       "notReadyHint": "Poder/Magia não está pronto para uso",

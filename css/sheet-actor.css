@@ -1214,6 +1214,10 @@
   color: #3d4a62;
 }
 
+.mad-dragon-turbo .item-row-spell.spell-no-uses .equipment-ammo-badge {
+  color: #c0392b;
+}
+
 .mad-dragon-turbo .item-row-spell.spell-no-uses,
 .mad-dragon-turbo .item-row-consumable.consumable-no-uses,
 .mad-dragon-turbo .item-row-equipment.equipment-no-uses {
