@@ -3,9 +3,7 @@
     <h3 class="item-card-name">{{item.name}}</h3>
   </header>
   {{#if system.description}}
-    <div class="item-card-desc">
-      {{{system.description}}}
-    </div>
+    <div class="item-card-desc">{{system.description}}</div>
   {{/if}}
   {{#if isSpell}}
     <div class="item-card-meta">

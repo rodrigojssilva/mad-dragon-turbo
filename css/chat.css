@@ -161,7 +161,9 @@
   margin-top: 0;
 }
 
-.mdt-item-card .item-card-desc {
+.mdt-chat-card .item-card-desc {
+  white-space: pre-wrap;
+  word-break: break-word;
   font-size: 0.9em;
   color: #26211b;
   line-height: 1.4;
