@@ -10,6 +10,13 @@
             <div class="item-summary">
                 <span class="item-name item-toggle">
                     <i class="fas fa-chevron-right item-chevron"></i>
+                    <span class="item-kind-badge" title="{{this.name}}">
+                        {{#if this.hasCustomImg}}
+                        <img class="item-kind-img" src="{{this.img}}" alt="" />
+                        {{else}}
+                        <i class="fas fa-image" aria-hidden="true"></i>
+                        {{/if}}
+                    </span>
                     {{#if this.ready}}
                     <i class="fas fa-circle spell-ready-icon is-ready"
                         title="{{localize 'MDT.spell.readyHint'}}"

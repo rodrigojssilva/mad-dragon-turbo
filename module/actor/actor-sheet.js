@@ -131,7 +131,15 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       },
     ];
 
-    context.specialties = actor.items.filter((i) => i.type === "specialty");
+    context.specialties = actor.items
+      .filter((i) => i.type === "specialty")
+      .map((item) => ({
+        id: item.id,
+        name: item.name,
+        img: item.img,
+        system: item.system,
+        hasCustomImg: itemHasCustomImage(item.img),
+      }));
     context.spells = actor.items
       .filter((i) => i.type === "spell")
       .map((spell) => {
@@ -144,6 +152,7 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
           id: spell.id,
           name: spell.name,
           img: spell.img,
+          hasCustomImg: itemHasCustomImage(spell.img),
           type: spell.type,
           system: {
             ...spell.system,
@@ -1517,6 +1526,8 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
         remainingUses,
         durationText,
         showTags: !isCast && (isHighLevel || freeUse),
+        img: item.img,
+        hasCustomImg: itemHasCustomImage(item.img),
       },
     );
 
@@ -1541,6 +1552,7 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     const freeUse = !!item.system.freeUse;
 
     const showKindMark = item.type === "equipment" || item.type === "consumable";
+    const showImageFallback = item.type === "specialty" || item.type === "spell";
     const content = await foundry.applications.handlebars.renderTemplate(
       "systems/mad-dragon-turbo/templates/chat/item-card.hbs",
       {
@@ -1554,6 +1566,7 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
         usedUses,
         remainingUses,
         showKindMark,
+        showImageFallback,
         img: item.img,
         hasCustomImg: itemHasCustomImage(item.img),
         kindIcon: showKindMark ? itemKindIconClass(item.system.kind) : "",

@@ -75,12 +75,12 @@
 }
 
 .mad-dragon-turbo .item-inline-header .item-profile-img {
-  flex: 0 0 112px;
-  width: 112px !important;
-  height: 112px !important;
-  min-width: 112px;
-  max-width: 112px !important;
-  max-height: 112px !important;
+  flex: 0 0 90px;
+  width: 90px !important;
+  height: 90px !important;
+  min-width: 90px;
+  max-width: 90px !important;
+  max-height: 90px !important;
   object-fit: contain !important;
   object-position: center;
   align-self: center;

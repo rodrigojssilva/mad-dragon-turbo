@@ -28,14 +28,16 @@
 }
 
 .mdt-equipment-card .mdt-chat-card-header,
-.mdt-consumable-card .mdt-chat-card-header {
+.mdt-consumable-card .mdt-chat-card-header,
+.mdt-spell-card .mdt-chat-card-header {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
 .mdt-equipment-card .mdt-chat-card-heading,
-.mdt-consumable-card .mdt-chat-card-heading {
+.mdt-consumable-card .mdt-chat-card-heading,
+.mdt-spell-card .mdt-chat-card-heading {
   min-width: 0;
 }
 

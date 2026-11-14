@@ -18,6 +18,13 @@
                     <div class="item-summary">
                         <span class="item-name item-toggle">
                             <i class="fas fa-chevron-right item-chevron"></i>
+                            <span class="item-kind-badge" title="{{this.name}}">
+                                {{#if this.hasCustomImg}}
+                                <img class="item-kind-img" src="{{this.img}}" alt="" />
+                                {{else}}
+                                <i class="fas fa-image" aria-hidden="true"></i>
+                                {{/if}}
+                            </span>
                             {{this.name}}
                         </span>
                         <div class="item-controls">
@@ -41,14 +48,14 @@
                                     <input class="item-name-input" type="text" disabled value="{{this.name}}"
                                         placeholder="{{localize 'MDT.item.namePlaceholder'}}" />
                                 </label>
+                                <label>
+                                    {{localize "MDT.item.descLabel"}}
+                                    <textarea class="item-desc-input" disabled
+                                        placeholder="{{localize 'MDT.item.descPlaceholder'}}"
+                                        rows="3">{{this.system.description}}</textarea>
+                                </label>
                             </div>
                         </div>
-                        <label>
-                            {{localize "MDT.item.descLabel"}}
-                            <textarea class="item-desc-input" disabled
-                                placeholder="{{localize 'MDT.item.descPlaceholder'}}"
-                                rows="3">{{this.system.description}}</textarea>
-                        </label>
 
                         <div class="item-edit-toolbar">
                             <button type="button" class="item-edit-btn item-edit-start" title="Editar"
