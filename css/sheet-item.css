@@ -128,10 +128,23 @@
   font-weight: normal;
 }
 
-.mad-dragon-turbo.sheet.item .item-sheet-label .item-kind-input {
+.mad-dragon-turbo.sheet.item .item-sheet-label .item-kind-input,
+.mad-dragon-turbo.sheet.item .item-sheet-label .item-kind-input:disabled {
   width: 100%;
   box-sizing: border-box;
   font-weight: normal;
+  background: #fff;
+  color: #1a1a1a;
+  -webkit-text-fill-color: #1a1a1a;
+  color-scheme: light;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  opacity: 1;
+}
+
+.mad-dragon-turbo.sheet.item .item-sheet-label .item-kind-input option {
+  background: #fff;
+  color: #1a1a1a;
 }
 
 .mad-dragon-turbo.sheet.item .item-name-with-kind {

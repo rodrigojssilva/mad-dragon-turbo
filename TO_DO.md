@@ -112,3 +112,7 @@
 
 ---
 
+- [x] FIX: No cadastro dos itens o select está com a cor escura, atrapalhando a leitura das opções 
+- [ ] Em poderes/magias exibir quantidade de usos gastos e totais na frente do nome.
+- [ ] Adicionar confirmação de uso do Descanso
+- [ ] Manter formatação do texto ao enviar para o chat
