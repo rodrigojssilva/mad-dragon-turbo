@@ -112,7 +112,7 @@
   gap: 4px;
   font-size: 0.8em;
   font-weight: bold;
-  color: #333;
+  color: var(--mdt-text-body);
   width: 100%;
   box-sizing: border-box;
 }
@@ -133,18 +133,18 @@
   width: 100%;
   box-sizing: border-box;
   font-weight: normal;
-  background: #fff;
-  color: #1a1a1a;
-  -webkit-text-fill-color: #1a1a1a;
-  color-scheme: light;
-  border: 1px solid #ccc;
+  background: var(--mdt-surface-input);
+  color: var(--mdt-text);
+  -webkit-text-fill-color: var(--mdt-text);
+  color-scheme: inherit;
+  border: 1px solid var(--mdt-border-input);
   border-radius: 3px;
   opacity: 1;
 }
 
 .mad-dragon-turbo.sheet.item .item-sheet-label .item-kind-input option {
-  background: #fff;
-  color: #1a1a1a;
+  background: var(--mdt-surface-input);
+  color: var(--mdt-text);
 }
 
 .mad-dragon-turbo.sheet.item .item-name-with-kind {
@@ -209,7 +209,7 @@
   max-width: 100%;
   font-size: 0.85em;
   font-weight: bold;
-  color: #333;
+  color: var(--mdt-text-body);
   white-space: normal;
   overflow: hidden;
 }
@@ -225,12 +225,12 @@
   width: 0;
   max-width: 100%;
   min-width: 0;
-  border: 1px solid #ccc;
+  border: 1px solid var(--mdt-border-input);
   border-radius: 3px;
   padding: 3px 6px;
   font-size: 0.9em;
   font-weight: normal;
-  background: #fff;
+  background: var(--mdt-surface-input);
   box-sizing: border-box;
 }
 
@@ -239,11 +239,11 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: #4a4338;
+  color: var(--mdt-text-heading);
   padding: 4px 8px;
   border-radius: 6px;
-  border: 1px solid #ccbfa6;
-  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid var(--mdt-border);
+  background: var(--mdt-surface-pill);
   flex-shrink: 0;
   max-height: 25px;
 }
@@ -262,13 +262,13 @@
 }
 
 .mad-dragon-turbo.sheet.item .item-sheet-header-actions .item-edit-save {
-  border-color: #333;
-  background: #333;
-  color: #f5f0e8;
+  border-color: var(--mdt-button-primary-bg);
+  background: var(--mdt-button-primary-bg);
+  color: var(--mdt-button-primary-text);
 }
 
 .mad-dragon-turbo.sheet.item .item-sheet-header-actions .item-edit-save:hover {
-  background: #222;
+  background: var(--mdt-button-save-hover);
 }
 
 .mad-dragon-turbo.sheet.item .item-sheet-spell-fields {
@@ -278,5 +278,5 @@
 .mad-dragon-turbo.sheet.item .spell-used-uses-item-locked {
   opacity: 0.85;
   cursor: not-allowed;
-  background: #eceae6 !important;
+  background: var(--mdt-surface-locked) !important;
 }

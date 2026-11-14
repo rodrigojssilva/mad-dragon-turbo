@@ -1,26 +1,211 @@
 /* Mad Dragon Turbo — ajustes ao shell do Foundry (janelas / conteúdo) */
 
+/* Aplicativos pinta body.theme-*. O tema salvo da ficha (.themed.theme-*) vence o body. */
+.application.mad-dragon-turbo,
+.window-app.mad-dragon-turbo,
+.application.mad-dragon-turbo.themed.theme-light,
+.window-app.mad-dragon-turbo.themed.theme-light {
+  color-scheme: light;
+  --mdt-text: #1a1a1a;
+  --mdt-text-secondary: #3d362c;
+  --mdt-text-heading: #4a4338;
+  --mdt-text-muted: #555;
+  --mdt-text-faint: #6b6458;
+  --mdt-text-quiet: #888;
+  --mdt-text-body: #333;
+  --mdt-surface: #f5f0e8;
+  --mdt-surface-header: #e8e0d0;
+  --mdt-surface-card: linear-gradient(180deg, #eee6d8 0%, #e5dbc8 100%);
+  --mdt-surface-card-hover: #e5dbc8;
+  --mdt-surface-input: #fff;
+  --mdt-surface-input-soft: rgba(255, 255, 255, 0.45);
+  --mdt-surface-badge: #f7f3ea;
+  --mdt-surface-dialog: #f7f3ea;
+  --mdt-surface-button: #f4efe4;
+  --mdt-surface-button-hover: #e7dcc8;
+  --mdt-surface-edit: #f5f5f5;
+  --mdt-surface-edit-hover: #eaeaea;
+  --mdt-surface-locked: #eceae6;
+  --mdt-surface-option: rgba(255, 255, 255, 0.18);
+  --mdt-surface-option-hover: rgba(255, 255, 255, 0.28);
+  --mdt-surface-tab-active: rgba(255, 255, 255, 0.5);
+  --mdt-surface-tab-hover: rgba(255, 255, 255, 0.28);
+  --mdt-surface-row-hover: rgba(0, 0, 0, 0.04);
+  --mdt-surface-inset: rgba(255, 255, 255, 0.35);
+  --mdt-surface-inset-strong: rgba(255, 255, 255, 0.55);
+  --mdt-surface-icon-hover: rgba(0, 0, 0, 0.06);
+  --mdt-surface-spell: rgba(0, 0, 0, 0.03);
+  --mdt-surface-danger-row: rgba(140, 30, 30, 0.06);
+  --mdt-surface-disabled: #e6e2db;
+  --mdt-surface-pill: rgba(255, 255, 255, 0.35);
+  --mdt-border: #ccbfa6;
+  --mdt-border-strong: #8a7b66;
+  --mdt-border-mid: #b8aa8f;
+  --mdt-border-input: #ccc;
+  --mdt-border-input-soft: #bdbdbd;
+  --mdt-border-line: #333;
+  --mdt-border-row: #ddd;
+  --mdt-border-dashed: #b8b8b8;
+  --mdt-border-option: rgba(0, 0, 0, 0.08);
+  --mdt-border-hairline: rgba(0, 0, 0, 0.12);
+  --mdt-border-tab-hover: rgba(0, 0, 0, 0.06);
+  --mdt-border-fieldset: #b5a78f;
+  --mdt-border-edit-hover: #aaa;
+  --mdt-border-check: #5a4a3a;
+  --mdt-border-check-disabled: #a39e96;
+  --mdt-button-text: #3d362c;
+  --mdt-button-text-hover: #3d362c;
+  --mdt-button-icon: #5a4a3a;
+  --mdt-button-icon-hover: #5a4a3a;
+  --mdt-button-primary-bg: #333;
+  --mdt-button-primary-text: #f5f0e8;
+  --mdt-button-primary-hover: #555;
+  --mdt-button-save-hover: #222;
+  --mdt-icon: #5a4a3a;
+  --mdt-icon-hover: #3d362c;
+  --mdt-link: #558;
+  --mdt-link-hover: #335;
+  --mdt-focus: #5a6b8c;
+  --mdt-danger: #aaa;
+  --mdt-danger-hover: #900;
+  --mdt-danger-text: #7e1f1f;
+  --mdt-success: #1d5a3c;
+  --mdt-ammo: #3d4a62;
+  --mdt-ready-off: #8a8478;
+  --mdt-check-dot: #5a4a3a;
+  --mdt-check-fill: #fff;
+  --mdt-check-disabled-dot: #8a8478;
+  --mdt-check-disabled-fill: #e6e2db;
+  --mdt-check-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' d='M3.5 8.5l3 3 6-7'/%3E%3C/svg%3E");
+  --mdt-logo-filter: none;
+  --mdt-placeholder: #6b6458;
+  --mdt-health-high-text: #1d5a3c;
+  --mdt-health-high-bg: #d9efe3;
+  --mdt-health-high-border: #9cc9b0;
+  --mdt-health-mid-text: #6a3d00;
+  --mdt-health-mid-bg: #fff0d6;
+  --mdt-health-mid-border: #e3c28a;
+  --mdt-health-low-text: #651717;
+  --mdt-health-low-bg: #f8dede;
+  --mdt-health-low-border: #e3aaaa;
+  --mdt-sanity-high-text: #1a3d6e;
+  --mdt-sanity-high-bg: #dde8fb;
+  --mdt-sanity-high-border: #a8c0e8;
+  --mdt-sanity-mid-text: #6a3d00;
+  --mdt-sanity-mid-bg: #fff2cf;
+  --mdt-sanity-mid-border: #e3cb86;
+  --mdt-sanity-low-text: #651717;
+  --mdt-sanity-low-bg: #f8dede;
+  --mdt-sanity-low-border: #e3aaaa;
+}
+
+body.theme-dark .application.mad-dragon-turbo,
+body.theme-dark .window-app.mad-dragon-turbo,
+.application.mad-dragon-turbo.themed.theme-dark,
+.window-app.mad-dragon-turbo.themed.theme-dark {
+  color-scheme: dark;
+  --mdt-text: var(--color-light-1);
+  --mdt-text-secondary: var(--color-light-3);
+  --mdt-text-heading: var(--color-light-2);
+  --mdt-text-muted: var(--color-light-4);
+  --mdt-text-faint: var(--color-light-5);
+  --mdt-text-quiet: var(--color-light-4);
+  --mdt-text-body: var(--color-light-2);
+  --mdt-surface: var(--color-cool-5);
+  --mdt-surface-header: var(--color-cool-4);
+  --mdt-surface-card: linear-gradient(180deg, var(--color-cool-4) 0%, var(--color-cool-5) 100%);
+  --mdt-surface-card-hover: var(--color-cool-4);
+  --mdt-surface-input: var(--color-cool-4);
+  --mdt-surface-input-soft: rgba(255, 255, 255, 0.06);
+  --mdt-surface-badge: var(--color-cool-4);
+  --mdt-surface-dialog: var(--color-cool-5);
+  --mdt-surface-button: var(--color-cool-5-50);
+  --mdt-surface-button-hover: var(--color-warm-1);
+  --mdt-button-text-hover: var(--color-cool-5);
+  --mdt-button-icon-hover: var(--color-cool-5);
+  --mdt-surface-edit: var(--color-cool-4);
+  --mdt-surface-edit-hover: color-mix(in srgb, var(--color-cool-4) 65%, var(--color-light-6));
+  --mdt-surface-locked: var(--color-cool-5);
+  --mdt-surface-option: rgba(255, 255, 255, 0.06);
+  --mdt-surface-option-hover: rgba(255, 255, 255, 0.1);
+  --mdt-surface-tab-active: rgba(255, 255, 255, 0.12);
+  --mdt-surface-tab-hover: rgba(255, 255, 255, 0.08);
+  --mdt-surface-row-hover: rgba(255, 255, 255, 0.06);
+  --mdt-surface-inset: rgba(255, 255, 255, 0.06);
+  --mdt-surface-inset-strong: rgba(255, 255, 255, 0.1);
+  --mdt-surface-icon-hover: rgba(255, 255, 255, 0.08);
+  --mdt-surface-spell: rgba(255, 255, 255, 0.04);
+  --mdt-surface-danger-row: rgba(240, 140, 140, 0.14);
+  --mdt-surface-disabled: var(--color-cool-5);
+  --mdt-surface-pill: rgba(255, 255, 255, 0.06);
+  --mdt-border: var(--color-light-6);
+  --mdt-border-strong: var(--color-light-5);
+  --mdt-border-mid: var(--color-light-5);
+  --mdt-border-input: var(--color-light-6);
+  --mdt-border-input-soft: var(--color-light-6);
+  --mdt-border-line: var(--color-light-6);
+  --mdt-border-row: var(--color-cool-3);
+  --mdt-border-dashed: var(--color-light-6);
+  --mdt-border-option: rgba(255, 255, 255, 0.12);
+  --mdt-border-hairline: rgba(255, 255, 255, 0.12);
+  --mdt-border-tab-hover: rgba(255, 255, 255, 0.16);
+  --mdt-border-fieldset: var(--color-light-6);
+  --mdt-border-edit-hover: var(--color-light-4);
+  --mdt-border-check: var(--color-light-3);
+  --mdt-border-check-disabled: var(--color-light-6);
+  --mdt-button-text: var(--color-light-2);
+  --mdt-button-icon: var(--color-light-3);
+  --mdt-button-primary-bg: var(--color-warm-1);
+  --mdt-button-primary-text: var(--color-cool-5);
+  --mdt-button-primary-hover: color-mix(in srgb, var(--color-warm-1) 78%, white);
+  --mdt-button-save-hover: color-mix(in srgb, var(--color-warm-1) 78%, white);
+  --mdt-icon: var(--color-light-3);
+  --mdt-icon-hover: var(--color-light-1);
+  --mdt-link: #b7c9ea;
+  --mdt-link-hover: #e7eefb;
+  --mdt-focus: #b7c9ea;
+  --mdt-danger: var(--color-light-4);
+  --mdt-danger-hover: #ffb4b4;
+  --mdt-danger-text: #f0b4b4;
+  --mdt-success: #9ed9b8;
+  --mdt-ammo: #c5d4ea;
+  --mdt-ready-off: var(--color-light-4);
+  --mdt-check-dot: var(--color-light-1);
+  --mdt-check-fill: var(--color-cool-4);
+  --mdt-check-disabled-dot: var(--color-light-5);
+  --mdt-check-disabled-fill: var(--color-cool-5);
+  --mdt-check-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%230b0a13' stroke-width='2' d='M3.5 8.5l3 3 6-7'/%3E%3C/svg%3E");
+  --mdt-logo-filter: invert(1);
+  --mdt-placeholder: var(--color-light-4);
+  --mdt-health-high-text: #b7e4cc;
+  --mdt-health-high-bg: #163528;
+  --mdt-health-high-border: #3d7a5c;
+  --mdt-health-mid-text: #f0d3a0;
+  --mdt-health-mid-bg: #3a2a12;
+  --mdt-health-mid-border: #a67c3a;
+  --mdt-health-low-text: #f0b4b4;
+  --mdt-health-low-bg: #3a1616;
+  --mdt-health-low-border: #a85a5a;
+  --mdt-sanity-high-text: #c5d6f5;
+  --mdt-sanity-high-bg: #1a2a48;
+  --mdt-sanity-high-border: #5a7ab0;
+  --mdt-sanity-mid-text: #f3e0a8;
+  --mdt-sanity-mid-bg: #3a3014;
+  --mdt-sanity-mid-border: #a89050;
+  --mdt-sanity-low-text: #f0b4b4;
+  --mdt-sanity-low-bg: #3a1616;
+  --mdt-sanity-low-border: #a85a5a;
+}
+
 /* Só as janelas deste sistema. O seletor genérico de .window-app apagava o fundo
-   das configurações do Foundry e deixava texto escuro em cima do tema escuro. */
+   das configurações do Foundry. O cabeçalho fica com o chrome do Foundry. */
 body.game .mad-dragon-turbo.window-app .window-content,
 body.game .application.mad-dragon-turbo .window-content {
   background: transparent !important;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  color: #1a1a1a;
-  color-scheme: light;
-  --color-text-primary: #1a1a1a;
-  --color-text-secondary: #3d362c;
-  --color-text-header: #1a1a1a;
-  --color-text-emphatic: #1a1a1a;
-  --color-text-inactive: #6b6458;
-  --color-text-dark-primary: #1a1a1a;
-  --color-text-dark-secondary: #3d362c;
-  --color-text-dark-header: #1a1a1a;
-  --color-text-light-primary: #1a1a1a;
-  --color-text-light-secondary: #3d362c;
-  --color-text-light-header: #1a1a1a;
-  --color-text-light-heading: #1a1a1a;
+  color: var(--mdt-text);
+  color-scheme: inherit;
 }
 
 /* Ordem de turno continua pela iniciativa; só oculta o valor numérico no tracker */
@@ -28,20 +213,19 @@ body.game .application.mad-dragon-turbo .window-content {
   display: none !important;
 }
 
-/* Diálogo de rolagem: paleta fixa, independente do tema claro/escuro do cliente */
+/* Diálogo de rolagem */
 .mad-dragon-turbo.mdt-roll-dialog-app {
   width: 310px;
   min-width: 310px;
-  color-scheme: light;
-  --checkbox-background-color: #fff;
-  --checkbox-checked-color: #5a4a3a;
-  --checkbox-border-color: #5a4a3a;
-  --button-background-color: #f4efe4;
-  --button-text-color: #3d362c;
-  --button-border-color: #8a7b66;
-  --color-text-primary: #3d362c;
-  --color-border: #8a7b66;
-  --input-background-color: #fff;
+  --checkbox-background-color: var(--mdt-check-fill);
+  --checkbox-checked-color: var(--mdt-check-dot);
+  --checkbox-border-color: var(--mdt-border-check);
+  --button-background-color: var(--mdt-surface-button);
+  --button-text-color: var(--mdt-button-text);
+  --button-border-color: var(--mdt-border-strong);
+  --color-border: var(--mdt-border-strong);
+  --input-background-color: var(--mdt-surface-input);
+  --input-text-color: var(--mdt-text);
 }
 
 .mad-dragon-turbo.mdt-select-target-app .mdt-select-target-msg {
@@ -49,7 +233,7 @@ body.game .application.mad-dragon-turbo .window-content {
   text-align: center;
   font-weight: 600;
   line-height: 1.35;
-  color: #1a1a1a;
+  color: var(--mdt-text);
 }
 
 .mad-dragon-turbo.mdt-money-amount-app .mdt-money-amount-label {
@@ -84,81 +268,55 @@ body.game .application.mad-dragon-turbo .window-content {
   gap: 6px;
 }
 
-/* Modais do sistema: superfície clara e texto escuro, no tema claro e no escuro.
-   A regra geral da ficha deixa o conteúdo transparente com texto #1a1a1a; no tema
-   escuro isso some. Aqui o fundo e o título ficam explícitos. */
+/* Modais: o cabeçalho segue o chrome do Foundry. O miolo usa a paleta do tema. */
 body.game .application.mad-dragon-turbo.mdt-dialog-app {
-  color-scheme: light;
-  background: #f7f3ea;
-  --color-text-primary: #1a1a1a;
-  --color-text-secondary: #3d362c;
-  --color-text-header: #1a1a1a;
-  --color-text-emphatic: #1a1a1a;
-  --color-text-light-heading: #1a1a1a;
-  --color-text-light-primary: #1a1a1a;
-  --color-text-light-header: #1a1a1a;
-  --color-text-dark-primary: #1a1a1a;
-  --color-text-dark-secondary: #3d362c;
-  --color-text-dark-header: #1a1a1a;
-  --button-background-color: #f4efe4;
-  --button-text-color: #3d362c;
-  --button-border-color: #8a7b66;
-  --color-border: #8a7b66;
-  --input-background-color: #fff;
-  --input-text-color: #1a1a1a;
-}
-
-body.game .application.mad-dragon-turbo.mdt-dialog-app .window-header {
-  background: #efe8dc !important;
-  color: #1a1a1a !important;
-}
-
-body.game .application.mad-dragon-turbo.mdt-dialog-app .window-header .window-title {
-  color: #1a1a1a !important;
-  -webkit-text-fill-color: #1a1a1a !important;
-  background: none !important;
-  background-image: none !important;
-  background-clip: border-box !important;
-  -webkit-background-clip: border-box !important;
-  text-shadow: none !important;
-  opacity: 1;
-}
-
-body.game .application.mad-dragon-turbo.mdt-dialog-app .window-header .header-control,
-body.game .application.mad-dragon-turbo.mdt-dialog-app .window-header .header-button,
-body.game .application.mad-dragon-turbo.mdt-dialog-app .window-header button {
-  color: #1a1a1a !important;
-  -webkit-text-fill-color: #1a1a1a !important;
+  --button-background-color: var(--mdt-surface-button);
+  --button-text-color: var(--mdt-button-text);
+  --button-border-color: var(--mdt-border-strong);
+  --color-border: var(--mdt-border-strong);
+  --input-background-color: var(--mdt-surface-input);
+  --input-text-color: var(--mdt-text);
 }
 
 body.game .application.mad-dragon-turbo.mdt-dialog-app .window-content {
-  background: #f7f3ea !important;
-  color: #1a1a1a !important;
+  background: var(--mdt-surface-dialog) !important;
+  color: var(--mdt-text) !important;
 }
 
 body.game .application.mad-dragon-turbo.mdt-dialog-app .form-footer button {
-  color: #3d362c !important;
-  background: #f4efe4 !important;
-  border: 1px solid #8a7b66 !important;
+  color: var(--mdt-button-text) !important;
+  background: var(--mdt-surface-button) !important;
+  border: 1px solid var(--mdt-border-strong) !important;
   text-shadow: none !important;
 }
 
+body.game .application.mad-dragon-turbo.mdt-dialog-app .form-footer button:hover,
+body.game .application.mad-dragon-turbo.mdt-dialog-app .form-footer button:focus-visible {
+  color: var(--mdt-button-text-hover) !important;
+  background: var(--mdt-surface-button-hover) !important;
+}
+
 body.game .application.mad-dragon-turbo.mdt-dialog-app .form-footer button i {
-  color: #5a4a3a !important;
+  color: var(--mdt-button-icon) !important;
+}
+
+body.game .application.mad-dragon-turbo.mdt-dialog-app .form-footer button:hover i,
+body.game .application.mad-dragon-turbo.mdt-dialog-app .form-footer button:focus-visible i {
+  color: var(--mdt-button-icon-hover) !important;
 }
 
 body.game .application.mad-dragon-turbo.mdt-dialog-app .window-content input,
 body.game .application.mad-dragon-turbo.mdt-dialog-app .window-content select,
 body.game .application.mad-dragon-turbo.mdt-dialog-app .window-content textarea {
-  color: #1a1a1a !important;
-  -webkit-text-fill-color: #1a1a1a !important;
-  background: #fff !important;
+  color: var(--mdt-text) !important;
+  -webkit-text-fill-color: var(--mdt-text) !important;
+  background: var(--mdt-surface-input) !important;
 }
 
 .mad-dragon-turbo.mdt-drop-exists-app .mdt-drop-exists-msg,
 .mad-dragon-turbo.mdt-rest-confirm-app .mdt-rest-confirm-msg,
 .mad-dragon-turbo.mdt-money-amount-app .mdt-money-amount-label {
-  color: #1a1a1a;
+  color: var(--mdt-text);
 }
 
 /* Confirmação de descanso */
@@ -187,7 +345,7 @@ body.game .application.mad-dragon-turbo.mdt-dialog-app .window-content textarea 
 
 .mad-dragon-turbo .mdt-roll-dialog-card,
 .mad-dragon-turbo .mdt-roll-dialog-form {
-  color: #3d362c;
+  color: var(--mdt-text-secondary);
 }
 
 .mad-dragon-turbo.mdt-roll-dialog-app .form-footer:empty {
@@ -199,11 +357,11 @@ body.game .application.mad-dragon-turbo.mdt-dialog-app .window-content textarea 
   display: flex;
   flex-direction: column;
   gap: 10px;
-  color-scheme: light;
+  color-scheme: inherit;
 }
 
 .mdt-roll-dialog-form fieldset.mdt-roll-section {
-  border: 1px solid #b5a78f;
+  border: 1px solid var(--mdt-border-fieldset);
   border-radius: 6px;
   padding: 8px 10px 10px;
   margin: 0;
@@ -213,7 +371,7 @@ body.game .application.mad-dragon-turbo.mdt-dialog-app .window-content textarea 
   padding: 0 4px;
   font-weight: 700;
   font-size: 0.95em;
-  color: #4a4338;
+  color: var(--mdt-text-heading);
 }
 
 .mdt-roll-dialog-form .mdt-difficulty-row {
@@ -236,7 +394,7 @@ body.game .application.mad-dragon-turbo.mdt-dialog-app .window-content textarea 
 .mdt-roll-dialog-form .mdt-difficulty-group-title {
   font-weight: 600;
   font-size: 0.88em;
-  color: #4a4338;
+  color: var(--mdt-text-heading);
 }
 
 .mdt-roll-dialog-form .mdt-difficulty-options {
@@ -256,7 +414,7 @@ body.game .application.mad-dragon-turbo.mdt-dialog-app .window-content textarea 
   line-height: 1.25;
   font-size: inherit;
   font-weight: 700;
-  color: #3d362c;
+  color: var(--mdt-text-secondary);
   cursor: pointer;
   user-select: none;
 }
@@ -269,13 +427,13 @@ body.game .application.mad-dragon-turbo.mdt-dialog-app .window-content textarea 
   width: 16px;
   height: 16px;
   margin: 0;
-  border: 2px solid #5a4a3a;
-  background: #fff;
+  border: 2px solid var(--mdt-border-check);
+  background: var(--mdt-check-fill);
   box-shadow: none;
   opacity: 1;
   filter: none;
-  accent-color: #5a4a3a;
-  color-scheme: light;
+  accent-color: var(--mdt-border-check);
+  color-scheme: inherit;
   cursor: pointer;
 }
 
@@ -295,12 +453,12 @@ body.game .application.mad-dragon-turbo.mdt-dialog-app .window-content textarea 
 }
 
 .mad-dragon-turbo.mdt-roll-dialog-app input[type="radio"]:checked {
-  background: radial-gradient(circle, #5a4a3a 0 45%, #fff 48% 100%);
+  background: radial-gradient(circle, var(--mdt-check-dot) 0 45%, var(--mdt-check-fill) 48% 100%);
 }
 
 .mad-dragon-turbo.mdt-roll-dialog-app input[type="checkbox"]:checked {
-  background-color: #5a4a3a;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' d='M3.5 8.5l3 3 6-7'/%3E%3C/svg%3E");
+  background-color: var(--mdt-check-dot);
+  background-image: var(--mdt-check-icon);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 12px 12px;
@@ -308,7 +466,7 @@ body.game .application.mad-dragon-turbo.mdt-dialog-app .window-content textarea 
 
 .mad-dragon-turbo.mdt-roll-dialog-app input[type="radio"]:focus-visible,
 .mad-dragon-turbo.mdt-roll-dialog-app input[type="checkbox"]:focus-visible {
-  outline: 2px solid #5a4a3a;
+  outline: 2px solid var(--mdt-focus);
   outline-offset: 2px;
 }
 
@@ -332,22 +490,27 @@ body.game .application.mad-dragon-turbo.mdt-dialog-app .window-content textarea 
 }
 
 .mad-dragon-turbo .mdt-roll-dialog-form .mdt-action-buttons button {
-  color: #3d362c;
-  background: #f4efe4;
-  border: 1px solid #8a7b66;
+  color: var(--mdt-button-text);
+  background: var(--mdt-surface-button);
+  border: 1px solid var(--mdt-border-strong);
   border-radius: 4px;
   box-shadow: none;
   text-shadow: none;
 }
 
 .mad-dragon-turbo .mdt-roll-dialog-form .mdt-action-buttons button i {
-  color: #5a4a3a;
+  color: var(--mdt-button-icon);
 }
 
 .mad-dragon-turbo .mdt-roll-dialog-form .mdt-action-buttons button:hover,
 .mad-dragon-turbo .mdt-roll-dialog-form .mdt-action-buttons button:focus-visible {
-  background: #e7dcc8;
-  color: #3d362c;
+  background: var(--mdt-surface-button-hover);
+  color: var(--mdt-button-text-hover);
+}
+
+.mad-dragon-turbo .mdt-roll-dialog-form .mdt-action-buttons button:hover i,
+.mad-dragon-turbo .mdt-roll-dialog-form .mdt-action-buttons button:focus-visible i {
+  color: var(--mdt-button-icon-hover);
 }
 
 .mdt-roll-dialog-form .mdt-only-gm-row {
@@ -364,7 +527,7 @@ body.game .application.mad-dragon-turbo.mdt-dialog-app .window-content textarea 
   line-height: 1;
   min-height: 1.25rem;
   cursor: pointer;
-  color: #3d362c;
+  color: var(--mdt-text-secondary);
 }
 
 .mdt-roll-dialog-form .mdt-only-gm-label input[type="checkbox"] {
@@ -376,7 +539,7 @@ body.game .application.mad-dragon-turbo.mdt-dialog-app .window-content textarea 
   display: inline-flex;
   align-items: center;
   line-height: 1;
-  color: #3d362c;
+  color: var(--mdt-text-secondary);
 }
 
 .mdt-roll-dialog-form .mdt-only-gm-label i {
@@ -387,6 +550,6 @@ body.game .application.mad-dragon-turbo.mdt-dialog-app .window-content textarea 
   height: 1em;
   line-height: 1;
   flex: 0 0 auto;
-  color: #5a4a3a;
+  color: var(--mdt-icon);
   opacity: 0.92;
 }

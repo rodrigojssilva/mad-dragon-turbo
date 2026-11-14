@@ -306,9 +306,6 @@ export class MDTRoll {
       });
 
       app.addEventListener("render", () => {
-        const el = app.element;
-        el?.classList.remove("theme-dark", "theme-scifi");
-        el?.classList.add("themed", "theme-light");
         MDTRoll._repositionRollDialogButtons(app);
       });
       app.addEventListener("close", () => finish(null), { once: true });
@@ -468,11 +465,6 @@ export class MDTRoll {
         ],
       });
 
-      pickerApp.addEventListener("render", () => {
-        const el = pickerApp.element;
-        el?.classList.remove("theme-dark", "theme-scifi");
-        el?.classList.add("themed", "theme-light");
-      });
       pickerApp.addEventListener(
         "close",
         () => {

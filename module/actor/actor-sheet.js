@@ -1829,11 +1829,6 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
         rejectClose: false,
       });
 
-      app.addEventListener("render", () => {
-        const el = app.element;
-        el?.classList.remove("theme-dark", "theme-scifi");
-        el?.classList.add("themed", "theme-light");
-      });
       app.addEventListener("close", () => finish("cancel"), { once: true });
       app.render({ force: true });
     });

@@ -57,27 +57,27 @@
   display: block;
 }
 
-/* A janela V2 herda texto claro do tema. Os campos da ficha são claros. */
+/* A janela V2 herda a cor do tema. Os campos acompanham a superfície. */
 .application.mad-dragon-turbo .window-content input:not([type="radio"]):not([type="checkbox"]),
 .application.mad-dragon-turbo .window-content textarea,
 .application.mad-dragon-turbo .window-content select {
-  color: #1a1a1a;
-  -webkit-text-fill-color: #1a1a1a;
-  color-scheme: light;
+  color: var(--mdt-text);
+  -webkit-text-fill-color: var(--mdt-text);
+  color-scheme: inherit;
 }
 
 .application.mad-dragon-turbo .window-content input:not([type="radio"]):not([type="checkbox"]):disabled,
 .application.mad-dragon-turbo .window-content textarea:disabled,
 .application.mad-dragon-turbo .window-content select:disabled {
-  color: #1a1a1a;
-  -webkit-text-fill-color: #1a1a1a;
+  color: var(--mdt-text);
+  -webkit-text-fill-color: var(--mdt-text);
   opacity: 1;
 }
 
 .application.mad-dragon-turbo .window-content input::placeholder,
 .application.mad-dragon-turbo .window-content textarea::placeholder {
-  color: #6b6458;
-  -webkit-text-fill-color: #6b6458;
+  color: var(--mdt-placeholder);
+  -webkit-text-fill-color: var(--mdt-placeholder);
   opacity: 1;
 }
 
@@ -94,13 +94,13 @@
   min-width: 16px;
   min-height: 16px;
   margin: 0;
-  border: 2px solid #5a4a3a;
-  background: #fff;
+  border: 2px solid var(--mdt-border-check);
+  background: var(--mdt-check-fill);
   box-shadow: none;
   opacity: 1;
   filter: none;
-  accent-color: #5a4a3a;
-  color-scheme: light;
+  accent-color: var(--mdt-border-check);
+  color-scheme: inherit;
   cursor: pointer;
   vertical-align: middle;
 }
@@ -128,13 +128,13 @@
 
 .application.mad-dragon-turbo.actor input[type="radio"]:checked,
 .application.mad-dragon-turbo.item input[type="radio"]:checked {
-  background: radial-gradient(circle, #5a4a3a 0 45%, #fff 48% 100%);
+  background: radial-gradient(circle, var(--mdt-check-dot) 0 45%, var(--mdt-check-fill) 48% 100%);
 }
 
 .application.mad-dragon-turbo.actor input[type="checkbox"]:checked,
 .application.mad-dragon-turbo.item input[type="checkbox"]:checked {
-  background-color: #5a4a3a;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' d='M3.5 8.5l3 3 6-7'/%3E%3C/svg%3E");
+  background-color: var(--mdt-check-dot);
+  background-image: var(--mdt-check-icon);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 12px 12px;
@@ -144,8 +144,8 @@
 .application.mad-dragon-turbo.actor input[type="checkbox"]:disabled,
 .application.mad-dragon-turbo.item input[type="radio"]:disabled,
 .application.mad-dragon-turbo.item input[type="checkbox"]:disabled {
-  border-color: #a39e96;
-  background: #e6e2db;
+  border-color: var(--mdt-border-check-disabled);
+  background: var(--mdt-check-disabled-fill);
   cursor: default;
   opacity: 1;
   filter: none;
@@ -153,13 +153,13 @@
 
 .application.mad-dragon-turbo.actor input[type="radio"]:checked:disabled,
 .application.mad-dragon-turbo.item input[type="radio"]:checked:disabled {
-  background: radial-gradient(circle, #8a8478 0 45%, #e6e2db 48% 100%);
+  background: radial-gradient(circle, var(--mdt-check-disabled-dot) 0 45%, var(--mdt-check-disabled-fill) 48% 100%);
 }
 
 .application.mad-dragon-turbo.actor input[type="checkbox"]:checked:disabled,
 .application.mad-dragon-turbo.item input[type="checkbox"]:checked:disabled {
-  background-color: #8a8478;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' d='M3.5 8.5l3 3 6-7'/%3E%3C/svg%3E");
+  background-color: var(--mdt-check-disabled-dot);
+  background-image: var(--mdt-check-icon);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 12px 12px;
@@ -169,7 +169,7 @@
 .application.mad-dragon-turbo.actor input[type="checkbox"]:focus-visible,
 .application.mad-dragon-turbo.item input[type="radio"]:focus-visible,
 .application.mad-dragon-turbo.item input[type="checkbox"]:focus-visible {
-  outline: 2px solid #5a4a3a;
+  outline: 2px solid var(--mdt-focus);
   outline-offset: 2px;
 }
 
@@ -179,10 +179,10 @@
   gap: 6px;
   margin: 0 5px 10px;
   padding: 6px;
-  border: 1px solid #ccbfa6;
+  border: 1px solid var(--mdt-border);
   border-radius: 8px;
-  background: linear-gradient(180deg, #eee6d8 0%, #e5dbc8 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  background: var(--mdt-surface-card);
+  box-shadow: inset 0 1px 0 var(--mdt-surface-inset);
   box-sizing: border-box;
 }
 
@@ -196,7 +196,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.02em;
-  color: #3d362c;
+  color: var(--mdt-text-secondary);
   border-radius: 6px;
   border: 1px solid transparent;
   cursor: pointer;
@@ -207,34 +207,44 @@
 }
 
 .mad-dragon-turbo nav.sheet-tabs .item:hover {
-  background: rgba(255, 255, 255, 0.28);
-  border-color: rgba(0, 0, 0, 0.06);
+  background: var(--mdt-surface-tab-hover);
+  border-color: var(--mdt-border-tab-hover);
 }
 
 .mad-dragon-turbo nav.sheet-tabs .item.active {
-  background: rgba(255, 255, 255, 0.5);
-  border-color: #b8aa8f;
-  color: #1a1a1a;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  background: var(--mdt-surface-tab-active);
+  border-color: var(--mdt-border-mid);
+  color: var(--mdt-text);
+  box-shadow: inset 0 1px 0 var(--mdt-surface-inset-strong);
 }
 
 .mad-dragon-turbo nav.sheet-tabs .item:focus-visible {
-  outline: 2px solid #5a6b8c;
+  outline: 2px solid var(--mdt-focus);
   outline-offset: 2px;
 }
 
 /* ===========================
    FICHA — LAYOUT GERAL
    =========================== */
-/* Fundo da ficha no próprio form. Opacidade da marca: opacity no root de ../assets/MDT_logo.svg (CSS não isola opacidade só do bg-image). */
+/* Fundo da ficha. A marca fica num ::before para poder clarear no tema escuro. */
 .mad-dragon-turbo.sheet {
+  isolation: isolate;
   font-family: "Signika", sans-serif;
-  background-color: #f5f0e8;
-  background-image: url("../assets/MDT_logo.svg");
-  background-repeat: no-repeat;
-  background-position: bottom 10px right 10px;
-  background-size: min(220px, 50%) auto;
-  color: #1a1a1a;
+  background-color: var(--mdt-surface);
+  color: var(--mdt-text);
+}
+
+.mad-dragon-turbo.sheet::before {
+  content: "";
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: min(220px, 50%);
+  aspect-ratio: 244 / 150;
+  background: url("../assets/MDT_logo.svg") no-repeat right bottom / contain;
+  filter: var(--mdt-logo-filter);
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* CABEÇALHO */
@@ -242,8 +252,8 @@
   display: flex;
   gap: 10px;
   padding: 10px;
-  background: #e8e0d0;
-  border-bottom: 2px solid #333;
+  background: var(--mdt-surface-header);
+  border-bottom: 2px solid var(--mdt-border-line);
 }
 
 .mad-dragon-turbo .header-left {
@@ -261,7 +271,7 @@
   width: 90px;
   height: 90px;
   object-fit: cover;
-  border: 1px solid #ccbfa6;
+  border: 1px solid var(--mdt-border);
   border-radius: 8px;
   cursor: pointer;
   box-sizing: border-box;
@@ -269,8 +279,8 @@
 }
 
 .mad-dragon-turbo .roll-test {
-  background: #333;
-  color: #f5f0e8;
+  background: var(--mdt-button-primary-bg);
+  color: var(--mdt-button-primary-text);
   border: none;
   border-radius: 4px;
   padding: 4px 8px;
@@ -283,13 +293,13 @@
 }
 
 .mad-dragon-turbo .roll-test:hover {
-  background: #555;
+  background: var(--mdt-button-primary-hover);
 }
 
 .mad-dragon-turbo .rest-test {
-  background: linear-gradient(180deg, #eee6d8 0%, #e5dbc8 100%);
-  color: #1a1a1a;
-  border: 1px solid #ccbfa6;
+  background: var(--mdt-surface-card);
+  color: var(--mdt-text);
+  border: 1px solid var(--mdt-border);
   border-radius: 4px;
   padding: 4px 8px;
   cursor: pointer;
@@ -298,16 +308,16 @@
   align-items: center;
   gap: 6px;
   white-space: nowrap;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  box-shadow: inset 0 1px 0 var(--mdt-surface-inset);
 }
 
 .mad-dragon-turbo .rest-test:hover {
-  background: #e5dbc8;
-  border-color: #b8aa8f;
+  background: var(--mdt-surface-card-hover);
+  border-color: var(--mdt-border-mid);
 }
 
 .mad-dragon-turbo .rest-test i {
-  color: #1a1a1a;
+  color: var(--mdt-text);
 }
 
 .mad-dragon-turbo .header-actions {
@@ -348,7 +358,7 @@
 .mad-dragon-turbo .resource-input {
   width: 40px;
   text-align: center;
-  border: 1px solid #ccc;
+  border: 1px solid var(--mdt-border-input);
   border-radius: 3px;
   font-size: 1em;
   font-weight: bold;
@@ -358,12 +368,12 @@
 
 .mad-dragon-turbo .resource-sep {
   font-weight: bold;
-  color: #555;
+  color: var(--mdt-text-muted);
 }
 
 .mad-dragon-turbo .resource-max {
   font-weight: bold;
-  color: #555;
+  color: var(--mdt-text-muted);
 }
 
 .mad-dragon-turbo .resource-max-input {
@@ -381,9 +391,9 @@
   text-transform: uppercase;
   text-align: right;
   margin: 0 0 6px;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--mdt-border-line);
   padding-bottom: 4px;
-  color: #1a1a1a;
+  color: var(--mdt-text);
 }
 
 .mad-dragon-turbo .header-field {
@@ -398,15 +408,15 @@
   font-size: 0.75em;
   font-weight: bold;
   text-transform: uppercase;
-  color: #3d362c;
+  color: var(--mdt-text-secondary);
 }
 
 .mad-dragon-turbo .header-field input {
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid #ccc;
+  border: 1px solid var(--mdt-border-input);
   border-radius: 3px;
-  background: rgba(255, 255, 255, 0.45);
+  background: var(--mdt-surface-input-soft);
   font-family: inherit;
   font-size: 0.9em;
   padding: 4px 6px;
@@ -431,7 +441,7 @@
 .mad-dragon-turbo .header-field-concept .concept-to-chat {
   flex-shrink: 0;
   cursor: pointer;
-  color: #558;
+  color: var(--mdt-link);
   opacity: 0.7;
   padding: 2px 4px;
   line-height: 1;
@@ -439,7 +449,7 @@
 
 .mad-dragon-turbo .header-field-concept .concept-to-chat:hover {
   opacity: 1;
-  color: #335;
+  color: var(--mdt-link-hover);
 }
 
 .mad-dragon-turbo .header-field-name .header-edit-toolbar {
@@ -463,10 +473,10 @@
   box-sizing: border-box;
   min-height: 40px;
   resize: vertical;
-  border: 1px solid #ccc;
+  border: 1px solid var(--mdt-border-input);
   border-radius: 3px;
   padding: 4px 6px;
-  background: rgba(255, 255, 255, 0.45);
+  background: var(--mdt-surface-input-soft);
   font-family: inherit;
   font-size: 0.9em;
 }
@@ -501,17 +511,17 @@
   font-size: 0.85em;
   font-weight: bold;
   text-transform: uppercase;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--mdt-border-line);
   margin: 0 0 4px;
   padding-bottom: 2px;
-  color: #1a1a1a;
+  color: var(--mdt-text);
 }
 
 .mad-dragon-turbo .section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--mdt-border-line);
   margin-bottom: 4px;
   padding-bottom: 2px;
 }
@@ -525,11 +535,11 @@
 .mad-dragon-turbo .section-header a {
   cursor: pointer;
   font-size: 0.8em;
-  color: #555;
+  color: var(--mdt-text-muted);
 }
 
 .mad-dragon-turbo .section-header a:hover {
-  color: #000;
+  color: var(--mdt-text);
 }
 
 /* RECURSOS */
@@ -553,7 +563,7 @@
   text-transform: uppercase;
   display: block;
   margin-bottom: 2px;
-  color: #1a1a1a;
+  color: var(--mdt-text);
 }
 
 .mad-dragon-turbo .resource-icon {
@@ -566,10 +576,10 @@
 }
 
 .mad-dragon-turbo .mdt-top-card {
-  border: 1px solid #ccbfa6;
+  border: 1px solid var(--mdt-border);
   border-radius: 8px;
-  background: linear-gradient(180deg, #eee6d8 0%, #e5dbc8 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  background: var(--mdt-surface-card);
+  box-shadow: inset 0 1px 0 var(--mdt-surface-inset);
   padding: 8px 10px;
 }
 
@@ -591,7 +601,7 @@
   font-style: italic;
   text-align: right;
   text-transform: uppercase;
-  color: #3d362c;
+  color: var(--mdt-text-secondary);
 }
 
 .mad-dragon-turbo .mdt-style-card .style-option-group {
@@ -611,8 +621,8 @@
   margin: 0;
   padding: 8px 10px;
   border-radius: 6px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid var(--mdt-border-option);
+  background: var(--mdt-surface-option);
   min-width: 0;
   min-height: 48px;
   height: 100%;
@@ -621,7 +631,7 @@
 }
 
 .mad-dragon-turbo .mdt-style-card .style-option:hover {
-  background: rgba(255, 255, 255, 0.28);
+  background: var(--mdt-surface-option-hover);
 }
 
 .mad-dragon-turbo .mdt-style-card .style-line-title {
@@ -648,7 +658,7 @@
   white-space: normal;
   cursor: pointer;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--mdt-text);
 }
 
 .mad-dragon-turbo .mdt-style-card .style-option-icon-btn {
@@ -662,7 +672,7 @@
   padding: 0;
   border: none;  
   background: transparent;
-  color: #5a4a3a;
+  color: var(--mdt-icon);
   font-size: 1.25rem;
   opacity: 0.92;
   cursor: pointer;
@@ -677,13 +687,13 @@
 }
 
 .mad-dragon-turbo .mdt-style-card .style-option-icon-btn:hover {
-  background: rgba(0, 0, 0, 0.06);
-  color: #3d362c;
+  background: var(--mdt-surface-icon-hover);
+  color: var(--mdt-icon-hover);
   opacity: 1;
 }
 
 .mad-dragon-turbo .mdt-style-card .style-option-icon-btn:focus-visible {
-  outline: 2px solid #5a6b8c;
+  outline: 2px solid var(--mdt-focus);
   outline-offset: 2px;
 }
 
@@ -732,7 +742,7 @@
   font-weight: bold;
   text-transform: uppercase;
   line-height: 1.2;
-  color: #1a1a1a;
+  color: var(--mdt-text);
 }
 
 .mad-dragon-turbo .mdt-vitals-card .resource-col-values .resource-value-row {
@@ -762,40 +772,40 @@
 
 /* Vida — alinhado às faixas do ícone (alto / médio / baixo) */
 .mad-dragon-turbo .mdt-vitals-card .resource-tier-health.tier-high {
-  color: #1d5a3c;
-  background: #d9efe3;
-  border-color: #9cc9b0;
+  color: var(--mdt-health-high-text);
+  background: var(--mdt-health-high-bg);
+  border-color: var(--mdt-health-high-border);
 }
 
 .mad-dragon-turbo .mdt-vitals-card .resource-tier-health.tier-mid {
-  color: #6a3d00;
-  background: #fff0d6;
-  border-color: #e3c28a;
+  color: var(--mdt-health-mid-text);
+  background: var(--mdt-health-mid-bg);
+  border-color: var(--mdt-health-mid-border);
 }
 
 .mad-dragon-turbo .mdt-vitals-card .resource-tier-health.tier-low {
-  color: #651717;
-  background: #f8dede;
-  border-color: #e3aaaa;
+  color: var(--mdt-health-low-text);
+  background: var(--mdt-health-low-bg);
+  border-color: var(--mdt-health-low-border);
 }
 
 /* Sanidade */
 .mad-dragon-turbo .mdt-vitals-card .resource-tier-sanity.tier-high {
-  color: #1a3d6e;
-  background: #dde8fb;
-  border-color: #a8c0e8;
+  color: var(--mdt-sanity-high-text);
+  background: var(--mdt-sanity-high-bg);
+  border-color: var(--mdt-sanity-high-border);
 }
 
 .mad-dragon-turbo .mdt-vitals-card .resource-tier-sanity.tier-mid {
-  color: #6a3d00;
-  background: #fff2cf;
-  border-color: #e3cb86;
+  color: var(--mdt-sanity-mid-text);
+  background: var(--mdt-sanity-mid-bg);
+  border-color: var(--mdt-sanity-mid-border);
 }
 
 .mad-dragon-turbo .mdt-vitals-card .resource-tier-sanity.tier-low {
-  color: #651717;
-  background: #f8dede;
-  border-color: #e3aaaa;
+  color: var(--mdt-sanity-low-text);
+  background: var(--mdt-sanity-low-bg);
+  border-color: var(--mdt-sanity-low-border);
 }
 
 .mad-dragon-turbo .mdt-list-card .section-header {
@@ -803,16 +813,16 @@
 }
 
 .mad-dragon-turbo .mdt-list-card .item-row {
-  border-bottom-color: rgba(0, 0, 0, 0.15);
+  border-bottom-color: var(--mdt-border-row);
 }
 
 .mad-dragon-turbo .mdt-header-card {
   margin-bottom: 12px;
-  border-bottom: 1px solid #ccbfa6;
+  border-bottom: 1px solid var(--mdt-border);
 }
 
 .mad-dragon-turbo .mdt-header-card .sheet-title {
-  border-bottom-color: #b8aa8f;
+  border-bottom-color: var(--mdt-border-mid);
 }
 
 .mad-dragon-turbo .mdt-diary-card .section-header {
@@ -828,12 +838,12 @@
 
 .mad-dragon-turbo .item-row {
   padding: 2px 4px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--mdt-border-row);
   font-size: 0.85em;
 }
 
 .mad-dragon-turbo .item-row:hover {
-  background: rgba(0, 0, 0, 0.04);
+  background: var(--mdt-surface-row-hover);
 }
 
 .mad-dragon-turbo .item-name {
@@ -843,17 +853,17 @@
 
 .mad-dragon-turbo .item-delete {
   cursor: pointer;
-  color: #aaa;
+  color: var(--mdt-danger);
   font-size: 0.8em;
   padding: 0 2px;
 }
 
 .mad-dragon-turbo .item-delete:hover {
-  color: #900;
+  color: var(--mdt-danger-hover);
 }
 
 .mad-dragon-turbo .empty-line {
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--mdt-border-input);
   height: 22px;
 }
 
@@ -875,25 +885,25 @@
   padding: 0;
   line-height: 1.4;
   font-size: 0.95em;
-  color: #3d362c;
+  color: var(--mdt-text-secondary);
 }
 
 .mad-dragon-turbo .mdt-style-info-dialog-card .mdt-style-info-special-wrap {
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  border-top: 1px solid var(--mdt-border-hairline);
 }
 
 .mad-dragon-turbo .mdt-style-info-dialog-card .mdt-style-info-special-wrap .mdt-style-info-special {
   margin: 0;
   padding: 8px 10px;
   border-radius: 6px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid var(--mdt-border-option);
+  background: var(--mdt-surface-option);
   line-height: 1.35;
   font-size: 0.9em;
   font-weight: 700;
-  color: #3d362c;
+  color: var(--mdt-text-secondary);
 }
 
 .mad-dragon-turbo .mdt-style-info-dialog-card .mdt-style-info-special-wrap .mdt-style-info-extras {
@@ -901,7 +911,7 @@
   padding: 0 0 0 18px;
   line-height: 1.35;
   font-size: 0.88em;
-  color: #3d362c;
+  color: var(--mdt-text-secondary);
 }
 
 .mad-dragon-turbo .mdt-style-info-dialog-card .mdt-style-info-special-wrap .mdt-style-info-extras li {
@@ -922,7 +932,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  color: #4a4338;
+  color: var(--mdt-text-heading);
 }
 
 /* Área do DialogV2: contentClasses no window (ApplicationWindowConfiguration.contentClasses) */
@@ -932,14 +942,14 @@
 
 .mad-dragon-turbo .style-desc {
   font-size: 0.75em;
-  color: #555;
+  color: var(--mdt-text-muted);
   margin: 2px 0 0 20px;
   font-style: italic;
 }
 
 .mad-dragon-turbo .style-stats {
   font-size: 0.7em;
-  color: #333;
+  color: var(--mdt-text-body);
   margin-left: 20px;
   display: block;
   font-weight: bold;
@@ -949,7 +959,7 @@
 .mad-dragon-turbo textarea {
   width: 100%;
   background: transparent;
-  border: 1px solid #ccc;
+  border: 1px solid var(--mdt-border-input);
   border-radius: 2px;
   padding: 4px;
   font-family: inherit;
@@ -960,7 +970,7 @@
 
 /* RODAPÉ RECURSOS */
 .mad-dragon-turbo .resources-footer {
-  border-top: 1px solid #333;
+  border-top: 1px solid var(--mdt-border-line);
   padding-top: 6px;
 }
 
@@ -973,7 +983,7 @@
 .mad-dragon-turbo .resources-footer input {
   flex: 1;
   border: none;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--mdt-border-line);
   background: transparent;
   font-family: inherit;
 }
@@ -1073,9 +1083,9 @@
 .mad-dragon-turbo .spell-fields {
   margin-bottom: 5px;
   padding: 6px;
-  border: 1px dashed #b8b8b8;
+  border: 1px dashed var(--mdt-border-dashed);
   border-radius: 4px;
-  background: rgba(0, 0, 0, 0.03);
+  background: var(--mdt-surface-spell);
 }
 
 .mad-dragon-turbo .spell-checkbox {
@@ -1113,10 +1123,10 @@
 }
 
 .mad-dragon-turbo .spell-uses-grid input {
-  border: 1px solid #bdbdbd;
+  border: 1px solid var(--mdt-border-input-soft);
   border-radius: 3px;
   padding: 2px 4px;
-  background: #fff;
+  background: var(--mdt-surface-input);
 }
 
 .mad-dragon-turbo .equipment-fields {
@@ -1183,11 +1193,11 @@
   width: 0;
   max-width: 100%;
   min-width: 0;
-  border: 1px solid #ccc;
+  border: 1px solid var(--mdt-border-input);
   border-radius: 3px;
   padding: 3px 6px;
   font-size: 0.9em;
-  background: #fff;
+  background: var(--mdt-surface-input);
   box-sizing: border-box;
   font-weight: normal;
 }
@@ -1196,10 +1206,10 @@
 .mad-dragon-turbo .equipment-qty-input,
 .mad-dragon-turbo .equipment-ammo-input {
   width: 100%;
-  border: 1px solid #bdbdbd;
+  border: 1px solid var(--mdt-border-input-soft);
   border-radius: 3px;
   padding: 2px 4px;
-  background: #fff;
+  background: var(--mdt-surface-input);
   font-weight: normal;
 }
 
@@ -1211,7 +1221,7 @@
   margin-left: 6px;
   font-size: 1em;
   font-weight: 700;
-  color: #3d4a62;
+  color: var(--mdt-ammo);
 }
 
 .mad-dragon-turbo .item-row-spell.spell-no-uses .equipment-ammo-badge {
@@ -1221,14 +1231,14 @@
 .mad-dragon-turbo .item-row-spell.spell-no-uses,
 .mad-dragon-turbo .item-row-consumable.consumable-no-uses,
 .mad-dragon-turbo .item-row-equipment.equipment-no-uses {
-  background: rgba(140, 30, 30, 0.06);
+  background: var(--mdt-surface-danger-row);
 }
 
 .mad-dragon-turbo .spell-empty-badge {
   margin-left: 6px;
   font-size: 0.74em;
   font-weight: 700;
-  color: #7e1f1f;
+  color: var(--mdt-danger-text);
 }
 
 .mad-dragon-turbo .spell-ready-icon {
@@ -1238,15 +1248,15 @@
 }
 
 .mad-dragon-turbo .spell-ready-icon.is-ready {
-  color: #1d5a3c;
+  color: var(--mdt-success);
 }
 
 .mad-dragon-turbo .spell-ready-icon.is-not-ready {
-  color: #8a8478;
+  color: var(--mdt-ready-off);
 }
 
 .mad-dragon-turbo .item-row-spell.spell-not-ready {
-  background: rgba(140, 30, 30, 0.06);
+  background: var(--mdt-surface-danger-row);
 }
 
 .mad-dragon-turbo .spell-ready-checkbox {
@@ -1259,14 +1269,14 @@
 .mad-dragon-turbo .spell-empty-note {
   margin: 6px 0 0;
   font-size: 0.8em;
-  color: #7e1f1f;
+  color: var(--mdt-danger-text);
   font-weight: 600;
 }
 
 .mad-dragon-turbo .spell-free-use-note {
   margin: 6px 0 0;
   font-size: 0.8em;
-  color: #1d5a3c;
+  color: var(--mdt-success);
   font-weight: 600;
 }
 

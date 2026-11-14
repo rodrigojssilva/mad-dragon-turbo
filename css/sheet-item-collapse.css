@@ -18,12 +18,12 @@
 .mad-dragon-turbo .item-chevron {
   padding: 4px;
   font-size: 0.7em;
-  color: #888;
+  color: var(--mdt-text-quiet);
   transition: transform 0.15s;
 }
 
 .mad-dragon-turbo .item-chevron:hover {
-  color: #333;
+  color: var(--mdt-text-body);
 }
 
 .mad-dragon-turbo .item-kind-badge {
@@ -34,10 +34,10 @@
   height: 30px;
   flex: 0 0 30px;
   box-sizing: border-box;
-  border: 1px solid #b8aa8f;
+  border: 1px solid var(--mdt-border-mid);
   border-radius: 4px;
-  background: #f7f3ea;
-  color: #3d362c;
+  background: var(--mdt-surface-badge);
+  color: var(--mdt-text-secondary);
   line-height: 1;
 }
 
@@ -48,8 +48,8 @@
 
 .mad-dragon-turbo .item-description {
   padding: 6px 8px;
-  background: rgba(0, 0, 0, 0.04);
-  border-top: 1px solid #ddd;
+  background: var(--mdt-surface-row-hover);
+  border-top: 1px solid var(--mdt-border-row);
 }
 
 .mad-dragon-turbo .item-description.hidden {
@@ -60,11 +60,11 @@
 .mad-dragon-turbo .item-description .spell-duration-input,
 .mad-dragon-turbo .item-description .item-kind-input {
   width: 100%;
-  border: 1px solid #ccc;
+  border: 1px solid var(--mdt-border-input);
   border-radius: 3px;
   padding: 3px 6px;
   font-size: 0.9em;
-  background: #fff;
+  background: var(--mdt-surface-input);
   box-sizing: border-box;
   margin-bottom: 3px;
   font-weight: normal;
@@ -72,11 +72,11 @@
 
 .mad-dragon-turbo .item-desc-input {
   width: 100%;
-  border: 1px solid #ccc;
+  border: 1px solid var(--mdt-border-input);
   border-radius: 3px;
   padding: 4px 6px;
   font-size: 0.85em;
-  background: #fff;
+  background: var(--mdt-surface-input);
   resize: vertical;
   box-sizing: border-box;
   font-family: inherit;
@@ -84,18 +84,18 @@
 
 .mad-dragon-turbo .item-desc-content {
   margin-bottom: 6px;
-  color: #333;
+  color: var(--mdt-text-body);
 }
 
 .mad-dragon-turbo .item-edit-desc {
   font-size: 0.8em;
-  color: #888;
+  color: var(--mdt-text-quiet);
   cursor: pointer;
   display: inline-block;
 }
 
 .mad-dragon-turbo .item-edit-desc:hover {
-  color: #333;
+  color: var(--mdt-text-body);
 }
 
 .mad-dragon-turbo .item-to-chat,
@@ -104,7 +104,7 @@
 .mad-dragon-turbo .equipment-use,
 .mad-dragon-turbo .spell-cast {
   cursor: pointer;
-  color: #558;
+  color: var(--mdt-link);
   opacity: 0.7;
 }
 
@@ -136,21 +136,21 @@
   width: 25px;
   height: 25px;
   padding: 0;
-  border: 1px solid #ccc;
+  border: 1px solid var(--mdt-border-input);
   border-radius: 6px;
-  background: #f5f5f5;
-  color: #333;
+  background: var(--mdt-surface-edit);
+  color: var(--mdt-text-body);
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 
 .mad-dragon-turbo .item-edit-btn:hover {
-  background: #eaeaea;
-  border-color: #aaa;
+  background: var(--mdt-surface-edit-hover);
+  border-color: var(--mdt-border-edit-hover);
 }
 
 .mad-dragon-turbo .item-edit-btn:focus-visible {
-  outline: 2px solid #558;
+  outline: 2px solid var(--mdt-link);
   outline-offset: 2px;
 }
 

@@ -117,3 +117,7 @@
 - [x] Adicionar confirmação de uso do Descanso
 - [x] Manter formatação do texto ao enviar para o chat
 - [x] FIX: Logo borrada na ficha do personagem
+
+---
+
+- [ ] Atualizar layout para seguir o tema do foundry
