@@ -100,6 +100,22 @@ Hooks.on("init", async function () {
   MDTRoll.registerChatHooks();
 });
 
+/** Modais do sistema ficam no tema claro para o texto não depender do tema do cliente. */
+function pinMdtDialogTheme(app, element) {
+  const raw = element?.classList ? element : app?.element;
+  const node = raw?.jquery ? raw[0] : raw;
+  const root = node?.classList?.contains("mdt-dialog-app")
+    ? node
+    : node?.closest?.(".mdt-dialog-app");
+  if (!root) return;
+  root.classList.remove("theme-dark", "theme-scifi");
+  root.classList.add("themed", "theme-light");
+}
+
+for (const hook of ["renderDialogV2", "renderApplicationV2"]) {
+  Hooks.on(hook, pinMdtDialogTheme);
+}
+
 Hooks.on("preCreateItem", (doc) => {
   if (doc.type !== "equipment" && doc.type !== "consumable") return;
   const kind = doc.system?.kind ?? "";

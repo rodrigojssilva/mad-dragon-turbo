@@ -753,7 +753,7 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     );
 
     await foundry.applications.api.DialogV2.wait({
-      classes: ["mad-dragon-turbo", "mdt-style-info-dialog-app"],
+      classes: ["mad-dragon-turbo", "mdt-dialog-app", "mdt-style-info-dialog-app"],
       window: {
         title: game.i18n.localize(m.title),
         contentClasses: ["mad-dragon-turbo", "mdt-style-info-dialog-content"],
@@ -1243,7 +1243,7 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
   async _promptMoneyAmount(max) {
     const maxAttr = Number.isFinite(max) ? ` max="${max}"` : "";
     const result = await foundry.applications.api.DialogV2.wait({
-      classes: ["mad-dragon-turbo", "mdt-money-amount-app"],
+      classes: ["mad-dragon-turbo", "mdt-dialog-app", "mdt-money-amount-app"],
       window: {
         title: game.i18n.localize("MDT.consumable.moneyAmountTitle"),
         contentClasses: ["mad-dragon-turbo", "mdt-money-amount-content"],
@@ -1693,7 +1693,7 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     }
 
     const result = await foundry.applications.api.DialogV2.wait({
-      classes: ["mad-dragon-turbo", "mdt-drop-exists-app"],
+      classes: ["mad-dragon-turbo", "mdt-dialog-app", "mdt-drop-exists-app"],
       window: {
         title: game.i18n.localize("MDT.item.dropExistsTitle"),
         contentClasses: ["mad-dragon-turbo", "mdt-drop-exists-content"],
@@ -1794,6 +1794,51 @@ export class MadDragonActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
       ui.notifications?.info(game.i18n.localize("MDT.spell.restNoSpells"));
       return;
     }
+
+    const result = await new Promise((resolve) => {
+      let settled = false;
+      const finish = (value) => {
+        if (settled) return;
+        settled = true;
+        resolve(value);
+      };
+
+      const app = new foundry.applications.api.DialogV2({
+        classes: ["mad-dragon-turbo", "mdt-dialog-app", "mdt-rest-confirm-app"],
+        window: {
+          title: game.i18n.localize("MDT.spell.restConfirmTitle"),
+          contentClasses: ["mad-dragon-turbo", "mdt-rest-confirm-content"],
+        },
+        content: `<p class="mdt-rest-confirm-msg">${game.i18n.localize("MDT.spell.restConfirm")}</p>`,
+        buttons: [
+          {
+            action: "cancel",
+            label: game.i18n.localize("MDT.spell.restConfirmNo"),
+            icon: "fa-solid fa-xmark",
+            default: true,
+            callback: () => finish("cancel"),
+          },
+          {
+            action: "confirm",
+            label: game.i18n.localize("MDT.spell.restConfirmYes"),
+            icon: "fa-solid fa-check",
+            callback: () => finish("confirm"),
+          },
+        ],
+        modal: true,
+        rejectClose: false,
+      });
+
+      app.addEventListener("render", () => {
+        const el = app.element;
+        el?.classList.remove("theme-dark", "theme-scifi");
+        el?.classList.add("themed", "theme-light");
+      });
+      app.addEventListener("close", () => finish("cancel"), { once: true });
+      app.render({ force: true });
+    });
+
+    if (result !== "confirm") return;
 
     await this._flushVitalInputsToActor();
 

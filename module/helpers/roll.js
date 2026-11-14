@@ -237,7 +237,7 @@ export class MDTRoll {
       };
 
       const app = new foundry.applications.api.DialogV2({
-        classes: ["mad-dragon-turbo", "mdt-roll-dialog-app"],
+        classes: ["mad-dragon-turbo", "mdt-dialog-app", "mdt-roll-dialog-app"],
         window: {
           title: game.i18n.localize("MDT.roll.title"),
           contentClasses: ["mad-dragon-turbo", "mdt-roll-dialog-content"],
@@ -444,7 +444,7 @@ export class MDTRoll {
       MDTRoll._cancelTargetPick = cancelQuiet;
 
       pickerApp = new foundry.applications.api.DialogV2({
-        classes: ["mad-dragon-turbo", "mdt-select-target-app"],
+        classes: ["mad-dragon-turbo", "mdt-dialog-app", "mdt-select-target-app"],
         window: {
           title: game.i18n.localize("MDT.roll.target"),
           contentClasses: ["mad-dragon-turbo", "mdt-select-target-content"],
@@ -468,6 +468,11 @@ export class MDTRoll {
         ],
       });
 
+      pickerApp.addEventListener("render", () => {
+        const el = pickerApp.element;
+        el?.classList.remove("theme-dark", "theme-scifi");
+        el?.classList.add("themed", "theme-light");
+      });
       pickerApp.addEventListener(
         "close",
         () => {
